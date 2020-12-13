@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Join Room
+
+{% endblock %}
+
+{% block content %}
+    <form class="needs-validation" action="/" methods="POST">
+        {% if user_logged == true %}
+            <div>
+                <h3>display name: {{ display-name }}</h3>
+            </div>
+        {% else %}
+            <div>
+                <input type="text" name="guestName" placeholder="Type your name...">
+            </div>
+        {% endif %}
+
+        <div>
+            <input type="text" name="code" placeholder="Enter the room code here...">
+        </div>
+        <div>
+            <button>Join</button>
+        </div>
+    </form>
+
+{% endblock %}
