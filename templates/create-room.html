@@ -186,7 +186,14 @@ button:hover {
             event.preventDefault();
             
             var listposted = false;
-            var js_data = JSON.stringify(selectedBless)
+
+            var roomdict = {
+                rname : $("#roomName").val(),
+                rdate : $("#datetime").val(),
+                rlist: selectedBless
+            }
+
+            var js_data = JSON.stringify(roomdict)
             
             if (!listposted) {
             $.ajax({

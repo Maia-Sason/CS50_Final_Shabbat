@@ -193,15 +193,12 @@ def createRoom():
     
     elif request.method == "POST":
 
-        roomName = request.form.get("roomName")
-        roomDate = request.form.get("dateTimehtml")
-
-        data = request.json
-
+        data = request.get_json()
         if data != None:
-            roomList = data
+            datadict = json.dumps(data)
+            roomdict = json.loads(datadict)
 
-            print(roomList)
+            print(roomdict["rlist"][0])
             
 
             go = True
@@ -212,17 +209,17 @@ def createRoom():
                 if roomCode != code:
                     go = False
            
-            room = Room(room_name=roomName, room_code=roomCode, user_id=1)
+            room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=1)
             db.session.add(room)
             db.session.commit()
 
 
        
             
-            for i in range(len(roomList)):
+            for i in range(len(roomdict["rlist"])):
                 print(i)
                 j = i
-                j = Room_Bless(bless_id=roomList[i],ord_num=(1+i), room_id=room.id)
+                j = Room_Bless(bless_id=roomdict['rlist'][i],ord_num=(1+i), room_id=room.id)
                 
                 db.session.add(j)
                 db.session.commit()
