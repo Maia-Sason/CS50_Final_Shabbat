@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from helper import *
+
 import json
 
 from sqlalchemy.orm import relationship
@@ -83,7 +85,7 @@ class Room_Bless(db.Model):
     #     self.bless_id = bless_id
     #     self.orderer = ord_num
 
-    
+
 # class room_join(db.Model):
 #     room_id = db.Column(db.Integer, db.ForeignKey("Room.room_id"))
 #     user_id = db.Column(db.Integer, db.ForeignKey("User.user_id"))
@@ -129,7 +131,8 @@ def index():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     ''' Login page ''' 
-
+    if request.method == "GET":
+        return render_template("login.html")
     # Get user to log in.
     # pull up info from db
 
@@ -181,7 +184,6 @@ def createBless():
 def createRoom():
     ''' Create a room '''
     room_exist = 0
-    list_capture = False
     if (request.method == "GET") and (room_exist < 10):
         # create a multistep form
         return render_template('create-room.html')
@@ -200,12 +202,17 @@ def createRoom():
             roomList = data
 
             print(roomList)
-            list_capture = True
-            print(list_capture)
-            print(roomList[1])
+            
 
-        
-            room = Room(room_name=roomName, room_code="dev", user_id=1)
+            go = True
+            
+            while go:
+                roomCode = get_rndm(6)
+                code = Room.query.filter_by(room_code=roomCode).first()
+                if roomCode != code:
+                    go = False
+           
+            room = Room(room_name=roomName, room_code=roomCode, user_id=1)
             db.session.add(room)
             db.session.commit()
 
