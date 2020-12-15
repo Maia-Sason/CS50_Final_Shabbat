@@ -106,7 +106,7 @@ button:hover {
     <div class='tab form-group'>
         Name and Date:
         <p><input  type="text" id="roomName" placeholder="Room name..."
-             oninput="this.className = '' " name="roomName"></p>
+              name="roomName"></p>
         <p><input  type="datetime-local" id="datetime" placeholder="mm/dd/yyyy, HH:MM AM"
              oninput="this.className = '' " name="dateTimehtml"></p>
     
@@ -182,6 +182,7 @@ button:hover {
 
         if (currentTab >= x.length) {
             document.getElementById("roomCreation").submit();
+
             return false;
         }
 
@@ -247,7 +248,7 @@ $(document).ready(function() {
             $(this).addClass('btn-primary selected').removeClass('btn-outline-primary btn-outline-danger');
             selectedBless.push($(this).val());
         }
-        console.log(selectedBless, blessVal);
+        
 
         $(".btnBless").each(function() {
             if ($(this).hasClass("selected")) {
@@ -256,10 +257,12 @@ $(document).ready(function() {
                 $(this).html($(this).val());
             }
         });
-        
-    });
 
-})
+   
+    });
+});
+
+console.log(selectedBless);
 
 $(document).ready(function() {
     
@@ -271,7 +274,10 @@ $(document).ready(function() {
         list += "<li>" + "Number of Bless Blocks: " + selectedBless.length + "</li>";
 
         $("#confirmation").html(list);
+        console.log(selectedBless)
     })
+
+    selectedBless = JSON.stringify(selectedBless);
     
 })
 
