@@ -181,6 +181,28 @@ button:hover {
         currentTab = currentTab + n;
 
         if (currentTab >= x.length) {
+
+            
+            event.preventDefault();
+            
+            var listposted = false;
+            var js_data = JSON.stringify(selectedBless)
+            
+            if (!listposted) {
+            $.ajax({
+                url : "/create-room",
+                type : 'post',
+                contentType : "application/json",
+                dataType : 'json',
+                data: js_data
+                
+            }).done(function(result) {
+                listposted = true;
+                alert('page content:' + data)
+                
+            });
+            }
+
             document.getElementById("roomCreation").submit();
 
             return false;
@@ -260,6 +282,11 @@ $(document).ready(function() {
 
    
     });
+    $("#roomCreation").submit(function (event) {
+        
+        
+    })
+    
 });
 
 console.log(selectedBless);
@@ -276,8 +303,6 @@ $(document).ready(function() {
         $("#confirmation").html(list);
         console.log(selectedBless)
     })
-
-    selectedBless = JSON.stringify(selectedBless);
     
 })
 

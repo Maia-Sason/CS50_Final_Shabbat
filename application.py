@@ -78,10 +78,12 @@ class Room_Bless(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
     
-    def __init__(self, ord_num, bless_id, room_id):
-        self.room_id = room_id
-        self.bless_id = bless_id
-        self.orderer = ord_num
+    # def __init__(self, ord_num, bless_id, room_id):
+    #     self.room_id = room_id
+    #     self.bless_id = bless_id
+    #     self.orderer = ord_num
+
+    
 # class room_join(db.Model):
 #     room_id = db.Column(db.Integer, db.ForeignKey("Room.room_id"))
 #     user_id = db.Column(db.Integer, db.ForeignKey("User.user_id"))
@@ -179,6 +181,7 @@ def createBless():
 def createRoom():
     ''' Create a room '''
     room_exist = 0
+    list_capture = False
     if (request.method == "GET") and (room_exist < 10):
         # create a multistep form
         return render_template('create-room.html')
@@ -190,22 +193,32 @@ def createRoom():
 
         roomName = request.form.get("roomName")
         roomDate = request.form.get("dateTimehtml")
-        roomList = json.loads('selectedBless')
 
-        print(roomList)
+        data = request.json
 
+        if data != None:
+            roomList = data
 
-        if roomName and roomDate:
-            room = Room(room_name=roomName, room_code="uYqazcvY", user_id=1)
+            print(roomList)
+            list_capture = True
+            print(list_capture)
+            print(roomList[1])
+
+        
+            room = Room(room_name=roomName, room_code="dev", user_id=1)
             db.session.add(room)
             db.session.commit()
 
+
        
             
-            # for i in range(len(roomList)):
-            #     i = Room_Bless(bless_id=roomList[i],ord_num=(i+1), room_id=room.id)
-            #     db.session.add(i)
-            #     db.session.commit()
+            for i in range(len(roomList)):
+                print(i)
+                j = i
+                j = Room_Bless(bless_id=roomList[i],ord_num=(1+i), room_id=room.id)
+                
+                db.session.add(j)
+                db.session.commit()
         return render_template('roomCreated.html')
 
 
