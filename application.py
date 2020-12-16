@@ -6,7 +6,7 @@ import json
 
 from sqlalchemy.orm import relationship
 from flask import Flask, render_template, redirect, flash, jsonify, request
-from flask_login import LoginManager, login_user, current_user, login_required, logout_user
+from flask_login import LoginManager, login_user, current_user, login_required, logout_user, UserMixin
 
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
@@ -25,7 +25,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
 db = SQLAlchemy(app)
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     display_name = db.Column(db.String(50), unique=True)
@@ -35,7 +35,7 @@ class User(db.Model):
     blessings = db.relationship('Bless', backref='author', lazy=True)
 
     def __init__(self, display_name, email, phash):
-        self.name = display_name
+        self.display_name = display_name
         self.email = email
         self.phash = phash
 
@@ -104,8 +104,9 @@ app.secret_key = 'secret'
 socketio = SocketIO(app)
 
 @login.user_loader
-def load_user(user_id):
-    return User.get(user_id)
+def load_user(id):
+    return User.query.get(int(id))
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -143,22 +144,25 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-    
+        user_log = User.query.filter_by(email=email).first()
+        if user_log == None:
+            return apology("Invalid email/password.")
 
-   
-    # user_object = User.query.filter_by(email=email).first()
-    # if user_object is None:
-        # error
-    # elif password != user_object.password:
-        # error
-    # else:
-        # if everything is correct:
-        # login_user(user_object)
+        if user_log.phash == password and user_log.email == email:
+            login_user(user_log)
+            return render_template("index.html")
+        return apology("Invalid email/password.")
 
 
         
     # Get user to log in.
     # pull up info from db
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return render_template('login.html')
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -166,6 +170,21 @@ def register():
     if request.method == "GET":
         return render_template("register.html")
     else:
+        email = request.form.get('email')
+        display_name = request.form.get('display_name')
+        password = request.form.get('password')
+
+        # if email not email and display_name not display_name and password not password:
+            # error
+        
+        # if email = email in db:
+            # error
+        print(display_name)
+        # hash password and store all in db
+        new = User(email=email, display_name=display_name, phash=password)
+        db.session.add(new)
+        db.session.commit()
+
         return render_template('login.html')
 
     # Get user to sign up and store info in db
@@ -254,7 +273,7 @@ def createRoom():
                 if roomCode != code:
                     go = False
            
-            room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=1)
+            room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
             db.session.add(room)
             db.session.commit()
 

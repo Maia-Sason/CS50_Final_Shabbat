@@ -8,11 +8,11 @@
 
 {% block content %}
     <form class="needs-validation" action="/" methods="POST">
-        {% if user_logged == true %}
+        {% if current_user.is_authenticated %}
             <div>
-                <h3>display name: {{ display-name }}</h3>
+                <h3>display name: {{ current_user.display_name }}</h3>
             </div>
-        {% else %}
+        {% elif current_user.is_anonymous %}
             <div>
                 <input type="text" name="guestName" placeholder="Type your name...">
             </div>
