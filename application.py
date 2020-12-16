@@ -16,8 +16,9 @@ app = Flask(__name__)
 
 # Configure flask login
 
-# login = LoginManager(app)
-# login.init_app(app)
+# Configure flask login
+login = LoginManager(app)
+login.init_app(app)
 
 # config sqlalchemy
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -102,6 +103,11 @@ app.secret_key = 'secret'
 # Instantiate Flask-socket io and pass in app.
 socketio = SocketIO(app)
 
+@login.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     ''' Join a room here. '''
@@ -133,14 +139,53 @@ def login():
     ''' Login page ''' 
     if request.method == "GET":
         return render_template("login.html")
+    else:
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+    
+
+   
+    # user_object = User.query.filter_by(email=email).first()
+    # if user_object is None:
+        # error
+    # elif password != user_object.password:
+        # error
+    # else:
+        # if everything is correct:
+        # login_user(user_object)
+
+
+        
     # Get user to log in.
     # pull up info from db
 
 @app.route('/register', methods=["GET", "POST"])
 def register():
     ''' Sign User up '''
+    if request.method == "GET":
+        return render_template("register.html")
+    else:
+        return render_template('login.html')
 
     # Get user to sign up and store info in db
+
+# that was weird... this refused to work for awhile until i checked
+# it on google chrome
+@app.route('/_check_email')
+def check_mail():
+    # solution from
+    # URL: https://stackoverflow.com/questions/15438524/object20object-validation-plugin-flask
+
+    email = request.args.get('email')
+    check = User.query.filter_by(email=email).first()
+    if check == None:
+        checker = "true"
+    else:
+        checker = "false"
+    return checker
+    
+
 
 @app.route('/room-library', methods=["GET", "POST"])
 @login_required
