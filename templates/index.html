@@ -7,22 +7,22 @@
 {% endblock %}
 
 {% block content %}
-    <form class="needs-validation" action="/" methods="POST">
+    <form action="/" method="post">
         {% if current_user.is_authenticated %}
-            <div>
+        <div class="form-group col-md-6">
                 <h3>display name: {{ current_user.display_name }}</h3>
             </div>
         {% elif current_user.is_anonymous %}
-            <div>
+        <div class="form-group col-md-6">
                 <input type="text" name="guestName" placeholder="Type your name...">
             </div>
         {% endif %}
 
-        <div>
+        <div class="form-group col-md-6">
             <input type="text" name="code" placeholder="Enter the room code here...">
         </div>
         <div>
-            <button>Join</button>
+            <button id="submit" class="btn btn-primary" type="submit">Join</button>
         </div>
     </form>
 

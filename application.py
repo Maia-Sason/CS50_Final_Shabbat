@@ -113,27 +113,41 @@ def load_user(id):
 def index():
     ''' Join a room here. '''
 
-    if (request.method == "GET"):
+    if request.method == "GET":
         # If user is logged in:
         # else:
-        return render_template('index.html', )
-    else:
+        return render_template('index.html' )
+    elif request.method == "POST":
         # If user logged in... Display name = user display name
         # else
 
         displayName = request.form.get("guestName")
 
+        if current_user.is_authenticated:
+            displayName = current_user.display_name
+
         roomCode = request.form.get("code")
 
-        foundRoom = Room.query.filter_by(code=roomCode).first()
+        foundRoom = Room.query.filter_by(room_code=roomCode).first()
+
         if foundRoom == None:
-            return render_template("error.html")
-        else:
+            return apology("Room not found!")
+        elif foundRoom.user_id == current_user.id:
+            return apology("You can't join your own room as a guest!")
             # if roomCode == a room code that also matches the host:
                 # return error "you cant join your own room as a guest"
-            return render_template("room_join.html", roomCode=roomCode, displayName=displayName)
+        
+        # tell program that user is a guest not a host
+        mode = 'guest'
+
+        return render_template("room_join.html", room=foundRoom, displayName=displayName, mode=mode)
             # return render template room-joined, pass code, pass Displayname
             # return error "that room does not exist"
+
+
+@app.route("/room_join")
+def room_join():
+    return render_template('room_join.html')
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -210,11 +224,14 @@ def check_mail():
 @login_required
 def roomLibrary():
     ''' You can view all the rooms you own here  ((LIMIT 10/user))'''
-    # load all existing rooms for user
+    if request.method == "GET":
+        # load all existing rooms for user
+        user_rooms = Room.query.filter_by(user_id=current_user.get_id()).all()
 
-    # button to add a new room
+        # button to add a new room
 
-    # give ability to delete a room off the page.
+        # give ability to delete a room off the page.
+        return render_template("room-library.html", user_rooms = user_rooms)
 
 
 @app.route("/bless-library", methods=["GET", "POST"])
@@ -245,15 +262,17 @@ def createBless():
 
 
 @app.route('/create-room', methods=['GET', 'POST'])
+@login_required
 def createRoom():
     ''' Create a room '''
-    room_exist = 0
-    if (request.method == "GET") and (room_exist < 10):
+    room_exist = Room.query.filter_by(user_id=current_user.get_id()).all()
+    if (request.method == "GET"):
+        if len(room_exist) >= 10:
+            return apology("No more than 10 active rooms supported.")
         # create a multistep form
         return render_template('create-room.html')
 
-    elif room_exist >= 10:
-        return render_template('error.html')
+        
     
     elif request.method == "POST":
 
