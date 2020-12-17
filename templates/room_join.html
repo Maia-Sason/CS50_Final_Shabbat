@@ -7,5 +7,10 @@
 {% block content %}
 
     <h1>waiting</h1>
+    <button id="changecolor" type="button" class="btn btn-primary">red</button>
+
+<!-- solved 400 GET error by using a different version of socket.io CDN -->
+    <script src="https://cdn.socket.io/socket.io-3.0.0.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/socketio.js') }}"></script>
 
 {% endblock %}

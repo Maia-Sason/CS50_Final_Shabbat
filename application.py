@@ -101,7 +101,7 @@ db.session.commit()
 app.secret_key = 'secret'
 
 # Instantiate Flask-socket io and pass in app.
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 @login.user_loader
 def load_user(id):
@@ -123,17 +123,18 @@ def index():
 
         displayName = request.form.get("guestName")
 
-        if current_user.is_authenticated:
-            displayName = current_user.display_name
-
         roomCode = request.form.get("code")
 
         foundRoom = Room.query.filter_by(room_code=roomCode).first()
 
         if foundRoom == None:
             return apology("Room not found!")
-        elif foundRoom.user_id == current_user.id:
-            return apology("You can't join your own room as a guest!")
+
+        if current_user.is_authenticated:
+            displayName = current_user.display_name
+           
+            if foundRoom.user_id == current_user.id:
+                return apology("You can't join your own room as a guest!")
             # if roomCode == a room code that also matches the host:
                 # return error "you cant join your own room as a guest"
         
@@ -144,10 +145,6 @@ def index():
             # return render template room-joined, pass code, pass Displayname
             # return error "that room does not exist"
 
-
-@app.route("/room_join")
-def room_join():
-    return render_template('room_join.html')
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -311,18 +308,25 @@ def createRoom():
 
 # Set up sockets.
 
-@app.route('/room-joined', methods=['GET','POST'])
+@app.route('/room_join', methods=['GET','POST'])
 def roomJoined():
     ''' Join the room as guest or host '''
+    if request.method == 'GET': 
+
     # if joined with host id:
         # load up host privledges
         # render template pass host, room settings
     # if joined with room code:
         # load up guest access
         # render privledges pass guest, room settings
-
+        return render_template('room_join.html')
     # connect to sockets here i think
 
+@socketio.on('message')
+def message(data):
+
+    print(f'\n\n{data}\n\n')
+    send(data, broadcast=True)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, debug=True)
