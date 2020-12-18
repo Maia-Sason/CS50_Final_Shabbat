@@ -113,11 +113,9 @@ button:hover {
     </div>
     <div class='tab form-group'>
         Select Bless blocks and order
-        <button type="button" class="btn btn-outline-primary btnBless" value="A">A</button>
-        <button type="button" class="btn btn-outline-primary btnBless" value="B">B</button>
-        <button type="button" class="btn btn-outline-primary btnBless" value="C">C</button>
-        <button type="button" class="btn btn-outline-primary btnBless" value="D">D</button>
-        <button type="button" class="btn btn-outline-primary btnBless" value="E">E</button>
+        {% for bless in allBless%}
+        <button type="button" valueid="{{ bless.bless_name }}" class="btn btn-outline-primary btnBless" value='{{ bless.id }}'>{{ bless.bless_name }}</button>
+        {% endfor %}
         
     </div>
     <div class="tab form-group">
@@ -268,19 +266,22 @@ $(document).ready(function() {
         if ($(this).hasClass("selected")) {
             $(this).addClass('btn-outline-primary').removeClass('btn-primary selected');
             
+            // remove blessings from list in correct order
             selectedBless.splice(selectedBless.indexOf(blessVal), 1 );
         
         } else {
+            // add bless to list
             $(this).addClass('btn-primary selected').removeClass('btn-outline-primary btn-outline-danger');
             selectedBless.push($(this).val());
         }
+        console.log(selectedBless)
         
 
         $(".btnBless").each(function() {
             if ($(this).hasClass("selected")) {
                 $(this).html(selectedBless.indexOf($(this).val()) + 1);
             } else {
-                $(this).html($(this).val());
+                $(this).html($(this).attr("valueid"));
             }
         });
 

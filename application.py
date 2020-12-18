@@ -43,7 +43,7 @@ class User(UserMixin, db.Model):
 
 class Bless(db.Model):
     __tablename__ = 'bless'
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
     id = db.Column(db.Integer, primary_key=True)
     bless_name = db.Column(db.String(30))
     eng = db.Column(db.String)
@@ -51,12 +51,13 @@ class Bless(db.Model):
     eng_heb = db.Column(db.String)
     meaning = db.Column(db.String)
 
-    def __init__(self, bless_name, eng, heb, eng_heb, meaning):
-        self.name = bless_name
+    def __init__(self, bless_name, eng, heb, eng_heb, meaning,user_id):
+        self.bless_name = bless_name
         self.eng = eng
         self.heb = heb
         self.eng_heb = eng_heb
         self.meaning = meaning
+        self.user_id = user_id
 
 class Room(db.Model):
     __tablename__ = 'room'
@@ -64,7 +65,7 @@ class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_code = db.Column(db.Integer, unique=True)
     room_name = db.Column(db.String(30))
-
+    
     # room_time = db.Column(db.DateTime)
 
 
@@ -75,7 +76,7 @@ class Room(db.Model):
 
 class Room_Bless(db.Model):
     __tablename__ = 'room_bless'
-    room_id = db.Column(db.Integer, db.ForeignKey("room.id"))
+    room_id = db.Column(db.Integer, db.ForeignKey("room.id"), nullable=False)
     bless_id = db.Column(db.Integer, db.ForeignKey("bless.id"))
     ord_num = db.Column(db.Integer)
     id = db.Column(db.Integer, primary_key=True)
@@ -141,7 +142,13 @@ def index():
         # tell program that user is a guest not a host
         mode = 'guest'
 
-        return render_template("room_join.html", room=foundRoom, displayName=displayName, mode=mode)
+        blessID = Bless.query.filter_by(id=Room_Bless.bless_id)\
+            .join(Room_Bless).filter_by(room_id=foundRoom.id).order_by(Room_Bless.ord_num.asc())
+        for bless in blessID:
+
+            print(f' {bless.bless_name} hi')
+
+        return render_template("room_join.html", room=foundRoom, displayName=displayName, mode=mode, blessID=blessID)
             # return render template room-joined, pass code, pass Displayname
             # return error "that room does not exist"
 
@@ -213,8 +220,8 @@ def check_mail():
         checker = "true"
     else:
         checker = "false"
+
     return checker
-    
 
 
 @app.route('/room-library', methods=["GET", "POST"])
@@ -244,6 +251,9 @@ def blessLibrary():
 @app.route('/create-bless', methods=["GET", "POST"])
 def createBless():
     ''' Create a new bless block here '''
+    userBless = current_user.blessings
+    genBless = Bless.query.filter_by(user_id=None).all()
+    allBless = genBless + userBless
 
     # if get:
         # render page with multistep form
@@ -266,12 +276,16 @@ def createRoom():
     if (request.method == "GET"):
         if len(room_exist) >= 10:
             return apology("No more than 10 active rooms supported.")
+        userBless = current_user.blessings
+        genBless = Bless.query.filter_by(user_id=None).all()
+        allBless = genBless + userBless
         # create a multistep form
-        return render_template('create-room.html')
+        return render_template('create-room.html', allBless=allBless)
 
         
     
     elif request.method == "POST":
+        
 
         data = request.get_json()
         if data != None:

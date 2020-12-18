@@ -1,13 +1,22 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Room Library
+    Room {{room.room_name}}
 {% endblock %}
 
 {% block content %}
+    <h2> Welcome to {{room.room_name}}</h2>
+    <h4>mode: {{mode}}</h4>
 
-    <h1>waiting</h1>
-    <button id="changecolor" type="button" class="btn btn-primary">red</button>
+    {% for bless in blessID %}
+    <h5>{{bless.bless_name}}</h5>
+    <p>{{bless.eng}}</p>
+    <p>{{bless.heb}}</p>
+    <p>{{bless.eng_heb}}</p>
+    {% endfor %}
+
+    <h3 id="wait"> Waiting... </h3>
+    <button id="changecolor" type="button" class="btn btn-primary" value="red">red</button>
 
 <!-- solved 400 GET error by using a different version of socket.io CDN -->
     <script src="https://cdn.socket.io/socket.io-3.0.0.min.js"></script>
