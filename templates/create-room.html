@@ -22,6 +22,7 @@ body {
 }
 
 #roomCreation {
+    /* the style for the form */
   background-color: #ffffff;
   margin: 100px auto;
   font-family: Raleway;
@@ -51,24 +52,6 @@ input.invalid {
 .tab {
   display: none;
 }
-/* 
-button {
-  background-color: #4CAF50;
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 17px;
-  font-family: Raleway;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-#prevBtn {
-  background-color: #bbbbbb;
-} */
 
 .btn-outline-primary:hover {
     opacity: 0.5;
@@ -111,13 +94,15 @@ button:hover {
              oninput="this.className = '' " name="dateTimehtml"></p>
     
     </div>
-    <div class='tab form-group'>
+    <!-- bless selection -->
+    <div class='tab form-group list'>
         Select Bless blocks and order
         {% for bless in allBless%}
         <button type="button" valueid="{{ bless.bless_name }}" class="btn btn-outline-primary btnBless" value='{{ bless.id }}'>{{ bless.bless_name }}</button>
         {% endfor %}
         
     </div>
+    <!-- confirm details before submission -->
     <div class="tab form-group">
         Confirm details.
         <ul id="confirmation"></ul>
@@ -140,106 +125,132 @@ button:hover {
 </div>
 
 <script>
-
+    // Sets up currentTab location
     var currentTab = 0;
 
+    // Sets up empty list for selected Bless
     var selectedBless = [];
 
+    // A function that shows the current tab
     showTab(currentTab);
 
     function showTab(n) {
-
+        // sets up var to set the display mode to block
         var x = document.getElementsByClassName("tab");
+        // The nth 'tab' is displayed
         x[n].style.display = "block";
 
         if (n == 0) {
+            // if n == 0, that means this is the beginning of the multistep
+            // prevbtn should not be displayed
             document.getElementById("prevBtn").style.display = "none";
         } else {
+            // Else show the prevBtn as 'inline'
             document.getElementById("prevBtn").style.display = "inline";
         }
 
         if (n == (x.length - 1)) {
+            // If n is on the last 'tab', change 'next' to 'submit'
             document.getElementById("nextBtn").innerHTML = "Submit";
         } else {
+            // Else button is 'next'
             document.getElementById("nextBtn").innerHTML = "Next";
         }
 
+        // Show the nth circle
         fixStepIndicator(n)
     }
 
+    // Function tells buttons what they do.
     function nextPrev(n) {
         var x = document.getElementsByClassName("tab");
 
+        // If n == 1 and form is not validated, return false
         if (n == 1 && !validateForm()) {
             return false;
         }
 
+        // Set current tab to display none
         x[currentTab].style.display = "none";
 
+        // Set current tab to currentTab + n (either +1 or -1)
         currentTab = currentTab + n;
 
+        // If current tab is greater than or == length of 'tabs' trigger submit
         if (currentTab >= x.length) {
 
-            
+            // stop submission
             event.preventDefault();
-            
-            var listposted = false;
 
+            // set up rname, rdate, and selectedBless as a js object
+            // (basically everything in the form that needs to be submitted)
             var roomdict = {
                 rname : $("#roomName").val(),
                 rdate : $("#datetime").val(),
                 rlist: selectedBless
             }
 
+            // send the dict as a JSON file
             var js_data = JSON.stringify(roomdict)
             
+            // Ajax call to send it off to the server
             $.ajax({
                 url : "/create-room",
                 type : 'post',
                 contentType : "application/json",
                 dataType : 'json',
                 data: js_data
-                
-            }).done(function(result) {
-                alert('page content:' + data)
-                
+                    
             });
 
+            // submit form
             document.getElementById("roomCreation").submit();
 
+            // not sure why returning false?
             return false;
         }
-
+        
+        // function that shows current tab.
         showTab(currentTab);
     }
 
     function validateForm() {
-
+        // By default valid is true
         var x, y, valid = true;
         
+        // x is all elements by class tab, y is all elements by class input
+        // in current tab
         x = document.getElementsByClassName('tab');
         y = x[currentTab].getElementsByTagName('input');
 
+        // While i is less than the length of the inputs
         for (let i = 0; i < y.length; i++) {
 
+            // If the ith input is nothing
             if (y[i].value == "") {
-                
+                // if not already class invalid
                 if (y[i].className != "invalid") {
-                y[i].className += "invalid";
+                    // add class invalid
+                    y[i].className += "invalid";
                 }
-
+                // Change valid to false
                 valid = false;
                 
             }
         }
 
+        // CHANGE THIS! currentTab == 1 is not reliable for scaling.
+        // If tab is where the bless blocks are
         if (currentTab == 1) {
+            // If selectedBless list is empty, set valid to false
             if (selectedBless.length == 0 ) {
                 valid = false;
+                // Add red outline to show that it needs to be selected
                 $(".btnBless").addClass("btn-outline-danger").removeClass("btn-oultine-*")
             }
         }
 
+        // If valid is true, set circle to green
         if (valid) {
             document.getElementsByClassName("step")[currentTab].className += "finish";
         }
@@ -247,68 +258,70 @@ button:hover {
         return valid;
     }
 
+    // a function to show the circles
 function fixStepIndicator(n) {
 
     var i, x = document.getElementsByClassName("step");
     for (i = 0; i < x.length; i++ ) {
+        // ith step is not active
         x[i].className = x[i].className.replace("active", "")
     }
-
+    // nth step is active
     x[n].className += " active";
 }
 
 
 $(document).ready(function() {
 
-
+    // On btnbless click set blessVal to the value of this button
     $(".btnBless").click(function() {
         let blessVal = ($(this).val());
+        // If this btnbless has the class 'selected'
         if ($(this).hasClass("selected")) {
+            // replace the color to outline color and remove 'selected'
             $(this).addClass('btn-outline-primary').removeClass('btn-primary selected');
             
             // remove blessings from list in correct order
             selectedBless.splice(selectedBless.indexOf(blessVal), 1 );
         
         } else {
-            // add bless to list
+            // Else, add bless to back of the list (it must not be in the list if it doesn't have selected)
             $(this).addClass('btn-primary selected').removeClass('btn-outline-primary btn-outline-danger');
             selectedBless.push($(this).val());
         }
         console.log(selectedBless)
         
-
+        // Go through each of the .btnbless buttons and if they have the class 'selected'...
         $(".btnBless").each(function() {
             if ($(this).hasClass("selected")) {
+                // Set the button to display the index of the value when it entered the list
                 $(this).html(selectedBless.indexOf($(this).val()) + 1);
             } else {
+                // Else set the button to display the valueid which is the name of the blessing
                 $(this).html($(this).attr("valueid"));
             }
         });
 
    
     });
-    $("#roomCreation").submit(function (event) {
-        
-        
-    })
-    
 });
 
 console.log(selectedBless);
 
 $(document).ready(function() {
-    
+    // Set up the confirmation page
+    // On nextbtn click list = ""
     $("#nextBtn").on("click", function () {
         var  list = "";
-        
+        // add these to list as they are updated
         list += "<li>" + "Name: " + $("#roomName").val() + "</li>";
         list += "<li>" + "Date and time: " + $("#datetime").val() + "</li>";
         list += "<li>" + "Number of Bless Blocks: " + selectedBless.length + "</li>";
-
+        
+        // Display list to html where tab id== "confirmation"
         $("#confirmation").html(list);
         console.log(selectedBless)
     })
-    
 })
 
 </script>

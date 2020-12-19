@@ -5,13 +5,19 @@
 {% endblock %}
 
 {% block content %}
-<ul>
-    {% for room in user_rooms %}
-    <li>{{ room.room_name }}</li>
-    {% endfor %}
-</ul>
+<!-- Show all rooms by user, and give user a way to view the room's data, code, and join room as host -->
+<!-- Probably also create room for socket io with the buttons -->
+<form action="/room-library" method="post">
+    <ul>
+        {% for room in user_rooms %}
+        <li>{{ room.room_name }} {{room.room_code}}
+            <input name="room" value="{{ room.id }}">
+            <button class="btn btn-primary" type="submit">enter</button></li>
+        {% endfor %}
+    </ul>
 
-<div>
-    <a href="/create-room" class="btn btn-primary">Create a new room</a>
-</div>
+    <div>
+        <a href="/create-room" class="btn btn-primary">Create a new room</a>
+    </div>
+</form>
 {% endblock %}

@@ -5,8 +5,9 @@
 {% endblock %}
 
 {% block content %}
+<!-- WIP  this is where socketio stuff should shine! -->
     <h2> Welcome to {{room.room_name}}</h2>
-    <h4>mode: {{mode}}</h4>
+    <h4> mode: {{mode}}</h4>
 
     {% for bless in blessID %}
     <h5>{{bless.bless_name}}</h5>
@@ -16,8 +17,10 @@
     {% endfor %}
 
     <h3 id="wait"> Waiting... </h3>
+    {% if mode == 'host' %}
     <button id="changecolor" type="button" class="btn btn-primary" value="red">red</button>
-
+    {% endif %}
+    
 <!-- solved 400 GET error by using a different version of socket.io CDN -->
     <script src="https://cdn.socket.io/socket.io-3.0.0.min.js"></script>
     <script src="{{ url_for('static', filename='scripts/socketio.js') }}"></script>

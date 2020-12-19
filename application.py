@@ -25,6 +25,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
 db = SQLAlchemy(app)
 
+# Set up classes for db
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -68,12 +69,6 @@ class Room(db.Model):
     
     # room_time = db.Column(db.DateTime)
 
-
-    # def __init__(self, room_code, room_name, user_id):
-    #     self.code = room_code
-    #     self.name = room_name
-    #     self.user_id = user_id
-
 class Room_Bless(db.Model):
     __tablename__ = 'room_bless'
     room_id = db.Column(db.Integer, db.ForeignKey("room.id"), nullable=False)
@@ -87,16 +82,8 @@ class Room_Bless(db.Model):
     #     self.bless_id = bless_id
     #     self.orderer = ord_num
 
-
-# class room_join(db.Model):
-#     room_id = db.Column(db.Integer, db.ForeignKey("Room.room_id"))
-#     user_id = db.Column(db.Integer, db.ForeignKey("User.user_id"))
-
-
 db.create_all()
 db.session.commit()
-
-# sessions (for guest accounts)
 
 # create secret key to keep client session secure, cookies during sess
 app.secret_key = 'secret'
@@ -106,6 +93,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 @login.user_loader
 def load_user(id):
+    # Get user's id
     return User.query.get(int(id))
 
 
@@ -115,33 +103,34 @@ def index():
     ''' Join a room here. '''
 
     if request.method == "GET":
-        # If user is logged in:
-        # else:
         return render_template('index.html' )
     elif request.method == "POST":
-        # If user logged in... Display name = user display name
-        # else
-
+       
+        # If user is anon, this will be their display Name
         displayName = request.form.get("guestName")
 
+        # Get room code
         roomCode = request.form.get("code")
 
+        # get room from room_code
         foundRoom = Room.query.filter_by(room_code=roomCode).first()
 
+        # if there was no room
         if foundRoom == None:
             return apology("Room not found!")
 
+        # If the user is logged in, set their display name to the display name in db
         if current_user.is_authenticated:
             displayName = current_user.display_name
            
+            # if foundroom's user_id is the current user's id, apologize
             if foundRoom.user_id == current_user.id:
                 return apology("You can't join your own room as a guest!")
-            # if roomCode == a room code that also matches the host:
-                # return error "you cant join your own room as a guest"
         
         # tell program that user is a guest not a host
         mode = 'guest'
 
+        # Collect all info for blessings for this room.
         blessID = Bless.query.filter_by(id=Room_Bless.bless_id)\
             .join(Room_Bless).filter_by(room_id=foundRoom.id).order_by(Room_Bless.ord_num.asc())
         for bless in blessID:
@@ -149,8 +138,6 @@ def index():
             print(f' {bless.bless_name} hi')
 
         return render_template("room_join.html", room=foundRoom, displayName=displayName, mode=mode, blessID=blessID)
-            # return render template room-joined, pass code, pass Displayname
-            # return error "that room does not exist"
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -162,24 +149,25 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
+        # find user email
         user_log = User.query.filter_by(email=email).first()
         if user_log == None:
+            # If email doesn't exist in db: return apology
             return apology("Invalid email/password.")
-
+        # DONT FORGET TO HASH THE PASSWORD!
         if user_log.phash == password and user_log.email == email:
+            # If user password and email match: log in user
             login_user(user_log)
             return render_template("index.html")
+        # Else apologize
         return apology("Invalid email/password.")
 
-
-        
-    # Get user to log in.
-    # pull up info from db
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
+    # Logs out user, and redirects to login.
     return render_template('login.html')
 
 @app.route('/register', methods=["GET", "POST"])
@@ -192,35 +180,34 @@ def register():
         display_name = request.form.get('display_name')
         password = request.form.get('password')
 
-        # if email not email and display_name not display_name and password not password:
-            # error
-        
-        # if email = email in db:
-            # error
         print(display_name)
-        # hash password and store all in db
+
+        # DONT FORGET TO hash password and store all in db
         new = User(email=email, display_name=display_name, phash=password)
         db.session.add(new)
         db.session.commit()
 
         return render_template('login.html')
 
-    # Get user to sign up and store info in db
 
 # that was weird... this refused to work for awhile until i checked
 # it on google chrome
 @app.route('/_check_email')
 def check_mail():
-    # solution from
+    # Solution from
     # URL: https://stackoverflow.com/questions/15438524/object20object-validation-plugin-flask
 
+    # Get email from validation remote
     email = request.args.get('email')
+    # Check to see if email exists
     check = User.query.filter_by(email=email).first()
     if check == None:
         checker = "true"
     else:
         checker = "false"
-
+    print(email)
+    print(check)
+    # return true or false for js
     return checker
 
 
@@ -232,15 +219,32 @@ def roomLibrary():
         # load all existing rooms for user
         user_rooms = Room.query.filter_by(user_id=current_user.get_id()).all()
 
-        # button to add a new room
+        # DONT FORGET TO give ability to delete a room off the page.
 
-        # give ability to delete a room off the page.
         return render_template("room-library.html", user_rooms = user_rooms)
+    else:
+        # Probably change this.
+        # mode to host
+        mode = 'host'
+        # room to whatever room was in the form
+        roomID = request.form.get("room")
+        print(roomID)
+
+        # gather room info and bless info
+        displayName = current_user.display_name
+        room = Room.query.filter_by(id=roomID).first()
+        blessID = Bless.query.filter_by(id=Room_Bless.bless_id)\
+            .join(Room_Bless).filter_by(room_id=room.id).order_by(Room_Bless.ord_num.asc())
+
+        return render_template("room_join.html", room=room, displayName=displayName, mode=mode, blessID=blessID)
 
 
 @app.route("/bless-library", methods=["GET", "POST"])
 def blessLibrary():
     ''' You can view all of the blessings you have here '''
+    userBless = current_user.blessings
+    genBless = Bless.query.filter_by(user_id=None).all()
+    allBless = genBless + userBless
     # load preset bless blocks from database
 
     # load custom bless blocks from data base
@@ -251,10 +255,6 @@ def blessLibrary():
 @app.route('/create-bless', methods=["GET", "POST"])
 def createBless():
     ''' Create a new bless block here '''
-    userBless = current_user.blessings
-    genBless = Bless.query.filter_by(user_id=None).all()
-    allBless = genBless + userBless
-
     # if get:
         # render page with multistep form
     # else:
@@ -272,44 +272,48 @@ def createBless():
 @login_required
 def createRoom():
     ''' Create a room '''
+    # get how many rooms user has
     room_exist = Room.query.filter_by(user_id=current_user.get_id()).all()
     if (request.method == "GET"):
+        # If amount of rooms is == or exceeds 10, return apology
         if len(room_exist) >= 10:
             return apology("No more than 10 active rooms supported.")
+
+        # Gather blessings to be displayed
         userBless = current_user.blessings
         genBless = Bless.query.filter_by(user_id=None).all()
         allBless = genBless + userBless
         # create a multistep form
         return render_template('create-room.html', allBless=allBless)
 
-        
-    
     elif request.method == "POST":
-        
-
+        # Get data from json AJAX call
         data = request.get_json()
         if data != None:
+            # Catch data before it is sent again as None
             datadict = json.dumps(data)
             roomdict = json.loads(datadict)
 
             print(roomdict["rlist"][0])
             
-
+            # set this to true
             go = True
             
+            # While go is true, create a room code, if room code doesn't exist, break out
+            # and set roomCode as the code of the new room
             while go:
                 roomCode = get_rndm(6)
                 code = Room.query.filter_by(room_code=roomCode).first()
                 if roomCode != code:
                     go = False
            
+            # DONT FORGET: to add date and time to DB
+
             room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
             db.session.add(room)
             db.session.commit()
 
-
-       
-            
+            # Go through the list of prayers, and add each one to the Room_Bless table
             for i in range(len(roomdict["rlist"])):
                 print(i)
                 j = i
@@ -326,18 +330,14 @@ def createRoom():
 def roomJoined():
     ''' Join the room as guest or host '''
     if request.method == 'GET': 
-
-    # if joined with host id:
-        # load up host privledges
-        # render template pass host, room settings
-    # if joined with room code:
-        # load up guest access
-        # render privledges pass guest, room settings
         return render_template('room_join.html')
     # connect to sockets here i think
 
 @socketio.on('message')
 def message(data):
+    # Take data, then print it to the console for debugging
+    # then send the data and broadcast it to every single user
+    # connected.
 
     print(f'\n\n{data}\n\n')
     send(data, broadcast=True)
