@@ -323,7 +323,6 @@ def createRoom():
                 db.session.commit()
         return render_template('roomCreated.html')
 
-
 # Set up sockets.
 
 @app.route('/room_join', methods=['GET','POST'])
@@ -341,6 +340,27 @@ def message(data):
 
     print(f'\n\n{data}\n\n')
     send(data, broadcast=True)
+
+@socketio.on('button_press')
+def button(msg):
+    print(f'\n\nThis is the data: {msg}\n\n')
+    emit('button_press', msg, broadcast=True)
+
+@socketio.on('start')
+def start(data):
+    print(f'\n\nThis is the start: {data}\n\n')
+    emit('start', data, broadcast=True)
+
+@socketio.on('bless')
+def bless(data):
+    print(f'\n\nThis is the bless: {data}\n\n')
+    blessing = Bless.query.filter_by(id=data['id']).first()
+    current_bless = {'name' : blessing.bless_name,
+                    'english' : blessing.eng,
+                    'hebrew' : blessing.heb,
+                    'eng_heb' : blessing.eng_heb,
+                    'meaning' : blessing.meaning}
+    emit('bless', current_bless, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

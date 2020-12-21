@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<!-- Works with validation.js -->
 <form action="/register" method="post" id="reg_form">
     <div class="form-group col-md-6">
         <input autocomplete="off" autofocus id="email" class="form-control"
@@ -29,7 +30,7 @@
 </form>
 
 
-
+<!-- add validation features from jquery -->
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.1/additional-methods.js"></script>
 <script src="static/scripts/validation.js"></script>

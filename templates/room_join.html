@@ -8,19 +8,43 @@
 <!-- WIP  this is where socketio stuff should shine! -->
     <h2> Welcome to {{room.room_name}}</h2>
     <h4> mode: {{mode}}</h4>
+    <h4> code: {{room.room_code}}</h4>
 
-    {% for bless in blessID %}
-    <h5>{{bless.bless_name}}</h5>
-    <p>{{bless.eng}}</p>
-    <p>{{bless.heb}}</p>
-    <p>{{bless.eng_heb}}</p>
-    {% endfor %}
+    <div id="placeholder">
+        <h3 id="bless_name"></h3>
+
+        <p id="paragraph" class="toggle" display="none"></p>
+        <p id='english_par' class="toggle" display="none"></p>
+        <p id='hebrew_par' class="toggle" display="none"></p>
+        <p id='eng_heb_par' class="toggle" display="none"></p>
+        <p id='meaning_par' class="toggle" display="none"></p>
+
+        
+
+    </div>
+
+    <div id="guest_buttons" style="display:none">
+        <button id='eng'>eng</button>
+        <button id='heb'>heb</button>
+        <button id='eng-heb'>eng-heb</button>
+        <button id='meaning'>meaning</button>
+    </div>
+
 
     <h3 id="wait"> Waiting... </h3>
     {% if mode == 'host' %}
+    <button id="next" style='display:none'>Next</button>
     <button id="changecolor" type="button" class="btn btn-primary" value="red">red</button>
-    {% endif %}
+    <button id='start'>Start session</button>
     
+
+    <div id="blessblocks" style="display:none">
+        {% for bless in blessID %}
+        <button id="{{ bless.id }}" value='{{ bless.id }}' class="btn btn-secondary bless">{{ bless.bless_name }}</button>
+        {% endfor %}
+    </div>
+    {% endif %}
+
 <!-- solved 400 GET error by using a different version of socket.io CDN -->
     <script src="https://cdn.socket.io/socket.io-3.0.0.min.js"></script>
     <script src="{{ url_for('static', filename='scripts/socketio.js') }}"></script>
