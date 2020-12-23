@@ -80,7 +80,8 @@ class Room_Bless(db.Model):
     # def __init__(self, ord_num, bless_id, room_id):
     #     self.room_id = room_id
     #     self.bless_id = bless_id
-    #     self.orderer = ord_num
+    #     self.ord_num = ord_num
+    #     self.id =
 
 db.create_all()
 db.session.commit()
@@ -219,24 +220,49 @@ def roomLibrary():
         # load all existing rooms for user
         user_rooms = Room.query.filter_by(user_id=current_user.get_id()).all()
 
+
         # DONT FORGET TO give ability to delete a room off the page.
 
         return render_template("room-library.html", user_rooms = user_rooms)
     else:
-        # Probably change this.
-        # mode to host
+        # # Probably change this.
+        # # mode to host
+        room_id = request.form.get("room_id")
+        print(f'this is the id: {room_id} ')
+        # print(room_id)
         mode = 'host'
-        # room to whatever room was in the form
-        roomID = request.form.get("room")
-        print(roomID)
+        # # room to whatever room was in the form
+      
 
         # gather room info and bless info
         displayName = current_user.display_name
-        room = Room.query.filter_by(id=roomID).first()
+        room = Room.query.filter_by(id=room_id).first()
         blessID = Bless.query.filter_by(id=Room_Bless.bless_id)\
             .join(Room_Bless).filter_by(room_id=room.id).order_by(Room_Bless.ord_num.asc())
 
         return render_template("room_join.html", room=room, displayName=displayName, mode=mode, blessID=blessID)
+        return apology("We couldn't connect you to your room!")
+
+
+@app.route('/_delete_room')
+def delete_room():
+    
+    data = request.args.get('room_id')
+
+    # datadict = json.dumps(data)
+    # roomdict = json.loads(datadict)
+
+    print(data)
+    room_delete = Room.query.filter_by(id = data).first()
+    bless_room = Room_Bless.__table__.delete().where(Room_Bless.room_id == data)
+
+    db.session.execute(bless_room)
+    db.session.delete(room_delete)
+    db.session.commit()
+
+    
+
+    return render_template('room-library.html')
 
 
 @app.route("/bless-library", methods=["GET", "POST"])
@@ -250,12 +276,15 @@ def blessLibrary():
     # load custom bless blocks from data base
 
     # give ability to delete a custom blessing off the page
+    return render_template('bless-library.html', genBless=genBless, userBless=userBless)
 
 
 @app.route('/create-bless', methods=["GET", "POST"])
 def createBless():
     ''' Create a new bless block here '''
     # if get:
+    if request.method == 'GET':
+        return render_template('create-bless.html')
         # render page with multistep form
     # else:
         # blessName = request.form.get("blessName")
@@ -332,6 +361,13 @@ def roomJoined():
         return render_template('room_join.html')
     # connect to sockets here i think
 
+@socketio.on('join')
+def join(data):
+    print(data)
+    join_room(data["room"])
+
+    send({'msg': data['displayname'] + " has joined the " + data['room'] + " room."}, room=data['room'])
+
 @socketio.on('message')
 def message(data):
     # Take data, then print it to the console for debugging
@@ -339,17 +375,17 @@ def message(data):
     # connected.
 
     print(f'\n\n{data}\n\n')
-    send(data, broadcast=True)
+    send(data, room=data['room'])
 
 @socketio.on('button_press')
 def button(msg):
     print(f'\n\nThis is the data: {msg}\n\n')
-    emit('button_press', msg, broadcast=True)
+    emit('button_press', msg['color'])
 
 @socketio.on('start')
 def start(data):
     print(f'\n\nThis is the start: {data}\n\n')
-    emit('start', data, broadcast=True)
+    emit('start', data, room=data['room'])
 
 @socketio.on('bless')
 def bless(data):
@@ -360,7 +396,8 @@ def bless(data):
                     'hebrew' : blessing.heb,
                     'eng_heb' : blessing.eng_heb,
                     'meaning' : blessing.meaning}
-    emit('bless', current_bless, broadcast=True)
+    emit('bless', current_bless, room=data['room'])
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

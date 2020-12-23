@@ -8,16 +8,54 @@
 <!-- Show all rooms by user, and give user a way to view the room's data, code, and join room as host -->
 <!-- Probably also create room for socket io with the buttons -->
 <form action="/room-library" method="post">
-    <ul>
-        {% for room in user_rooms %}
-        <li>{{ room.room_name }} {{room.room_code}}
-            <input name="room" value="{{ room.id }}">
-            <button class="btn btn-primary" type="submit">enter</button></li>
-        {% endfor %}
-    </ul>
+<div class="form-group">
+    {% if user_rooms != [] %}
+    <select id="room" name='room_id'>   
+    {% for room in user_rooms %}
+        <option value='{{room.id}}'>
+
+            {{ room.room_name }} {{room.room_code}}
+        
+        </option>
+
+    {% endfor %}
+    
+    </select>
+    <div id="functions">
+        <button id='enter' type='submit' class="btn btn-primary">Enter</button>
+        <button id='delete' type='button' class="btn btn-danger">Delete</button>
+    </div>
+    {% endif %}
+
+   
 
     <div>
         <a href="/create-room" class="btn btn-primary">Create a new room</a>
     </div>
+</div>
 </form>
+
+
+<script>
+    $(document).ready( ()=> {
+        $('#delete').on('click', function() {
+            let js_data = {'room_id' : $('#room').val()}
+            $.ajax({
+                url : "/_delete_room",
+                type : 'get',
+                contentType : "application/json",
+                dataType : 'json',
+                data: js_data
+                    
+            });
+
+        });
+
+        if ($('#room').val() == '') {
+            $('#functions'.hide());
+        }
+
+    });
+</script>
+
 {% endblock %}

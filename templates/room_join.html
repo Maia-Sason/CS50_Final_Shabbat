@@ -6,9 +6,12 @@
 
 {% block content %}
 <!-- WIP  this is where socketio stuff should shine! -->
+    <meta id="display_name" data-name='{{ displayName }}' data-id="{{ room.id }}">
+
     <h2> Welcome to {{room.room_name}}</h2>
     <h4> mode: {{mode}}</h4>
     <h4> code: {{room.room_code}}</h4>
+    <label ><p id="user_connected"></p></label>
 
     <div id="placeholder">
         <h3 id="bless_name"></h3>
@@ -18,8 +21,6 @@
         <p id='hebrew_par' class="toggle" display="none"></p>
         <p id='eng_heb_par' class="toggle" display="none"></p>
         <p id='meaning_par' class="toggle" display="none"></p>
-
-        
 
     </div>
 
@@ -44,6 +45,8 @@
         {% endfor %}
     </div>
     {% endif %}
+
+    
 
 <!-- solved 400 GET error by using a different version of socket.io CDN -->
     <script src="https://cdn.socket.io/socket.io-3.0.0.min.js"></script>
