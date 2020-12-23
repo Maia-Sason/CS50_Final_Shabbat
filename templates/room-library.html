@@ -8,22 +8,24 @@
 <!-- Show all rooms by user, and give user a way to view the room's data, code, and join room as host -->
 <!-- Probably also create room for socket io with the buttons -->
 <form action="/room-library" method="post">
-<div class="form-group">
+<div id="roomSelect" class="form-group">
     {% if user_rooms != [] %}
-    <select id="room" name='room_id'>   
-    {% for room in user_rooms %}
-        <option value='{{room.id}}'>
+    <div id='show_selection'>
+        <select id="room" name='room_id'>   
+        {% for room in user_rooms %}
+            <option value='{{room.id}}'>
 
-            {{ room.room_name }} {{room.room_code}}
+                {{ room.room_name }} {{room.room_code}}
+            
+            </option>
+
+        {% endfor %}
         
-        </option>
-
-    {% endfor %}
-    
-    </select>
-    <div id="functions">
-        <button id='enter' type='submit' class="btn btn-primary">Enter</button>
-        <button id='delete' type='button' class="btn btn-danger">Delete</button>
+        </select>
+        <div id="functions">
+            <button id='enter' type='submit' class="btn btn-primary">Enter</button>
+            <button id='delete' type='button' class="btn btn-danger">Delete</button>
+        </div>
     </div>
     {% endif %}
 
@@ -48,13 +50,13 @@
                 data: js_data
                     
             });
+            // reload room list after deletion
+            location.reload();
+            if ($('#room').children('option').length <= 0) {
+                $('#show_selection').fadeOut()
 
+            }
         });
-
-        if ($('#room').val() == '') {
-            $('#functions'.hide());
-        }
-
     });
 </script>
 
