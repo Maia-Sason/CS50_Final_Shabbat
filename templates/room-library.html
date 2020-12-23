@@ -52,6 +52,7 @@
             });
             // reload room list after deletion
             location.reload();
+            // this might be unecessary (below code)
             if ($('#room').children('option').length <= 0) {
                 $('#show_selection').fadeOut()
 

@@ -8,7 +8,7 @@
 
 {% block content %}
     <!-- form action for index -->
-    <form action="/" method="post">
+    <form id="join_form" action="/" method="post">
         <!-- If user is logged in, display their display name -->
         {% if current_user.is_authenticated %}
         <div class="form-group col-md-6">
@@ -17,17 +17,22 @@
         {% elif current_user.is_anonymous %}
         <!-- Else, let them type their display name -->
         <div class="form-group col-md-6">
-                <input type="text" name="guestName" placeholder="Type your name...">
+                <input class="form-control" type="text" name="guestName" placeholder="Type your name...">
             </div>
         {% endif %}
 
         <div class="form-group col-md-6">
             <!-- Get users to type the code of the room -->
-            <input type="text" name="code" placeholder="Enter the room code here...">
+            <input class="form-control" type="text" name="code" placeholder="Enter the room code here...">
         </div>
         <div>
             <button id="submit" class="btn btn-primary" type="submit">Join</button>
         </div>
     </form>
 
+
+    <!-- add validation features from jquery -->
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.1/additional-methods.js"></script>
+<script src="static/scripts/validation.js"></script>
 {% endblock %}

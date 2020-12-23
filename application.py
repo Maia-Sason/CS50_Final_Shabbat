@@ -7,6 +7,8 @@ import json
 from sqlalchemy.orm import relationship
 from flask import Flask, render_template, redirect, flash, jsonify, request
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user, UserMixin
+from passlib.hash import pbkdf2_sha256
+
 
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
@@ -29,8 +31,8 @@ db = SQLAlchemy(app)
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    display_name = db.Column(db.String(50), unique=True)
-    email = db.Column(db.String(50))
+    display_name = db.Column(db.String(50), unique=False)
+    email = db.Column(db.String(50), unique=True)
     phash = db.Column(db.String)
     rooms = db.relationship('Room', backref='author', lazy=True)
     blessings = db.relationship('Bless', backref='author', lazy=True)
@@ -156,7 +158,7 @@ def login():
             # If email doesn't exist in db: return apology
             return apology("Invalid email/password.")
         # DONT FORGET TO HASH THE PASSWORD!
-        if user_log.phash == password and user_log.email == email:
+        if pbkdf2_sha256.verify(password, user_log.phash) and user_log.email == email:
             # If user password and email match: log in user
             login_user(user_log)
             return render_template("index.html")
@@ -181,10 +183,12 @@ def register():
         display_name = request.form.get('display_name')
         password = request.form.get('password')
 
+        hashed_pswd = pbkdf2_sha256.hash(password)
+
         print(display_name)
 
         # DONT FORGET TO hash password and store all in db
-        new = User(email=email, display_name=display_name, phash=password)
+        new = User(email=email, display_name=display_name, phash=hashed_pswd)
         db.session.add(new)
         db.session.commit()
 
@@ -286,12 +290,20 @@ def createBless():
     if request.method == 'GET':
         return render_template('create-bless.html')
         # render page with multistep form
-    # else:
-        # blessName = request.form.get("blessName")
-        # blessEng = request.form.get("blessEng")
-        # blessHeb = request.form.get("blessHeb")
-        # blessHeb-Eng = request.form.get("blessHeb-Eng")
-        # blessMeaning = request.form.get("blessMeaning")
+    else:
+        
+        blessName = request.form.get("blessName")
+        blessEng = request.form.get("blessEng")
+        blessHeb = request.form.get("blessHeb")
+        blessEngHeb = request.form.get("blessEngHeb")
+        blessMeaning = request.form.get("blessMeaning")
+
+        newbless = Bless(bless_name=blessName, eng=blessEng, heb=blessHeb, eng_heb=blessEngHeb, meaning=blessMeaning, user_id=current_user.get_id())
+        db.session.add(newbless)
+        db.session.commit()
+
+        return redirect('/bless-library')
+
 
         # store it all in a database
     

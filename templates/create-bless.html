@@ -5,16 +5,68 @@
 {% endblock%}
 
 {% block content %}
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: #f1f1f1
+    }
+
+    #blessCreation {
+        background-color: #ffffff;
+        margin: 100px auto;
+        padding: 40px;
+        width: 70%;
+        min-width: 300px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    input.invalid {
+        background-color: #ffdddd
+    }
+
+    .tab {
+        display: none;
+    }
+
+    .btn-outline-primary:hover {
+        opacity: 0.5;
+    }
+
+    .step {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #bbbbbb;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+    .step.active {
+        opacity: 1;
+    }
+
+    .step.finish {
+        background-color : #4c98af
+    }
+</style>
 <div>
     <h1>multistep form here</h1>
     
-    <form class="needs-validation" id="roomCreation" action="/create-room" method="POST">
+    <form class="needs-validation" id="blessCreation" action="/create-bless" method="POST">
         <h1>Create Bless Block</h1>
     
         <!-- 1 tab for each step -->
         <div class='tab form-group'>
             Name of Block:
-            <p><input  type="text" id="blessName" placeholder="Bless Block name..."
+            <p><input class="form-control" type="text" id="blessName" placeholder="Bless Block name..."
                 name="blessName"></p>
         </div>
         <!-- bless hebrew -->
@@ -40,7 +92,7 @@
         <!-- bless meaning -->
         <div class='tab form-group list'>
             Meaning:
-            <textarea class='form-control' type="text" id="blessMeaning" placeholder="Why we do this..."
+            <textarea class='form-control optional' type="text" id="blessMeaning" placeholder="Why we do this..."
                 name="blessMeaning"></textarea>    
         </div>
         <!-- confirm details before submission -->
@@ -60,8 +112,117 @@
             <span class="step"></span>
             <span class="step"></span>
             <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
         </div>    
        
     </form>
     </div>
+
+    <script>
+        var currentTab = 0;
+
+        showTab(currentTab);
+
+        function showTab(n) {
+            var x = document.getElementsByClassName('tab');
+
+            x[n].style.display = 'block';
+
+            if (n == 0) {
+                document.getElementById('prevBtn').style.display = 'none';
+            } else {
+                document.getElementById('prevBtn').style.display = 'inline';
+            }
+
+            if (n == (x.length - 1)) {
+                document.getElementById('nextBtn').innerHTML = 'Submit';
+            } else {
+                document.getElementById('nextBtn').innerHTML = 'Next';
+            }
+
+            fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+            var x = document.getElementsByClassName('tab');
+
+            if (n == 1 && !validateForm() ) {
+                return false;
+            }
+
+            x[currentTab].style.display = 'none';
+
+            currentTab = currentTab + n;
+
+            if (currentTab >= x.length) {
+                document.getElementById("blessCreation").submit();
+
+                return false;
+            }
+
+            showTab(currentTab);
+        }
+
+        function validateForm() {
+            var x, y, z, valid = true;
+
+            x = document.getElementsByClassName('tab');
+            y = x[currentTab].getElementsByTagName('input');
+            z = x[currentTab].getElementsByTagName('textarea');
+            o = x[currentTab].getElementsByClassName('optional');
+
+            for (let i = 0; i < (y.length - o.length); i++) {
+                if (y[i].value == "" && y[i].className != 'optional') {
+                    if (y[i].className != 'is-invalid') {
+
+                        y[i].classList.add("is-invalid");
+                    }
+
+                    valid = false;
+                }
+            }
+
+            for (let i = 0; i < (z.length - o.length); i++) {
+                if ((z[i].value == "") && (z[i].className != 'optional')) {
+                    if (z[i].className != 'is-invalid') {
+
+                        z[i].classList.add("is-invalid");
+                    }
+
+                    valid = false;
+                }
+            }
+
+            if (valid) {
+                document.getElementsByClassName('step')[currentTab].className +='finish';
+            }
+
+            return valid;
+        }
+
+        function fixStepIndicator(n) {
+
+            var i, x = document.getElementsByClassName("step");
+            for (i = 0; i < x.length; i++ ) {
+                // ith step is not active
+                x[i].className = x[i].className.replace("active", "")
+            }
+            // nth step is active
+            x[n].className += " active";
+        }
+
+        $(document).ready(function () {
+            // if enter is pressed, prevent default and have it click
+            // Next button.
+            $(window).keydown(function(event) {
+                if(event.keyCode == 13) {
+                    event.preventDefault();
+                    $('#nextBtn').click();
+                }
+            })
+        })
+
+    </script>
 {% endblock %}

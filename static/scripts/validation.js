@@ -71,4 +71,19 @@ $(function() {
         }
     });
 
+    $('#join_form').validate({
+        rules: {
+            guestName: {
+                required: true,
+                nowhitespace: true
+            },
+            code: {
+                required: true,
+                nowhitespace: true,
+                maxlength: 6,
+                minlength: 6
+            }
+        }
+    });
+
 });
