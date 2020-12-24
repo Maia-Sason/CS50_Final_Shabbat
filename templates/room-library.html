@@ -5,6 +5,35 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    .btn-circle {
+        box-sizing: border-box;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        text-align: center;
+        font-weight: bold;
+        border: 6px black;
+        font-size: 20px;
+        text-decoration:none;
+    }
+
+    .btn-circle:hover {
+        transform: scale(0.90);
+    }
+
+    .padded {
+        margin: 20px;
+        right:75%;
+        position: absolute;
+        
+    }
+</style>
+
 <!-- Show all rooms by user, and give user a way to view the room's data, code, and join room as host -->
 <!-- Probably also create room for socket io with the buttons -->
 <form action="/room-library" method="post">
@@ -20,25 +49,52 @@
             </option>
 
         {% endfor %}
-        
         </select>
-        <div id="functions">
-            <button id='enter' type='submit' class="btn btn-primary">Enter</button>
-            <button id='delete' type='button' class="btn btn-danger">Delete</button>
-        </div>
+        
     </div>
+
+</div>
     {% endif %}
 
-   
+    <button id='preview' type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
-    <div>
-        <a href="/create-room" class="btn btn-primary">Create a new room</a>
-    </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+    
+    
+            <!-- Scrollable modal -->
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                  <h4 id="title"></h4>
+                  <p id="date"></p>
+                  <p id='code'></p><button type='button' class="btn btn-secondary" id='copy'>Copy</button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <div id="functions">
+                    <button id='enter' type='submit' class="btn btn-primary">Enter</button>
+                    <button id='delete' type='button' class="btn btn-danger">Delete</button>
+                </div>
+                </div>
+              </div>
+            </div>
+
+</div>
+
+<div class='padded'>
+    <a href="/create-room" class="btn btn-primary btn-circle">+</a>
 </div>
 </form>
 
 
 <script>
+
+
     $(document).ready( ()=> {
         $('#delete').on('click', function() {
             let js_data = {'room_id' : $('#room').val()}
@@ -58,6 +114,28 @@
 
             }
         });
+
+        $('#preview').on('click', function() {
+            let room_data = {'room_id' : $('#room').val()}
+            $.ajax({
+                url : '/_load_room_settings',
+                type: 'get',
+                contentType : 'json',
+                dataType : 'json',
+                data : room_data,
+                success : function(data) {
+                    $('#title').html('Room Name: ' + data.name)
+                    $('#code').html('Room Code: ' +data.code)
+                    $('#code').val() = data.code
+                }
+            })
+        })
+
+        // doesnt work
+        $('#copy').on('click', function() {
+            $('#code').val().select;
+            document.execCommand('copy');
+        })
     });
 </script>
 

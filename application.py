@@ -247,6 +247,19 @@ def roomLibrary():
         return render_template("room_join.html", room=room, displayName=displayName, mode=mode, blessID=blessID)
         return apology("We couldn't connect you to your room!")
 
+@app.route('/_load_room_settings')
+def load_room():
+
+    data = request.args.get('room_id')
+
+    room = Room.query.filter_by(id=data).first()
+
+    roomDict = {
+        'name' : room.room_name,
+        'code' : room.room_code
+    }
+
+    return roomDict
 
 @app.route('/_delete_room')
 def delete_room():
