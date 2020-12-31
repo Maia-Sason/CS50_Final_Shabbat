@@ -1,0 +1,190 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    font-family: "NanumGothic", "Manrope", "Helvetica";
+}
+
+.nav-container {
+    height: 151px;
+
+    background: linear-gradient(180deg, #FFE9D9 0%, #A1EDFD 100%);
+    box-shadow: 0px 4px 48px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper {
+    width: 907px;
+    margin: 0 auto;
+}
+
+.logo_image {
+    width: 75px;
+    height: 75px;
+}
+
+.logotext {
+    font-family: 'Nanum Gothic', sans-serif;
+    font-weight: 400px;
+    padding-left: 10px;
+    color: black;
+}
+
+.logo a {
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 150px;
+    font-size: 24px;
+}
+
+.nav-items li {
+    font-family: 'Nanum Gothic', sans-serif;
+    font-weight: 400px;
+    list-style: none;
+    color: black;
+    margin-right: 50px;
+}
+
+.active {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px;
+    padding-top: 2px;
+
+    width: 97px;
+    height: 44px;
+    left: 460px;
+    
+
+    background: #FFFFFF;
+    box-shadow: -1px 1px 8px rgba(0, 0, 0, 0.1);
+}
+
+.nav-items li a {
+    color: black;
+    text-decoration: none;
+    top: 54px;
+}
+
+.nav-items li:nth-last-of-type(1) {
+    margin: 0px;
+    width: 100px;
+}
+
+nav ul {
+    display: flex;
+    text-decoration: none;
+    height: 26px;
+}
+
+/* header */
+.header-container {
+    background: white url('bg-shapes-home.svg');
+    background-repeat: no-repeat;
+
+    height: calc(100vh - 150px);
+    margin: 50px;
+}
+
+.input-container {
+    position: absolute;
+    width: 428px;
+    height: 149px;
+    left: 117px;
+    top: 286px;
+
+}
+
+.input-container h2 {
+
+font-family: Roboto;
+font-style: normal;
+font-weight: 200;
+font-size: 36px;
+line-height: 49px;
+
+color: #000000;
+
+
+}
+
+.input-container h1 {
+    position: absolute;
+
+top: 40px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: 800;
+font-size: 64px;
+line-height: 87px;
+}
+
+.input-container p {
+position: absolute;
+width: 187px;
+top: 120px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: 300;
+font-size: 18px;
+line-height: 25px;
+}
+
+.input-container form {
+    position: absolute;
+    width: 277px;
+    height: 51px;
+    left: 110%;
+}
+
+.input-container input {
+    
+    padding: 10px 25px;
+    width: 277px;
+    height: 51px;
+    border-style: none;
+
+
+background: #FFFFFF;
+box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.25);
+border-radius: 15px;
+}
+
+.input-container button {
+    margin: 20px;
+    width: 105px;
+    height: 42px;
+
+    color: black !important;
+    
+
+    background: #D4FAFF;
+    box-shadow: 0px 1px 4px rgba(53, 89, 89, 0.25);
+    border-radius: 5px;
+
+
+    border-style: none;
+
+    font-family: Nanum Gothic;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 24px;
+
+}
+
+.enter { transition: transform 0.5s; }
+
+.enter:hover {
+    transform: scale(0.95); 
+    
+}

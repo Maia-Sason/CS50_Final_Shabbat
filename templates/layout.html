@@ -12,37 +12,69 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
+
+    <!-- fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href='https://fonts.googleapis.com/css?family=Manrope' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;900&display=swap" rel="stylesheet">
+
+
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+
     <title>{% block title %}
         {% endblock %}
     </title>
 </head>
 <body>
-    
-    <!-- Layout from CS50 finance50 -->
-    <nav class="navbar navbar-expand-md navbar-light bg-light border">
-        <a class="navbar-brand" href="/"><span>ShareShabbat</span></a>
-        <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbar" data-toggle="collapse" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar">
-            <!-- show this navigation bar if user is authenticated -->
-            {% if current_user.is_authenticated %}
-                <ul class="navbar-nav mr-auto mt-2">
-                    <li class="nav-item"><a class="nav-link" href="/room-library">Room Library</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/bless-library">Bless Library</a></li>
-                </ul>
-                <ul class="navbar-nav ml-auto mt-2">
-                    <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
-                </ul>
-            {% else %}
-            <!-- Else show this navigation bar if user is not authenticated -->
-                <ul class="navbar-nav ml-auto mt-2">
-                    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
-                </ul>
-            {% endif %}
-        </div>
-    </nav>
+
+                {% if current_user.is_authenticated %}
+                
+                <div class="nav-container">
+                    <nav class='wrapper'>
+                        <div class='logo'>
+                            <a href='/'><img class="logo_image" src="static/images/logopng.png" height="75px" alt="logo candles"><span class="logotext">ShareShabbat</span></a>
+            
+                        </div>
+                        <ul class='nav-items'>
+                            <li id='rooms' class="item">
+                                <a href=/room-library>Rooms</a>        
+                            </li>
+                            <li id='blocks' class="item">
+                                <a href=/bless-library>Blocks</a>
+                            </li>
+                            <li>
+                                <a href=/logout>Log Out</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                    
+                {% else %}
+                
+                <div class="nav-container">
+                    <nav class='wrapper'>
+                        <div class='logo'>
+                            <a href='/'><img class="logo_image" src="static/images/logopng.png" height="75px" alt="logo candles"><span class="logotext">ShareShabbat</span></a>
+            
+                        </div>
+                        <ul class='nav-items'>
+                            <li>
+                                <a href=#></a>        
+                            </li>
+                            <li>
+                                <a href=/register>Register</a>
+                            </li>
+                            <li>
+                                <a href=/login>Log In</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                {% endif %}
 
     {% if get_flashed_messages() %}
         <header>
@@ -58,5 +90,7 @@
 
         {% endblock %}
     </main>
+
+    <script src="static/scripts/layout.js"></script>
 </body>
 </html>

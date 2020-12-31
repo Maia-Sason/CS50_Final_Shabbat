@@ -10,24 +10,40 @@
     <!-- form action for index -->
     <form id="join_form" action="/" method="post">
         <!-- If user is logged in, display their display name -->
+        <div class="header-container">
+            <div class="wrapper">
+                <header>
+
         {% if current_user.is_authenticated %}
-        <div class="form-group col-md-6">
-                <h3>display name: {{ current_user.display_name }}</h3>
-            </div>
+        
+                    <div class="input-container">
+                        <h2>Welcome {{current_user.display_name}},</h2>
+                        <h1>Join a room.</h1>
+                        <p>Join a friend’s shabbat room to start the fun!</p>
+                        <div>
+                            <input name=roomcode placeholder="Room Code">
+                            <button class='enter' type='submit'>Enter</button>
+                        </div>
+                    </div>
+                
         {% elif current_user.is_anonymous %}
         <!-- Else, let them type their display name -->
-        <div class="form-group col-md-6">
-                <input class="form-control" type="text" name="guestName" placeholder="Type your name...">
+        <div class="input-container">
+            <h2>Welcome,</h2>
+            <h1>Join a room.</h1>
+            <p>Join a friend’s shabbat room to start the fun!</p>
+            <div>
+                <input name=displayname placeholder="Display Name">
+                <input name=roomcode placeholder="Room Code">
+                <button class='enter' type='submit'>Enter</button>
             </div>
+        </div>
         {% endif %}
 
-        <div class="form-group col-md-6">
-            <!-- Get users to type the code of the room -->
-            <input class="form-control" type="text" name="code" placeholder="Enter the room code here...">
-        </div>
-        <div>
-            <button id="submit" class="btn btn-primary" type="submit">Join</button>
-        </div>
+        </header>
+    </div>
+    </div>
+
     </form>
 
 
@@ -35,4 +51,11 @@
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.js"></script>
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.1/additional-methods.js"></script>
 <script src="static/scripts/validation.js"></script>
+
+<script>
+    $(document).ready(function () {
+    $('.item').removeClass('active')
+    $('#blocks').addClass('active')
+})
+</script>
 {% endblock %}
