@@ -17,11 +17,11 @@ $(function() {
         },
         highlight: function(element) {
             // On highlight, add the class 'is-invalid'
-            $(element).addClass("is-invalid");
+            $(element).addClass("is-invalid invalid-box");
         },
         unhighlight: function(element) {
             // On unhighlight, remove the class 'is-invalid'
-            $(element).removeClass("is-invalid");
+            $(element).removeClass("is-invalid invalid-box");
         }
     });
 
