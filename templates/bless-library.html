@@ -4,23 +4,37 @@
 {% endblock %}
 
 {% block content %}
+<div class='bg-bless'>
+
 <h2>Preset Bless Blocks</h2>
 <div>
-    <ul>
+    <ul class='list' id='preset'>
         {% for bless in genBless %}
-        <li>{{ bless.bless_name }}</li>
+        <li>
+            <div class="bless bless_normal">  
+                <h2 class="bless_title">{{ bless.bless_name }}</h2>
+            </div>
+        </li>
         {% endfor %}
+        <ul class='list' id='custom'></ul>
+            {% for bless in userBless %}
+            <li>
+            <div class="bless bless_normal">  
+                <h2 class="bless_title">{{ bless.bless_name }}</h2>
+            </div>
+            </li>
+            {% endfor %}
+        </ul>
     </ul>
 </div>
 
+
+
 <h2>Custom Bless Blocks</h2>
 <div>
-    <ul>
-        {% for bless in userBless %}
-        <li>{{ bless.bless_name }}</li>
-        {% endfor %}
-    </ul>
+    
     <a href="/create-bless" id='newbless' class="btn btn-primary">Create New Bless Block</a>
+</div>
 </div>
 
 <script>
