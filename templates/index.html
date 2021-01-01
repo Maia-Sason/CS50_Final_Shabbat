@@ -17,12 +17,16 @@
         {% if current_user.is_authenticated %}
         
                     <div class="input-container">
-                        <h2>Welcome {{current_user.display_name}},</h2>
-                        <h1>Join a room.</h1>
-                        <p>Join a friend’s shabbat room to start the fun!</p>
-                        <div class="form-group">
-                            <input name='code' placeholder="Room Code">
-                            <button class='enter' type='submit'>Enter</button>
+                        <div class="move">
+                        
+                            <h2>Welcome {{current_user.display_name}},</h2>
+                            <h1 id="head">Join a room.</h1>
+                            <p>Join a friend’s shabbat room to start the fun!</p>
+                            <div class="form-group">
+                                <input name='code' placeholder="Room Code">
+                                <button class='enter' type='submit'>Enter</button>
+                            </div>
+
                         </div>
                     </div>
                 

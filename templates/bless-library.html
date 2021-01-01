@@ -6,7 +6,16 @@
 {% block content %}
 <div class='bg-bless'>
 
-<h2>Preset Bless Blocks</h2>
+    <div class="input-container">
+        <h1>Bless Blocks</h1>
+        <p>Manage your blessings and create new ones.</p>
+    </div>
+
+<div>
+<button id='preset-btn' class='button-page'>Preset Blocks</button>
+<button id='custom-btn' class='button-page'>Custom Blocks</button>
+</div>
+
 <div>
     <ul class='list' id='preset'>
         {% for bless in genBless %}
@@ -28,11 +37,8 @@
     </ul>
 </div>
 
-
-
-<h2>Custom Bless Blocks</h2>
-<div>
-    
+<div id="bless_create_new">
+    <button id='preset-btn' class='button-page'>Create Bless Block</button>    
     <a href="/create-bless" id='newbless' class="btn btn-primary">Create New Bless Block</a>
 </div>
 </div>
@@ -41,6 +47,24 @@
     $(document).ready(function () {
     $('.item').removeClass('active')
     $('#blocks').addClass('active')
-})
+    })
+
+    $(document).ready(function () {
+        $('#preset-btn').on('click', function () {
+            $('#custom').fadeOut(300);
+            $('#preset').fadeIn(300);
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+            
+        })
+        $('#custom-btn').on('click', function () {
+            $('#preset').fadeOut(300);
+            $('#custom').fadeIn(300);
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+           
+
+        })
+    })
 </script>
 {% endblock %}

@@ -8,6 +8,7 @@ body {
 }
 
 .nav-container {
+    z-index: 99;
     height: 151px;
 
     background: linear-gradient(180deg, #FFE9D9 0%, #A1EDFD 100%);
@@ -91,18 +92,20 @@ nav ul {
 .header-container {
     background: white url('images/bg-shapes-home.svg');
     background-repeat: no-repeat;
-
+    width: 1000px;
     height: calc(100vh - 150px);
     margin: 50px;
 }
 
-.input-container {
-   
-    width: 428px;
-    height: 149px;
-    
-
+.move {
+    position: relative;
+    top: 10px;
 }
+
+.input-container {
+    height: max-content;
+}
+
 
 .input-container h2 {
 
@@ -121,15 +124,15 @@ color: #000000;
 }
 
 .input-container h1 {
-    
-
-top: 40px;
-
 font-family: Roboto;
 font-style: normal;
 font-weight: 800;
 font-size: 64px;
 line-height: 87px;
+}
+
+h1 #head {
+    top: 40px;
 }
 
 .input-container p {
@@ -330,10 +333,33 @@ ul {
     height: 100px;
 }
 
+#bless_create_new {
+    clear: both;
+}
+
 .bg-bless {
     background: white url('images/bless_block_bg.svg') no-repeat;
     background-repeat: no-repeat;
-
     height: calc(100vh - 150px);
-    margin: 50px;
+    background-position: 0% 0%;
+}
+
+.button-page {
+    border-style: none;
+    margin: 5px;
+    width: 151px;
+    height: 44px;
+    background: #FFFFFF;
+    box-shadow: -1px 1px 8px rgba(0, 0, 0, 0.1);
+    display: inline;
+    justify-content: center;
+    transition: transform 0.5s;
+}
+
+.button-page:hover {
+    transform: scale(0.95);
+}
+
+.button-page .active {
+    background: #c9e6ec;
 }
