@@ -16,11 +16,77 @@
 <button id='custom-btn' class='button-page'>Custom Blocks</button>
 </div>
 
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <!-- Scrollable modal -->
+        <div class="modal-content model-custom">
+            <div class="modal-header">
+                <h4 class="modal-title">Bless Title</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="tab text-field">
+                <pre class="hebrew">
+וַיְהִי עֶרֶב וַיְהִי בֹקֶר
+יוֹם הַשִּׁשִּׁי. וַיְכֻלּוּ הַשָּׁמַיִם וְהָאָרֶץ וְכָל צְבָאָם
+וַיְכַל אֱלֹהִים בַּיּום הַשְּׁבִיעִי מְלַאכְתּו אֲשֶׁר עָשָׂה. וַיִּשְׁבּת בַּיּום הַשְּׁבִיעִי מִכָּל מְלַאכְתּו אֲשֶׁר עָשָׂה
+וַיְבָרֶךְ אֱלֹהִים אֶת יוֹם הַשְּׁבִיעִי וַיְקַדֵּשׁ אֹתוֹ. כִּי בוֹ שָׁבַת מִכָּל מְלַאכְתּו אֲשֶׁר בָּרָא אֱלֹהִים לַעֲשׂות
+
+סַבְרִי מָרָנָן וְרַבָּנָן וְרַבּותַי
+
+(!לחיים)
+
+בָּרוּךְ אַתָּה ה׳ אֱֹלהֵינוּ מֶלֶךְ הָעוֹלָם בּוֹרֵא פְּרִי הַגָּפֶן
+
+בָּרוּךְ אַתָּה ה’ אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֹתָיו וְרָצָה בָנוּ וְשַׁבַּת קָדְשׁוֹ בְּאַהֲבָה וּבְרָצוֹן הִנְחִילָנוּ זִכָּרוֹן לְמַעֲשֵׂה בְרֵאשִׁית. כִּי הוּא יוֹם תְּחִלָּה לְמִקְרָאֵי קֹדֶשׁ זֵכֶר לִיצִיאַת מִצְרָיִם. כִּי בָנוּ בָחַרְתָּ וְאוֹתָנוּ קִדַּשְׁתָּ מִכָּל הָעַמִּים וְשַׁבַּת קָדְשְׁךָ בְּאַהֲבָה וּבְרָצוֹן הִנְחַלְתָּנוּ
+בָּרוּךְ אַתָּה ה׳ מְקַדֵּשׁ הַשַּׁבָּת
+                    
+                    
+                </pre>
+            </div>
+            <div class="tab text-field">
+                <pre class="english">Bold.org is built for students, like you, who are determined to make the climb.
+
+                    As you join the Bold.org platform, you get the opportunity to showcase your goals, achievements, and drive to scholarship panels via your student profile.
+                    
+                    The $25,000 “Be Bold” Scholarship is a no-essay scholarship that will be awarded to the applicant with the boldest profile.
+                    
+                    To us, boldest does not mean “best”, or “most accomplished”. Being bold means being:
+                    
+                    Earnest
+                    Determined
+                    Moving
+                    The scholarship will be awarded to the student whose profile is most bold, according to these characteristics.
+                    
+                    Furthermore, the scholarship will be unique in that it will favor students who apply earlier—who are bold and seize the day without procrastinating.
+                    
+                    </pre>
+            </div>
+            <div class="modal-body">
+                <h4 id="title"></h4>
+                <p id="date"></p>
+                <p id='code'></p><button type='button' class="btn btn-secondary" id='copy'>Copy</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div id="functions">
+                    <button id='enter' type='submit' class="btn btn-primary">Enter</button>
+                    <button id='delete' type='button' class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
 <div>
     <ul class='list' id='preset'>
         {% for bless in genBless %}
         <li>
-            <div class="bless bless_normal">  
+            <div bless-value='{{ bless.id }}' class="bless bless_normal" data-toggle="modal" data-target="#myModal">  
                 <h2 class="bless_title">{{ bless.bless_name }}</h2>
             </div>
         </li>
@@ -28,7 +94,7 @@
         <ul class='list' id='custom'></ul>
             {% for bless in userBless %}
             <li>
-            <div class="bless bless_normal">  
+            <div bless-value='{{ bless.id }}' class="bless bless_normal" data-toggle="modal" data-target="#myModal">  
                 <h2 class="bless_title">{{ bless.bless_name }}</h2>
             </div>
             </li>
@@ -64,6 +130,27 @@
             $(this).addClass('active');
            
 
+        })
+    })
+
+    $(document).ready(function () {
+        $('.bless').on('click', function() {
+            alert($(this).attr('bless-value'));
+            let block_data = {bless_id : $(this).attr('bless-value')};
+            let json_data = JSON.stringify(block_data)
+            
+            $.ajax({
+                url : '/_load_bless_settings',
+                type : 'post',
+                contentType : "application/json",
+                dataType : 'json',
+                data : json_data,
+                success : function(data) {
+                    // load all bless data into html
+                    $('.modal-title').html(data.name)
+                    
+                }
+            })
         })
     })
 </script>

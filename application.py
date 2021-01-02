@@ -61,6 +61,7 @@ class Bless(db.Model):
         self.eng_heb = eng_heb
         self.meaning = meaning
         self.user_id = user_id
+        self.id = id
 
 class Room(db.Model):
     __tablename__ = 'room'
@@ -280,6 +281,26 @@ def delete_room():
     
 
     return render_template('room-library.html')
+
+@app.route('/_load_bless_settings', methods=['POST'])
+def load_bless():
+    if request.method == 'POST':
+        data = request.get_json()
+     
+
+        bless = Bless.query.filter_by(id=data['bless_id']).first()
+
+        print(data)
+
+        blockDict = {
+            'name' : bless.bless_name,
+            'hebrew' : bless.heb,
+            'english' : bless.eng,
+            'transliteration' : bless.eng_heb,
+            'meaning' : bless.meaning
+        }
+
+        return blockDict
 
 
 @app.route("/bless-library", methods=["GET", "POST"])
