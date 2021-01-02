@@ -37,13 +37,6 @@
 סַבְרִי מָרָנָן וְרַבָּנָן וְרַבּותַי
 
 (!לחיים)
-
-בָּרוּךְ אַתָּה ה׳ אֱֹלהֵינוּ מֶלֶךְ הָעוֹלָם בּוֹרֵא פְּרִי הַגָּפֶן
-
-בָּרוּךְ אַתָּה ה’ אֱלֹהֵינוּ מֶלֶךְ הָעוֹלָם אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֹתָיו וְרָצָה בָנוּ וְשַׁבַּת קָדְשׁוֹ בְּאַהֲבָה וּבְרָצוֹן הִנְחִילָנוּ זִכָּרוֹן לְמַעֲשֵׂה בְרֵאשִׁית. כִּי הוּא יוֹם תְּחִלָּה לְמִקְרָאֵי קֹדֶשׁ זֵכֶר לִיצִיאַת מִצְרָיִם. כִּי בָנוּ בָחַרְתָּ וְאוֹתָנוּ קִדַּשְׁתָּ מִכָּל הָעַמִּים וְשַׁבַּת קָדְשְׁךָ בְּאַהֲבָה וּבְרָצוֹן הִנְחַלְתָּנוּ
-בָּרוּךְ אַתָּה ה׳ מְקַדֵּשׁ הַשַּׁבָּת
-                    
-                    
                 </pre>
             </div>
             <div class="tab text-field">
@@ -54,25 +47,19 @@
                     The $25,000 “Be Bold” Scholarship is a no-essay scholarship that will be awarded to the applicant with the boldest profile.
                     
                     To us, boldest does not mean “best”, or “most accomplished”. Being bold means being:
-                    
-                    Earnest
-                    Determined
-                    Moving
-                    The scholarship will be awarded to the student whose profile is most bold, according to these characteristics.
-                    
-                    Furthermore, the scholarship will be unique in that it will favor students who apply earlier—who are bold and seize the day without procrastinating.
-                    
                     </pre>
             </div>
-            <div class="modal-body">
-                <h4 id="title"></h4>
-                <p id="date"></p>
-                <p id='code'></p><button type='button' class="btn btn-secondary" id='copy'>Copy</button>
+            <div class="tab text-field"> <pre class="english">words</pre></div>
+            <div class="tab text-field"> <pre class="english">words</pre></div>
+            <div id='buttonplacement'>
+                <button id='back' type="button" class="nextprev prev">Back</button>
+                <button id='next' type="button" class="nextprev next">Next</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <div id="functions">
                     <button id='enter' type='submit' class="btn btn-primary">Enter</button>
+                    
                     <button id='delete' type='button' class="btn btn-danger">Delete</button>
                 </div>
             </div>
@@ -83,6 +70,7 @@
 
 
 <div>
+    <div id="preset">
     <ul class='list' id='preset'>
         {% for bless in genBless %}
         <li>
@@ -91,15 +79,19 @@
             </div>
         </li>
         {% endfor %}
-        <ul class='list' id='custom'></ul>
-            {% for bless in userBless %}
-            <li>
-            <div bless-value='{{ bless.id }}' class="bless bless_normal" data-toggle="modal" data-target="#myModal">  
-                <h2 class="bless_title">{{ bless.bless_name }}</h2>
-            </div>
-            </li>
-            {% endfor %}
-        </ul>
+    </ul>
+    </div>
+        <div id="custom" style="display:none">
+            <ul class='list'>
+                {% for bless in userBless %}
+                <li>
+                <div bless-value='{{ bless.id }}' class="bless bless_normal" data-toggle="modal" data-target="#myModal">  
+                    <h2 class="bless_title">{{ bless.bless_name }}</h2>
+                </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </ul>
 </div>
 
@@ -111,21 +103,79 @@
 
 <script>
     $(document).ready(function () {
-    $('.item').removeClass('active')
-    $('#blocks').addClass('active')
+        $('.bless').on('click', function() {
+            $('.tab').hide();
+            var currentTab = 0;
+        
+
+            currentTab = 0;
+
+            
+
+            showTab(currentTab);
+
+            function showTab(n) {
+                let x = $('.tab');
+
+                $('.tab:eq('+currentTab+')').show();
+
+                console.log("this is show tab " + currentTab)
+
+                if (n == 0) {
+                    $("#back").hide();
+                } else {
+                    $('#back').show();
+                }
+
+                if (n == (x.length - 1)) {
+                    $("#next").hide();
+                } else {
+                    $('#next').show();
+                }
+            }
+
+            $('#next').on('click', function() {
+                nextPrevClick(1);
+                $('.tab').hide();
+                showTab(currentTab);
+                console.log("this is" + currentTab)      
+            })
+
+            $('#back').on('click', function() {
+                nextPrevClick(-1);
+                $('.tab').hide();
+                showTab(currentTab);     
+            })
+
+            function nextPrevClick(n) {
+            
+                $('.tab:eq('+currentTab+')').hide();
+
+                currentTab = currentTab + n;
+
+                console.log(currentTab)
+
+            }
+        })
+
+    })
+
+    $(document).ready(function () {
+        $('.item').removeClass('active')
+        $('#blocks').addClass('active')
     })
 
     $(document).ready(function () {
         $('#preset-btn').on('click', function () {
-            $('#custom').fadeOut(300);
-            $('#preset').fadeIn(300);
+            $('#custom').fadeOut(300).slideUp().delay(300);
+            $('#preset').delay(300).fadeIn(300).slideDown();
             $(this).siblings().removeClass('active');
             $(this).addClass('active');
             
         })
         $('#custom-btn').on('click', function () {
-            $('#preset').fadeOut(300);
-            $('#custom').fadeIn(300);
+            $('#preset').fadeOut(300).slideUp().delay(300);
+            $('#custom').delay(300).fadeIn(300).slideDown();
             $(this).siblings().removeClass('active');
             $(this).addClass('active');
            

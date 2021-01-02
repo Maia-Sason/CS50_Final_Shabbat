@@ -11,7 +11,7 @@
     <h2> Welcome to {{room.room_name}}</h2>
     <h4> mode: {{mode}}</h4>
     <h4> code: {{room.room_code}}</h4>
-    <label ><p id="user_connected"></p></label>
+    <label><p id="user_connected" display="none"></p></label>
 
     <div id="placeholder">
         <h3 id="bless_name"></h3>
@@ -40,9 +40,11 @@
     
 
     <div id="blessblocks" style="display:none">
+        <ul class='list>
         {% for bless in blessID %}
-        <button id="{{ bless.id }}" value='{{ bless.id }}' class="btn btn-secondary bless">{{ bless.bless_name }}</button>
+        <li><button id="{{ bless.id }}" value='{{ bless.id }}' class="bless bless_normal">{{ bless.bless_name }}</button></li>
         {% endfor %}
+        </ul>
     </div>
     {% endif %}
 

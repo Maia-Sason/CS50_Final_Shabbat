@@ -267,6 +267,7 @@ line-height: 25px;
     color: #526374;
     justify-content: center;
     transition: transform 0.5s;
+    border: none;
 }
 
 .bless_title {
@@ -408,3 +409,67 @@ ul {
 .button-page .active {
     background: #c9e6ec;
 }
+
+.next {
+    background: #D4FAFF !important;
+}
+
+.nextprev {
+    width: 105px;
+    height: 42px;
+    
+    box-shadow: 0px 1px 4px rgba(53, 89, 89, 0.25);
+    border-radius: 5px;
+    border-style: none;
+    justify-content: center;
+    transition: transform 0.5s;
+    
+    font-family: 'Nanum Gothic';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 24px;
+    color: black !important;
+    margin:  0 30px 30px;
+}
+
+.nextprev:hover {
+    transform: scale(0.95);
+}
+
+.prev {
+    background:#99A8AD;
+}
+
+#buttonplacement {
+    position: relative;
+    display: flex;
+    justify-content: center;   
+}
+
+.modal-header {
+    display: flex;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 0px;
+    border-top-left-radius: .3rem;
+    border-top-right-radius: .3rem;
+}
+
+.modal-footer {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 0px;
+}
+
+.tab {
+    display: none;
+  }

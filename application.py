@@ -411,7 +411,7 @@ def join(data):
     print(data)
     join_room(data["room"])
 
-    send({'msg': data['displayname'] + " has joined the " + data['room'] + " room."}, room=data['room'])
+    send({'msg': data['displayname'] + " has joined the room."}, room=data['room'])
 
 @socketio.on('message')
 def message(data):
