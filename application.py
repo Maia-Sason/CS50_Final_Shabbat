@@ -61,7 +61,6 @@ class Bless(db.Model):
         self.eng_heb = eng_heb
         self.meaning = meaning
         self.user_id = user_id
-        self.id = id
 
 class Room(db.Model):
     __tablename__ = 'room'
