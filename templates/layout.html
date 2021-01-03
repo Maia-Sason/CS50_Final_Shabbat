@@ -86,12 +86,17 @@
         </header>
     {% endif %}
 
+    <!-- display bg -->
+    {% block background %}
+    {% endblock %}
     <!-- This is where the body is extended -->
     <main class="container p-5">
         {% block content %}
 
         {% endblock %}
     </main>
+
+    
 
     <script src="static/scripts/layout.js"></script>
 </body>

@@ -89,12 +89,8 @@ nav ul {
 }
 
 /* header */
-.header-container {
-    background: white url('images/bg-shapes-home.svg');
-    background-repeat: no-repeat;
-    width: 1000px;
-    height: calc(100vh - 150px);
-    margin: 50px;
+.bg-index {
+    background: url('images/bg-shapes-home.svg');
 }
 
 .move {
@@ -160,11 +156,47 @@ line-height: 25px;
     width: 277px;
     height: 51px;
     border-style: none;
+    display: flex;
 
 
     background: #FFFFFF;
     box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
+}
+
+.tab2 {
+    padding: 20px;
+    display: none;
+}
+
+.tab2 input {
+    height: 50px;
+    width: 100%;
+    border-style: none;
+    padding: 20px;
+    
+    display: flex;
+    
+    background: #FFFFFF;
+    box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    
+}
+
+.tab2 textarea {
+    
+    width: 100%;
+    border-style: none;
+    padding: 20px;
+    margin: 1px;
+    
+    display: flex;
+    
+    background: #FFFFFF;
+    box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    
+    
 }
 
 .input-container button {
@@ -230,8 +262,12 @@ line-height: 25px;
     font-weight: 300;
     font-size: 23px;
     line-height: 33px;
+    padding: 0 10px;
     text-align: center;
     position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     top: 100px;
 }
 
@@ -279,6 +315,10 @@ line-height: 25px;
     text-align: center;
     position: relative;
     top: 17px;
+    overflow:hidden;
+    padding: 0 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .bless_normal {
@@ -339,10 +379,28 @@ ul {
 }
 
 .bg-bless {
-    background: white url('images/bless_block_bg.svg') no-repeat;
+
+    background: url('images/bless_block_bg.svg') no-repeat;
+}
+
+.bg-1 {
     background-repeat: no-repeat;
-    height: calc(100vh - 150px);
-    background-position: 0% 0%;
+    
+    background-position: 14vh 19%;
+}
+
+.bg {
+    background-repeat: no-repeat;
+    
+    background-position: 10vh 25%;
+}
+
+
+.bg-room {
+    background: url('images/room_lib.svg') no-repeat;
+    background-repeat: no-repeat;
+   
+    background-position: 0% 20%;
 }
 
 .button-page {
@@ -414,6 +472,10 @@ ul {
     background: #D4FAFF !important;
 }
 
+.delete {
+    background:#FFC5C5 !important; 
+}
+
 .nextprev {
     width: 105px;
     height: 42px;
@@ -441,7 +503,7 @@ ul {
     background:#99A8AD;
 }
 
-#buttonplacement {
+.button-placement {
     position: relative;
     display: flex;
     justify-content: center;   

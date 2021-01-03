@@ -227,7 +227,7 @@ def roomLibrary():
 
         # DONT FORGET TO give ability to delete a room off the page.
 
-        return render_template("room-library.html", user_rooms = user_rooms)
+        return render_template("room-library.html", user_rooms = user_rooms, len = len)
     else:
         # # Probably change this.
         # # mode to host
@@ -285,7 +285,6 @@ def delete_room():
 def load_bless():
     if request.method == 'POST':
         data = request.get_json()
-     
 
         bless = Bless.query.filter_by(id=data['bless_id']).first()
 
@@ -316,29 +315,31 @@ def blessLibrary():
     return render_template('bless-library.html', genBless=genBless, userBless=userBless)
 
 
-@app.route('/create-bless', methods=["GET", "POST"])
+@app.route('/_create_bless', methods=["POST"])
 def createBless():
     ''' Create a new bless block here '''
-    # if get:
-    if request.method == 'GET':
-        return render_template('create-bless.html')
-        # render page with multistep form
-    else:
-        
-        blessName = request.form.get("blessName")
-        blessEng = request.form.get("blessEng")
-        blessHeb = request.form.get("blessHeb")
-        blessEngHeb = request.form.get("blessEngHeb")
-        blessMeaning = request.form.get("blessMeaning")
+    data = request.get_json()
 
-        newbless = Bless(bless_name=blessName, eng=blessEng, heb=blessHeb, eng_heb=blessEngHeb, meaning=blessMeaning, user_id=current_user.get_id())
-        db.session.add(newbless)
-        db.session.commit()
+    newbless = Bless(bless_name=data['bname'], eng=data['beng'], heb=data['bheb'], eng_heb=data['beng_heb'], meaning=data['bmeaning'], user_id=current_user.get_id())
+    db.session.add(newbless)
+    db.session.commit()
 
-        return redirect('/bless-library')
+    return redirect('/bless-library')
 
 
-        # store it all in a database
+    # store it all in a database
+
+@app.route('/_delete_bless', methods=['POST'])
+def delete_bless():
+    data = request.get_json()
+
+    bless = Bless.query.filter_by(id=data['bless_id']).first()
+
+    db.session.delete(bless)
+    db.session.commit()
+
+    return redirect('/bless-library')
+
     
 
 

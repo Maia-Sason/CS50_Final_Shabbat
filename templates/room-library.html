@@ -5,37 +5,30 @@
 {% endblock %}
 
 {% block content %}
-<style>
-    .btn-circle {
-        box-sizing: border-box;
-        display: inline-flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        text-align: center;
-        font-weight: bold;
-        border: 6px black;
-        font-size: 20px;
-        text-decoration:none;
-    }
-
-    .btn-circle:hover {
-        transform: scale(0.90);
-    }
-
-    .padded {
-        margin: 20px;
-        right:75%;
-        position: absolute;
-        
-    }
-</style>
 
 <!-- Show all rooms by user, and give user a way to view the room's data, code, and join room as host -->
 <!-- Probably also create room for socket io with the buttons -->
+<div class='bg-room'>
+
+    <div class="input-container">
+        <h1>Room Library</h1>
+        <p>Create a room and host your own Jewish dinner.</p>
+        <p>{{ len(user_rooms) }}/10</p>
+    </div>
+
+<div>
+
+    <ul class='list' id='preset'>
+        {% for room in user_rooms %}
+        <li>
+            <div bless-value='{{ room.id }}' class="shabbat" data-toggle="modal" data-target="#modalPreview">  
+                <h2 class="shabbat_header">{{ room.room_name }}</h2>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+
 <form action="/room-library" method="post">
 <div id="roomSelect" class="form-group">
     {% if user_rooms != [] %}
@@ -86,6 +79,7 @@
 
     </div>
 
+ 
 <div class='padded'>
     <a href="/create-room" class="btn btn-primary btn-circle">+</a>
 </div>

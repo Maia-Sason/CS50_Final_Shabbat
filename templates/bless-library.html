@@ -3,109 +3,130 @@
     Bless Library
 {% endblock %}
 
-{% block content %}
-<div class='bg-bless'>
+{% block background %}
 
+<div class='bg bg-bless'>
+
+    {%endblock%}
+    {% block content %}
     <div class="input-container">
-        <h1>Bless Blocks</h1>
-        <p>Manage your blessings and create new ones.</p>
+            <h1>Bless Blocks</h1>
+            <p>Manage your blessings and create new ones.</p>
     </div>
 
-<div>
-<button id='preset-btn' class='button-page'>Preset Blocks</button>
-<button id='custom-btn' class='button-page'>Custom Blocks</button>
-</div>
-
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <button id='preset-btn' class='button-page'>Preset Blocks</button>
+    <button id='custom-btn' class='button-page'>Custom Blocks</button>
 
 
-        <!-- Scrollable modal -->
-        <div class="modal-content model-custom">
-            <div class="modal-header">
-                <h4 class="modal-title">Bless Title</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="tab text-field">
-                <pre class="hebrew">
-וַיְהִי עֶרֶב וַיְהִי בֹקֶר
-יוֹם הַשִּׁשִּׁי. וַיְכֻלּוּ הַשָּׁמַיִם וְהָאָרֶץ וְכָל צְבָאָם
-וַיְכַל אֱלֹהִים בַּיּום הַשְּׁבִיעִי מְלַאכְתּו אֲשֶׁר עָשָׂה. וַיִּשְׁבּת בַּיּום הַשְּׁבִיעִי מִכָּל מְלַאכְתּו אֲשֶׁר עָשָׂה
-וַיְבָרֶךְ אֱלֹהִים אֶת יוֹם הַשְּׁבִיעִי וַיְקַדֵּשׁ אֹתוֹ. כִּי בוֹ שָׁבַת מִכָּל מְלַאכְתּו אֲשֶׁר בָּרָא אֱלֹהִים לַעֲשׂות
+    <!-- Modal preview modal -->
+    <div id="modalPreview" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
-סַבְרִי מָרָנָן וְרַבָּנָן וְרַבּותַי
 
-(!לחיים)
-                </pre>
-            </div>
-            <div class="tab text-field">
-                <pre class="english">Bold.org is built for students, like you, who are determined to make the climb.
-
-                    As you join the Bold.org platform, you get the opportunity to showcase your goals, achievements, and drive to scholarship panels via your student profile.
-                    
-                    The $25,000 “Be Bold” Scholarship is a no-essay scholarship that will be awarded to the applicant with the boldest profile.
-                    
-                    To us, boldest does not mean “best”, or “most accomplished”. Being bold means being:
-                    </pre>
-            </div>
-            <div class="tab text-field"> <pre class="english">words</pre></div>
-            <div class="tab text-field"> <pre class="english">words</pre></div>
-            <div id='buttonplacement'>
-                <button id='back' type="button" class="nextprev prev">Back</button>
-                <button id='next' type="button" class="nextprev next">Next</button>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <div id="functions">
-                    <button id='enter' type='submit' class="btn btn-primary">Enter</button>
-                    
-                    <button id='delete' type='button' class="btn btn-danger">Delete</button>
+            <!-- Scrollable modal -->
+            <div class="modal-content model-custom">
+                <div class="modal-header">
+                    <h4 id="title" class="modal-title">Bless Title</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="tab text-field">
+                    <pre id='heb' class="hebrew"></pre>
+                </div>
+                <div class="tab text-field">
+                    <pre id="eng" class="english"></pre>
+                </div>
+                <div class="tab text-field"> <pre id="eng-heb" class="english">words</pre></div>
+                <div class="tab text-field"> <pre id="meaning" class="english">words</pre></div>
+                <div class='button-placement'>
+                    <button id='back' type="button" class="nextprev prev">Back</button>
+                    <button id='delete' type='button' style='display:none' class="nextprev delete" data-dismiss="modal">Delete</button>
+                    <button id='next' type="button" class="nextprev next">Next</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
+
     </div>
 
-</div>
+
+    <!-- Modal create modal -->
+    <div id="modalCreate" class="modal fade" role="dialog">
+        <div class="modal-dialog">
 
 
-<div>
-    <div id="preset">
-    <ul class='list' id='preset'>
-        {% for bless in genBless %}
-        <li>
-            <div bless-value='{{ bless.id }}' class="bless bless_normal" data-toggle="modal" data-target="#myModal">  
-                <h2 class="bless_title">{{ bless.bless_name }}</h2>
+            <!-- Scrollable modal -->
+            <div class="modal-content model-custom">
+                <div class="modal-header">
+                    <h4 id="title-create" class="modal-title">Create New Bless Block</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="tab2">
+                    <input class="input-small" id='title-block' placeholder="hello">
+                </div>
+                <div class="tab2">
+                    <textarea id='heb-create' style="direction:rtl" class="hebrew text-field" placeholder="עברית"></textarea>
+                </div>
+                <div class="tab2">
+                    <textarea id="eng-create" class="english text-field" placeholder="translation"></textarea>
+                </div>
+                <div class="tab2"> <textarea id="eng-heb-create" class="english text-field" placeholder="transliteration"></textarea></div>
+                <div class="tab2"> <textarea id="meaning-create" class="english text-field" placeholder="meaning"></textarea></div>
+                <div class='button-placement'>
+                    <button id='back-create' type="button" class="nextprev prev">Back</button>
+                    
+                    <button id='next-create' type="button" class="nextprev next">Next</button>
+
+                    <button id='create-create' type="button" class="nextprev next">Create</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
-        </li>
-        {% endfor %}
-    </ul>
+        </div>
+
     </div>
-        <div id="custom" style="display:none">
-            <ul class='list'>
-                {% for bless in userBless %}
-                <li>
-                <div bless-value='{{ bless.id }}' class="bless bless_normal" data-toggle="modal" data-target="#myModal">  
+
+
+
+    <div>
+        <div id="preset">
+        <ul class='list' id='preset'>
+            {% for bless in genBless %}
+            <li>
+                <div bless-value='{{ bless.id }}' class="bless bless_normal" data-toggle="modal" data-target="#modalPreview">  
                     <h2 class="bless_title">{{ bless.bless_name }}</h2>
                 </div>
-                </li>
-                {% endfor %}
-            </ul>
+            </li>
+            {% endfor %}
+        </ul>
         </div>
-    </ul>
-</div>
+            <div id="custom" style="display:none">
+                <ul class='list'>
+                    {% for bless in userBless %}
+                    <li>
+                    <div bless-value='{{ bless.id }}' class="bless bless_normal custom_bless" data-toggle="modal" data-target="#modalPreview">  
+                        <h2 class="bless_title">{{ bless.bless_name }}</h2>
+                    </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </ul>
+    </div>
 
-<div id="bless_create_new">
-    <button id='preset-btn' class='button-page'>Create Bless Block</button>    
-    <a href="/create-bless" id='newbless' class="btn btn-primary">Create New Bless Block</a>
-</div>
+    <div id="bless_create_new">
+        <button id='create-btn' class='button-page' data-toggle="modal" data-target="#modalCreate">Create Bless Block</button>
+    </div>
 </div>
 
 <script>
+    // preview bless blocks
     $(document).ready(function () {
         $('.bless').on('click', function() {
             $('.tab').hide();
-            var currentTab = 0;
+            let currentTab = 0;
         
 
             currentTab = 0;
@@ -160,6 +181,159 @@
 
     })
 
+    // create bless blocks
+    $(document).ready(function () {
+        
+        $('#create-btn').on('click', function() {
+            console.log(currentTab_create)
+            function nextPrevClick(n, currentTab) {
+            
+                let x = $('.tab2');
+
+                if (n == 1 && !validateForm()) {
+                    return false;
+                    
+                }
+
+                console.log($('#next-create').val())
+
+                $('.tab2:eq('+currentTab_create+')').hide();
+
+                currentTab_create += n;
+
+                console.log(currentTab_create)
+
+            }
+
+            $('.tab2').hide();
+            
+            var currentTab_create = 0;
+
+            showTab(currentTab_create);
+
+            function showTab(n) {
+                let x = $('.tab2');
+
+                $('.tab2:eq('+currentTab_create+')').show();
+
+                if (n == 0) {
+                    $("#back-create").hide();
+                } else {
+                    $('#back-create').show();
+                }
+
+                if (n == (x.length - 1)) {
+                    $("#next-create").hide()
+                    $("#create-create").show()
+             
+                } else {
+                    $('#next-create').show()
+                    $('#create-create').hide()
+                }
+            }
+
+            $('#next-create').on('click', function() {
+                let x = 1;
+                nextPrevClick(x);
+                $('.tab2').hide();
+                showTab(currentTab_create);
+            })
+
+            $('#back-create').on('click', function() {
+                let x = -1;
+                nextPrevClick(x);
+                $('.tab2').hide();
+                showTab(currentTab_create);     
+            })
+
+            $('#create-create').on('click', function () {
+                x = 1
+                nextPrevClick(x)
+
+                if ($('#meaning-create').val() != "") {
+                    let blessdict = {
+                        bname : $("#title-block").val(),
+                        bheb : $("#heb-create").val(),
+                        beng : $("#eng-create").val(),
+                        beng_heb : $("#eng-heb-create").val(),
+                        bmeaning : $("#meaning-create").val()
+                    }
+
+                    let js_data = JSON.stringify(blessdict)
+
+                    $.ajax({
+                        url : "/_create_bless",
+                        type : 'post',
+                        contentType : "application/json",
+                        dataType : 'json',
+                        data: js_data,
+                    })
+                    location.reload();
+
+                    return false;
+
+                }
+
+            })
+
+            function validateForm() {
+                // By default valid is true
+                let x, y, z, valid = true;
+                
+                // x is all elements by class tab, y is all elements by class input
+                // in current tab
+                x = document.getElementsByClassName('tab2');
+                y = x[currentTab_create].getElementsByTagName('input');
+                z = x[currentTab_create].getElementsByTagName('textarea')
+
+                // While i is less than the length of the inputs
+                for (let i = 0; i < y.length; i++) {
+
+                    // If the ith input is nothing
+                    if (y[i].value == "") {
+                        // if not already class invalid
+                        if (y[i].className != " invalid-box") {
+                            // add class invalid
+                            y[i].className += " invalid-box";
+                        }
+                        // Change valid to false
+                        valid = false;
+                        
+                    }
+                }
+
+                // While i is less than the length of the inputs
+                for (let i = 0; i < z.length; i++) {
+
+                    // If the ith input is nothing
+                    if (z[i].value == "") {
+                        // if not already class invalid
+                        if (z[i].className != "invalid-box") {
+                            // add class invalid
+                            z[i].className += " invalid-box";
+                        }
+                        
+
+                        console.log(z[i].classList)
+                        // Change valid to false
+                        valid = false;
+                        
+                    }
+
+                    if (z[i].value != "") {
+                        z[i].classList.remove('invalid-box')
+
+                    }
+                }
+
+                return valid;
+            }
+
+
+        })
+
+    })
+
     $(document).ready(function () {
         $('.item').removeClass('active')
         $('#blocks').addClass('active')
@@ -185,23 +359,51 @@
 
     $(document).ready(function () {
         $('.bless').on('click', function() {
-            alert($(this).attr('bless-value'));
+            let current_bless = $(this)
             let block_data = {bless_id : $(this).attr('bless-value')};
             let json_data = JSON.stringify(block_data)
+
+            if ($(this).hasClass('custom_bless')) {
+                $("#delete").show()
+            } else {
+                $("#delete").hide()
+            }
             
             $.ajax({
                 url : '/_load_bless_settings',
                 type : 'post',
                 contentType : "application/json",
+
                 dataType : 'json',
                 data : json_data,
                 success : function(data) {
                     // load all bless data into html
-                    $('.modal-title').html(data.name)
+                    $('#title').html(data.name)
+                    $('#heb').html(data.hebrew)
+                    $('#eng').html(data.english)
+                    $('#eng-heb').html(data.transliteration)
+                    $('#meaning').html(data.meaning)
                     
                 }
             })
+
+            $('#delete').on('click', function() {
+                
+
+                $.ajax({
+                    url : '/_delete_bless',
+                    type : 'post',
+                    contentType : "application/json",
+
+                    dataType : 'json',
+                    data : json_data,
+                    
+                })
+
+                current_bless.slideUp()
+            })
         })
+        
     })
 </script>
 {% endblock %}

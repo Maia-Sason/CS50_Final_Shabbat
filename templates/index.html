@@ -6,11 +6,16 @@
 
 {% endblock %}
 
+{% block background %}
+<div class="bg-1 bg-index">
+{% endblock %}
+
+
 {% block content %}
     <!-- form action for index -->
     <form id="join_form" action="/" method="post">
         <!-- If user is logged in, display their display name -->
-        <div class="header-container">
+        
             <div class="wrapper">
                 <header>
 
@@ -24,8 +29,8 @@
                             <p>Join a friend’s shabbat room to start the fun!</p>
                             <div class="form-group">
                                 <input name='code' placeholder="Room Code">
-                                <button class='enter' type='submit'>Enter</button>
                             </div>
+                            <button class='enter' type='submit'>Enter</button>
 
                         </div>
                     </div>
@@ -51,6 +56,7 @@
     </div>
 
     </form>
+</div>
 
 
     <!-- add validation features from jquery -->
