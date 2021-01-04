@@ -247,6 +247,22 @@ def roomLibrary():
         return render_template("room_join.html", room=room, displayName=displayName, mode=mode, blessID=blessID)
         return apology("We couldn't connect you to your room!")
 
+@app.route('/_load_bless_list')
+def load_bless_list():
+    userBless = current_user.blessings
+    genBless = Bless.query.filter_by(user_id=None).all()
+    allBless = genBless + userBless
+
+    blessList = []
+
+    for bless in allBless:
+        blessitems = {'id' : bless.id, 'name': bless.bless_name}
+        blessList.append(blessitems)
+
+    return json.dumps(blessList)
+
+
+
 @app.route('/_load_room_settings', methods=['POST'])
 def load_room():
 

@@ -40,9 +40,11 @@
     
 
     <div id="blessblocks" style="display:none">
-        <ul class='list>
+        <ul class='list'>
         {% for bless in blessID %}
-        <li><button id="{{ bless.id }}" value='{{ bless.id }}' class="bless bless_normal">{{ bless.bless_name }}</button></li>
+        <li>
+            <button id="{{ bless.id }}" value='{{ bless.id }}' class="bless bless_normal">{{ bless.bless_name }}</button>
+        </li>
         {% endfor %}
         </ul>
     </div>

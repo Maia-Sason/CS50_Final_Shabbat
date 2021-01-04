@@ -378,6 +378,13 @@ ul {
     clear: both;
 }
 
+#room_create_new {clear: both;}
+
+.offscreen {
+    position: absolute;
+    left: -999em;
+}
+
 .bg-bless {
 
     background: url('images/bless_block_bg.svg') no-repeat;

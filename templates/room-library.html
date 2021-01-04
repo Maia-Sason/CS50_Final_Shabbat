@@ -16,167 +16,342 @@
         <p>{{ len(user_rooms) }}/10</p>
     </div>
 
-<div>
- <!--room block display  -->
-    <ul class='list' id='preset'>
-        {% for room in user_rooms %}
-        <li>
-            <div room-value='{{ room.id }}' class="room_selected shabbat" data-toggle="modal" data-target="#modalPreview">  
-                <h2 class="shabbat_header">{{ room.room_name}}  {{ room.id }}</h2>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-
-<!-- Modal preview modal -->
-<div id="modalPreview" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-
-        <!-- Scrollable modal -->
-        <div class="modal-content model-custom">
-        <form action="/room-library" method="post">
-            <div class="modal-header">
-                <h4 id="room-title" class="modal-title">Title</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div>
-                <p id='room-code'>Room Code:</p><button>Copy</button>
-                <p id='room-date'>Room Date and time: -/-/- --:-- --</p>
-            </div>
-            <!-- room code -->
-            <div style="display:none">
-                <input name="room-id" value="3">
-            </div>
-            <div class='button-placement'>
-                <button id='delete' type='button' class="nextprev delete" data-dismiss="modal">Delete</button>
-                <button id='enter' type="submit" class="nextprev next">Enter</button>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </form>
-        </div>
-    </div>
-
-</div>
-
-
-<div id="roomSelect" class="form-group">
-    <!-- {% if user_rooms != [] %}
-    <div id='show_selection'>
-        <select id="room" name='room_id'>   
-        {% for room in user_rooms %}
-            <option value='{{room.id}}'>
-
-                {{ room.room_name }} {{room.room_code }}
-            
-            </option>
-
-        {% endfor %}
-        </select>
-        
-    </div>
-
-</div>
-    {% endif %} -->
-
-    <button id='preview' type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-
-    <!-- Modal -->
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-    
-    
-            <!-- Scrollable modal -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"></h4>
+    <div>
+    <!--room block display  -->
+        <ul class='list' id='preset'>
+            {% for room in user_rooms %}
+            <li>
+                <div room-value='{{ room.id }}' class="room_selected shabbat" data-toggle="modal" data-target="#modalPreview">  
+                    <h2 class="shabbat_header">{{ room.room_name}}  {{ room.id }}</h2>
                 </div>
-                <div class="modal-body">
-                    <h4 id="title"></h4>
-                    <p id="date"></p>
-                    <p id='code'></p><button type='button' class="btn btn-secondary" id='copy'>Copy</button>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Modal preview modal -->
+    <div id="modalPreview" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+
+            <!-- Scrollable modal -->
+            <div class="modal-content model-custom">
+            <form action="/room-library" method="post">
+                <div class="modal-header">
+                    <h4 id="room-title" class="modal-title">Title</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div>
+                    <!-- room-code -->
+                    <p id='room-code'>Room Code:</p><button type="button" id="copy">Copy</button>
+                    <input id="_hidden-code" class='offscreen' aria-hidden="true">
+                    <p id='room-date'>Room Date and time: -/-/- --:-- --</p>
+                </div>
+                <!-- room id -->
+                <div style="display:none">
+                    <input name="room-id" value="3">
+                </div>
+                <div class='button-placement'>
+                    <button id='delete' type='button' class="nextprev delete" data-dismiss="modal">Delete</button>
+                    <button id='enter' type="submit" class="nextprev next">Enter</button>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <div id="functions">
-                        <button id='enter' type='submit' class="btn btn-primary">Enter</button>
-                        <button id='delete' type='button' class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+            </div>
+        </div>
+
+    </div>
+
+     <!-- Modal create modal -->
+     <div id="modalCreate" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+
+            <!-- Scrollable modal -->
+            <div class="modal-content model-custom">
+                <div class="modal-header">
+                    <h4 id="title-create" class="modal-title">Create New Room</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="tab2">
+                    <input class="input-small" id='title-block' placeholder="Room Title">
+                    <input type="datetime-local" class="input-small" id='title-block' placeholder="DD/MM/YYYY 00:00 PM">
+                </div>
+                <div class="tab2">
+                    <div class="bless_list">
                     </div>
+                </div>
+                
+                <div class="tab2">
+                    some confirmation
+                </div>
+                <div class='button-placement'>
+                    <button id='back-create' type="button" class="nextprev prev">Back</button>
+                    
+                    <button id='next-create' type="button" class="nextprev next">Next</button>
+
+                    <button id='create-create' type="button" class="nextprev next">Create</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
 
     </div>
 
- 
-<div class='padded'>
-    <a href="/create-room" class="btn btn-primary btn-circle">+</a>
+
+        <button id='preview' type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+    
+    <div class='padded'>
+        <a href="/create-room" class="btn btn-primary btn-circle">+</a>
+    </div>
+    <div id="room_create_new">
+        <button id='create-btn' class='button-page' data-toggle="modal" data-target="#modalCreate">Create New Room</button>
+    </div>
+
 </div>
-
-
 
 <script>
 
 
 $(document).ready(function () {
 
-        $('.room_selected').on('click', function() {
-            let current_room = $(this)
+        let currentTab_create = 0;
+        
+        $('#create-btn').on('click', function() {
             
-            let room_data = {'room_id' : $(this).attr('room-value')};
 
-            let json_data = JSON.stringify(room_data)
+            console.log(currentTab_create)
+
+            $('.tab2').hide();
             
+
+            function nextPrevClick(n) {
+            
+                let x = $('.tab2');
+
+                if (n == 1 && !validateForm()) {
+                    return false;
+                    
+                }
+
+                console.log($('#next-create').val())
+
+                $('.tab2:eq('+currentTab_create+')').hide();
+
+                currentTab_create += n;
+
+                console.log(currentTab_create)
+
+            }
+
+            showTab(currentTab_create);
+
+            function showTab(n) {
+                let x = $('.tab2');
+
+                $('.tab2:eq('+currentTab_create+')').show();
+
+                if (n == 0) {
+                    $("#back-create").hide();
+                } else {
+                    $('#back-create').show();
+                }
+
+                if (n == (x.length - 1)) {
+                    $("#next-create").hide()
+                    $("#create-create").show()
+             
+                } else {
+                    $('#next-create').show()
+                    $('#create-create').hide()
+                }
+            }
+
+            $('#next-create').on('click', function() {
+                let x = 1;
+                nextPrevClick(x);
+                $('.tab2').hide();
+                showTab(currentTab_create);
+            })
+
+            $('#back-create').on('click', function() {
+                let x = -1;
+                nextPrevClick(x);
+                $('.tab2').hide();
+                showTab(currentTab_create);     
+            })
+
+            $('#create-create').on('click', function () {
+                x = 1
+                nextPrevClick(x)
+
+                if ($('#meaning-create').val() != "") {
+                    let blessdict = {
+                        bname : $("#title-block").val(),
+                        bheb : $("#heb-create").val(),
+                        beng : $("#eng-create").val(),
+                        beng_heb : $("#eng-heb-create").val(),
+                        bmeaning : $("#meaning-create").val()
+                    }
+
+                    let js_data = JSON.stringify(blessdict)
+
+                    // $.ajax({
+                    //     url : "/_create_room",
+                    //     type : 'post',
+                    //     contentType : "application/json",
+                    //     dataType : 'json',
+                    //     data: js_data,
+                    // })
+                    location.reload();
+
+                    return false;
+
+                }
+
+            })
+
+            function validateForm() {
+                // By default valid is true
+                let x, y, z, valid = true;
+                
+                // x is all elements by class tab, y is all elements by class input
+                // in current tab
+                x = document.getElementsByClassName('tab2');
+                y = x[currentTab_create].getElementsByTagName('input');
+                z = x[currentTab_create].getElementsByTagName('textarea')
+
+                // While i is less than the length of the inputs
+                for (let i = 0; i < y.length; i++) {
+
+                    // If the ith input is nothing
+                    if (y[i].value == "") {
+                        // if not already class invalid
+                        if (y[i].className != " invalid-box") {
+                            // add class invalid
+                            y[i].className += " invalid-box";
+                        }
+                        // Change valid to false
+                        valid = false;
+                        
+                    }
+
+                    if (y[i].value != "") {
+                        y[i].classList.remove('invalid-box')
+
+                    }
+                }
+
+                // While i is less than the length of the inputs
+                for (let i = 0; i < z.length; i++) {
+
+                    // If the ith input is nothing
+                    if (z[i].value == "") {
+                        // if not already class invalid
+                        if (z[i].className != "invalid-box") {
+                            // add class invalid
+                            z[i].className += " invalid-box";
+                        }
+                        
+
+                        console.log(z[i].classList)
+                        // Change valid to false
+                        valid = false;
+                        
+                    }
+
+                    if (z[i].value != "") {
+                        z[i].classList.remove('invalid-box')
+
+                    }
+                }
+
+                return valid;
+            }
+
+
+        })
+
+    })
+
+
+$(document).ready(function () {
+
+    $('.room_selected').on('click', function() {
+        let current_room = $(this)
+        
+        let room_data = {'room_id' : $(this).attr('room-value')};
+
+        let json_data = JSON.stringify(room_data)
+        
+        $.ajax({
+            url : '/_load_room_settings',
+            type : 'post',
+            contentType : "application/json",
+
+            dataType : 'json',
+            data : json_data,
+            success : function(data) {
+                $('#room-title').html('Room Name: ' + data.name),
+                $('#room-code').html('Room Code: ' + data.code),
+                $('#_hidden-code').val(data.code)
+            }
+        })
+
+        $('#delete').on('click', function() {
+            
+
             $.ajax({
-                url : '/_load_room_settings',
+                url : '/_delete_room',
                 type : 'post',
                 contentType : "application/json",
 
                 dataType : 'json',
                 data : json_data,
+                
+            })
+
+            current_room.slideUp()
+        })
+    })
+    
+})
+
+$(document).ready( ()=> {
+    $.ajax({
+                url : '/_load_bless_list',
+                type : 'get',
+                contentType : "application/json",
+
+                dataType : 'json',
                 success : function(data) {
-                    $('#room-title').html('Room Name: ' + data.name)
-                    $('#room-code').html('Room Code: ' + data.code)
-                    // $('#code').val() = data.code
+                    // figure this out
+                    for (let i = 0; i < data.length; i++) {
+                        console.log('id ' + data[i].id + ', name ' + data[i].name)
+                        $('.bless_list').append("<button id=' " +(data[i].id)+ "' value='" + (data[i].id) + "' class='bless bless_normal'>"+ (data[i].name) +"</button>")
+                    }
+
+                    console.log(data)
                 }
             })
-
-            $('#delete').on('click', function() {
-                
-
-                $.ajax({
-                    url : '/_delete_room',
-                    type : 'post',
-                    contentType : "application/json",
-
-                    dataType : 'json',
-                    data : json_data,
-                    
-                })
-
-                current_room.slideUp()
-            })
-        })
-        
-    })
-
-    $(document).ready( ()=> {
-
-        // doesnt work
-        $('#copy').on('click', function() {
-            $('#code').val().select;
-            document.execCommand('copy');
-        })
-    });
-
-    $(document).ready(function () {
-    $('.item').removeClass('active')
-    $('#rooms').addClass('active')
 })
+
+
+function copy() {
+
+    let copyText = document.querySelector('#_hidden-code')
+    copyText.select()
+    document.execCommand('copy');
+    console.log($('#_hidden-code').val())
+
+};
+
+document.querySelector("#copy").addEventListener("click", copy);
 </script>
 
 

@@ -300,6 +300,11 @@
                         valid = false;
                         
                     }
+
+                    if (y[i].value != "") {
+                        y[i].classList.remove('invalid-box')
+
+                    }
                 }
 
                 // While i is less than the length of the inputs
@@ -360,8 +365,11 @@
     $(document).ready(function () {
         $('.bless').on('click', function() {
             let current_bless = $(this)
-            let block_data = {bless_id : $(this).attr('bless-value')};
+            let block_data = undefined
+            block_data = {bless_id : $(this).attr('bless-value')};
             let json_data = JSON.stringify(block_data)
+
+            console.log(block_data)
 
             if ($(this).hasClass('custom_bless')) {
                 $("#delete").show()
@@ -388,7 +396,7 @@
             })
 
             $('#delete').on('click', function() {
-                
+                if (current_bless.hasClass('custom_bless')) {
 
                 $.ajax({
                     url : '/_delete_bless',
@@ -400,7 +408,10 @@
                     
                 })
 
+                
+
                 current_bless.slideUp()
+                }
             })
         })
         
