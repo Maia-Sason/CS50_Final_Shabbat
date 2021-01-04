@@ -17,27 +17,60 @@
     </div>
 
 <div>
-
+ <!--room block display  -->
     <ul class='list' id='preset'>
         {% for room in user_rooms %}
         <li>
-            <div bless-value='{{ room.id }}' class="shabbat" data-toggle="modal" data-target="#modalPreview">  
-                <h2 class="shabbat_header">{{ room.room_name }}</h2>
+            <div room-value='{{ room.id }}' class="room_selected shabbat" data-toggle="modal" data-target="#modalPreview">  
+                <h2 class="shabbat_header">{{ room.room_name}}  {{ room.id }}</h2>
             </div>
         </li>
         {% endfor %}
     </ul>
+</div>
+
+<!-- Modal preview modal -->
+<div id="modalPreview" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
 
-<form action="/room-library" method="post">
+        <!-- Scrollable modal -->
+        <div class="modal-content model-custom">
+        <form action="/room-library" method="post">
+            <div class="modal-header">
+                <h4 id="room-title" class="modal-title">Title</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div>
+                <p id='room-code'>Room Code:</p><button>Copy</button>
+                <p id='room-date'>Room Date and time: -/-/- --:-- --</p>
+            </div>
+            <!-- room code -->
+            <div style="display:none">
+                <input name="room-id" value="3">
+            </div>
+            <div class='button-placement'>
+                <button id='delete' type='button' class="nextprev delete" data-dismiss="modal">Delete</button>
+                <button id='enter' type="submit" class="nextprev next">Enter</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+        </div>
+    </div>
+
+</div>
+
+
 <div id="roomSelect" class="form-group">
-    {% if user_rooms != [] %}
+    <!-- {% if user_rooms != [] %}
     <div id='show_selection'>
         <select id="room" name='room_id'>   
         {% for room in user_rooms %}
             <option value='{{room.id}}'>
 
-                {{ room.room_name }} {{room.room_code}}
+                {{ room.room_name }} {{room.room_code }}
             
             </option>
 
@@ -47,7 +80,7 @@
     </div>
 
 </div>
-    {% endif %}
+    {% endif %} -->
 
     <button id='preview' type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
@@ -83,47 +116,55 @@
 <div class='padded'>
     <a href="/create-room" class="btn btn-primary btn-circle">+</a>
 </div>
-</form>
+
 
 
 <script>
 
 
-    $(document).ready( ()=> {
-        $('#delete').on('click', function() {
-            let js_data = {'room_id' : $('#room').val()}
-            $.ajax({
-                url : "/_delete_room",
-                type : 'get',
-                contentType : "application/json",
-                dataType : 'json',
-                data: js_data
-                    
-            });
-            // reload room list after deletion
-            location.reload();
-            // this might be unecessary (below code)
-            if ($('#room').children('option').length <= 0) {
-                $('#show_selection').fadeOut()
+$(document).ready(function () {
 
-            }
-        });
+        $('.room_selected').on('click', function() {
+            let current_room = $(this)
+            
+            let room_data = {'room_id' : $(this).attr('room-value')};
 
-        $('#preview').on('click', function() {
-            let room_data = {'room_id' : $('#room').val()}
+            let json_data = JSON.stringify(room_data)
+            
             $.ajax({
                 url : '/_load_room_settings',
-                type: 'get',
-                contentType : 'json',
+                type : 'post',
+                contentType : "application/json",
+
                 dataType : 'json',
-                data : room_data,
+                data : json_data,
                 success : function(data) {
-                    $('#title').html('Room Name: ' + data.name)
-                    $('#code').html('Room Code: ' +data.code)
-                    $('#code').val() = data.code
+                    $('#room-title').html('Room Name: ' + data.name)
+                    $('#room-code').html('Room Code: ' + data.code)
+                    // $('#code').val() = data.code
                 }
             })
+
+            $('#delete').on('click', function() {
+                
+
+                $.ajax({
+                    url : '/_delete_room',
+                    type : 'post',
+                    contentType : "application/json",
+
+                    dataType : 'json',
+                    data : json_data,
+                    
+                })
+
+                current_room.slideUp()
+            })
         })
+        
+    })
+
+    $(document).ready( ()=> {
 
         // doesnt work
         $('#copy').on('click', function() {

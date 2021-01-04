@@ -231,7 +231,7 @@ def roomLibrary():
     else:
         # # Probably change this.
         # # mode to host
-        room_id = request.form.get("room_id")
+        room_id = request.form.get("room-id")
         print(f'this is the id: {room_id} ')
         # print(room_id)
         mode = 'host'
@@ -247,12 +247,12 @@ def roomLibrary():
         return render_template("room_join.html", room=room, displayName=displayName, mode=mode, blessID=blessID)
         return apology("We couldn't connect you to your room!")
 
-@app.route('/_load_room_settings')
+@app.route('/_load_room_settings', methods=['POST'])
 def load_room():
 
-    data = request.args.get('room_id')
+    data = request.get_json()
 
-    room = Room.query.filter_by(id=data).first()
+    room = Room.query.filter_by(id=data['room_id']).first()
 
     roomDict = {
         'name' : room.room_name,
@@ -261,23 +261,22 @@ def load_room():
 
     return roomDict
 
-@app.route('/_delete_room')
+@app.route('/_delete_room', methods=['post'])
 def delete_room():
     
-    data = request.args.get('room_id')
+    data = request.get_json()
 
     # datadict = json.dumps(data)
     # roomdict = json.loads(datadict)
 
     print(data)
-    room_delete = Room.query.filter_by(id = data).first()
-    bless_room = Room_Bless.__table__.delete().where(Room_Bless.room_id == data)
+    room_delete = Room.query.filter_by(id = data['room_id']).first()
+    print(room_delete)
+    bless_room = Room_Bless.__table__.delete().where(Room_Bless.room_id == data['room_id'])
 
     db.session.execute(bless_room)
     db.session.delete(room_delete)
     db.session.commit()
-
-    
 
     return render_template('room-library.html')
 
