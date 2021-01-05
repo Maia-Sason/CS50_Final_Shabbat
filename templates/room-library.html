@@ -4,16 +4,19 @@
     Room Library
 {% endblock %}
 
+{% block background %}
+<div class='bg bg-room'>
+{% endblock %}
+
 {% block content %}
 
 <!-- Show all rooms by user, and give user a way to view the room's data, code, and join room as host -->
 <!-- Probably also create room for socket io with the buttons -->
-<div class='bg-room'>
 
     <div class="input-container">
         <h1>Room Library</h1>
         <p>Create a room and host your own Jewish dinner.</p>
-        <p>{{ len(user_rooms) }}/10</p>
+        <p id="amount_rooms"></p>
     </div>
 
     <div>
@@ -49,7 +52,7 @@
                 </div>
                 <!-- room id -->
                 <div style="display:none">
-                    <input name="room-id" value="3">
+                    <input name="room-id" id="room-id">
                 </div>
                 <div class='button-placement'>
                     <button id='delete' type='button' class="nextprev delete" data-dismiss="modal">Delete</button>
@@ -76,23 +79,26 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="tab2">
-                    <input class="input-small" id='title-block' placeholder="Room Title">
-                    <input type="datetime-local" class="input-small" id='title-block' placeholder="DD/MM/YYYY 00:00 PM">
+                    <input id="roomName" class="input-small" id='title-block' placeholder="Room Title">
+                    <input id="roomDate" type="datetime-local" class="input-small" id='title-block' placeholder="DD/MM/YYYY 00:00 PM">
                 </div>
-                <div class="tab2">
-                    <div class="bless_list">
+                <div class="tab2 bless_selection">
+                    <div class=" list">
+                        <ul class="bless_list"></ul>
                     </div>
                 </div>
                 
                 <div class="tab2">
+                    <ul id="confirmation">
                     some confirmation
+                    </ul>
                 </div>
                 <div class='button-placement'>
-                    <button id='back-create' type="button" class="nextprev prev">Back</button>
+                    <button id='back-create' type="button" onclick="nextPrev(-1)" class="nextprev prev">Back</button>
                     
-                    <button id='next-create' type="button" class="nextprev next">Next</button>
+                    <button id='next-create' type="button" onclick="nextPrev(1)" class="nextprev next">Next</button>
 
-                    <button id='create-create' type="button" class="nextprev next">Create</button>
+                    <!-- <button id='create-create' type="button" class="nextprev next">Create</button> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -102,13 +108,6 @@
 
     </div>
 
-
-        <button id='preview' type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-
-    
-    <div class='padded'>
-        <a href="/create-room" class="btn btn-primary btn-circle">+</a>
-    </div>
     <div id="room_create_new">
         <button id='create-btn' class='button-page' data-toggle="modal" data-target="#modalCreate">Create New Room</button>
     </div>
@@ -116,169 +115,117 @@
 </div>
 
 <script>
+var currentTab_create = 0
 
+var selectedBless = []
 
-$(document).ready(function () {
+showTab(currentTab_create);
 
-        let currentTab_create = 0;
-        
-        $('#create-btn').on('click', function() {
-            
+function showTab(n) {
 
-            console.log(currentTab_create)
+    // sets up var to set the display mode to block
+    var x = document.getElementsByClassName("tab2");
+    // The nth 'tab' is displayed
+    x[n].style.display = "block";
 
-            $('.tab2').hide();
-            
+    if (n==0) {
+        $('#back-create').hide();
+    } else {
+        $('#back-create').show();
+    }
 
-            function nextPrevClick(n) {
-            
-                let x = $('.tab2');
+    if (n == (x.length - 1)) {
+        $('#next-create').html('Create')
+    } else {
+        $('#next-create').html('Next')
+    }
+}
 
-                if (n == 1 && !validateForm()) {
-                    return false;
-                    
-                }
+function nextPrev(n) {
+    var x = document.getElementsByClassName("tab2");
 
-                console.log($('#next-create').val())
+    // If n == 1 and form is not validated, return false
+    if (n == 1 && !validateForm()) {
+        return false;
+    }
 
-                $('.tab2:eq('+currentTab_create+')').hide();
+    x[currentTab_create].style.display = 'none';
 
-                currentTab_create += n;
+    currentTab_create = currentTab_create + n;
 
-                console.log(currentTab_create)
+    if (currentTab_create >= x.length) {
+        var roomDict = {
+            rname : $("#roomName").val(),
+            rdate : $("#Roomdate").val(),
+            rlist: selectedBless
+        }
 
-            }
+        // ajax call in here
+        let js_data = JSON.stringify(roomDict)
 
-            showTab(currentTab_create);
-
-            function showTab(n) {
-                let x = $('.tab2');
-
-                $('.tab2:eq('+currentTab_create+')').show();
-
-                if (n == 0) {
-                    $("#back-create").hide();
-                } else {
-                    $('#back-create').show();
-                }
-
-                if (n == (x.length - 1)) {
-                    $("#next-create").hide()
-                    $("#create-create").show()
-             
-                } else {
-                    $('#next-create').show()
-                    $('#create-create').hide()
-                }
-            }
-
-            $('#next-create').on('click', function() {
-                let x = 1;
-                nextPrevClick(x);
-                $('.tab2').hide();
-                showTab(currentTab_create);
-            })
-
-            $('#back-create').on('click', function() {
-                let x = -1;
-                nextPrevClick(x);
-                $('.tab2').hide();
-                showTab(currentTab_create);     
-            })
-
-            $('#create-create').on('click', function () {
-                x = 1
-                nextPrevClick(x)
-
-                if ($('#meaning-create').val() != "") {
-                    let blessdict = {
-                        bname : $("#title-block").val(),
-                        bheb : $("#heb-create").val(),
-                        beng : $("#eng-create").val(),
-                        beng_heb : $("#eng-heb-create").val(),
-                        bmeaning : $("#meaning-create").val()
-                    }
-
-                    let js_data = JSON.stringify(blessdict)
-
-                    // $.ajax({
-                    //     url : "/_create_room",
-                    //     type : 'post',
-                    //     contentType : "application/json",
-                    //     dataType : 'json',
-                    //     data: js_data,
-                    // })
-                    location.reload();
-
-                    return false;
-
-                }
-
-            })
-
-            function validateForm() {
-                // By default valid is true
-                let x, y, z, valid = true;
-                
-                // x is all elements by class tab, y is all elements by class input
-                // in current tab
-                x = document.getElementsByClassName('tab2');
-                y = x[currentTab_create].getElementsByTagName('input');
-                z = x[currentTab_create].getElementsByTagName('textarea')
-
-                // While i is less than the length of the inputs
-                for (let i = 0; i < y.length; i++) {
-
-                    // If the ith input is nothing
-                    if (y[i].value == "") {
-                        // if not already class invalid
-                        if (y[i].className != " invalid-box") {
-                            // add class invalid
-                            y[i].className += " invalid-box";
-                        }
-                        // Change valid to false
-                        valid = false;
-                        
-                    }
-
-                    if (y[i].value != "") {
-                        y[i].classList.remove('invalid-box')
-
-                    }
-                }
-
-                // While i is less than the length of the inputs
-                for (let i = 0; i < z.length; i++) {
-
-                    // If the ith input is nothing
-                    if (z[i].value == "") {
-                        // if not already class invalid
-                        if (z[i].className != "invalid-box") {
-                            // add class invalid
-                            z[i].className += " invalid-box";
-                        }
-                        
-
-                        console.log(z[i].classList)
-                        // Change valid to false
-                        valid = false;
-                        
-                    }
-
-                    if (z[i].value != "") {
-                        z[i].classList.remove('invalid-box')
-
-                    }
-                }
-
-                return valid;
-            }
-
-
+        $.ajax({
+            url : "/_create_room",
+            type : 'post',
+            contentType : "application/json",
+            dataType : 'json',
+            data: js_data,
         })
+        location.reload();
+    }
+    
+    showTab(currentTab_create)
+    console.log(currentTab_create)
+}
 
-    })
+function validateForm() {
+    var x, y, valid = true;
+    // validate
 
+    // x is all elements by class tab, y is all elements by class input
+    // in current tab
+    x = document.getElementsByClassName('tab2');
+    y = x[currentTab_create].getElementsByTagName('input');
+
+    // While i is less than the length of the inputs
+    for (let i = 0; i < y.length; i++) {
+
+        // If the ith input is nothing
+        if (y[i].value == "") {
+            // if not already class invalid
+            if (y[i].className != " invalid-box") {
+                // add class invalid
+                y[i].className += " invalid-box";
+            }
+            // Change valid to false
+            valid = false;
+            
+        }
+
+        if (y[i].value != "") {
+            y[i].classList.remove('invalid-box')
+
+        }
+    }
+
+        // If tab is where the bless blocks are
+        if ($('.tab2:eq('+currentTab_create+')').hasClass('bless_selection')) {
+            // If selectedBless list is empty, set valid to false
+            if (selectedBless.length == 0 ) {
+                valid = false;
+                // Add red outline to show that it needs to be selected
+                $('.btn-bless').addClass(" outline-red")
+                
+            }
+        }
+    
+    return valid;
+
+
+}
+
+$("#modalCreate").on("hidden.bs.modal", function () {
+    location.reload();
+});
 
 $(document).ready(function () {
 
@@ -300,6 +247,7 @@ $(document).ready(function () {
                 $('#room-title').html('Room Name: ' + data.name),
                 $('#room-code').html('Room Code: ' + data.code),
                 $('#_hidden-code').val(data.code)
+                $("#room-id").val(data.id)
             }
         })
 
@@ -322,6 +270,7 @@ $(document).ready(function () {
     
 })
 
+
 $(document).ready( ()=> {
     $.ajax({
                 url : '/_load_bless_list',
@@ -333,7 +282,7 @@ $(document).ready( ()=> {
                     // figure this out
                     for (let i = 0; i < data.length; i++) {
                         console.log('id ' + data[i].id + ', name ' + data[i].name)
-                        $('.bless_list').append("<button id=' " +(data[i].id)+ "' value='" + (data[i].id) + "' class='bless bless_normal'>"+ (data[i].name) +"</button>")
+                        $('.bless_list').append("<li><div id=' " +(data[i].id)+ "' bless-value='" + (data[i].id) + "' class='btn-bless bless bless_normal'><p class=bless_title>"+ (data[i].name) +"</p></div></li")
                     }
 
                     console.log(data)
@@ -352,6 +301,78 @@ function copy() {
 };
 
 document.querySelector("#copy").addEventListener("click", copy);
+
+$(document).ready(function() {
+    // Set up the confirmation page
+    // On nextbtn click list = ""
+    $("#next-create").on("click", function () {
+        var  list = "";
+        // add these to list as they are updated
+        list += "<li>" + "Name: " + $("#roomName").val() + "</li>";
+        list += "<li>" + "Date and time: " + $("#roomDate").val() + "</li>";
+        list += "<li>" + "Number of Bless Blocks: " + selectedBless.length + "</li>";
+        
+        // Display list to html where tab id== "confirmation"
+        $("#confirmation").html(list);
+        console.log(selectedBless)
+    })
+})
+
+// On btnbless click set blessVal to the value of this button
+$(".bless_list").on('click', 'div', function() {
+    let blessVal = ($(this).attr('bless-value'));
+    // If this btnbless has the class 'selected'
+    let blessthis = $(this)
+    if ($(this).hasClass("selected")) {
+        // replace the color to outline color and remove 'selected'
+        $(this).removeClass('selected');
+        $(this).find('div').fadeOut(300, function () {
+            blessthis.find('div').remove()
+        })
+        
+        
+        // remove blessings from list in correct order
+        selectedBless.splice(selectedBless.indexOf(blessVal), 1 );
+    
+    } else {
+        // Else, add bless to back of the list (it must not be in the list if it doesn't have selected)
+        $(this).addClass('selected').append('<div class="order"><p style="display:none" class="num"></p></div>');
+        selectedBless.push($(this).attr('bless-value'));
+    }
+    console.log(selectedBless)
+    
+    // Go through each of the .btnbless buttons and if they have the class 'selected'...
+    $(".btn-bless").each(function() {
+        if ($(this).hasClass("selected")) {
+            // Set the button to display the index of the value when it entered the list
+            $(this).find(".num").html(selectedBless.indexOf($(this).attr('bless-value')) + 1).fadeIn(300);
+        } 
+        // else {
+        //     // Else set the button to display the valueid which is the name of the blessing
+        //     $(this).find(".num").html($(this).attr("valueid"));
+        // }
+    });
+
+
+});
+
+$(document).ready(function () {
+    let number = $(".shabbat").length
+    $("#amount_rooms").html(number + "/10")
+
+    if (number >= 10) {
+        $('#room_create_new').css('visibility','hidden')
+    } else {
+        $('#room_create_new').show()
+    }
+})
+
+// nav bar
+$(document).ready(function () {
+    $('.item').removeClass('active')
+    $('#rooms').addClass('active')
+})
+
 </script>
 
 

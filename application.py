@@ -272,7 +272,8 @@ def load_room():
 
     roomDict = {
         'name' : room.room_name,
-        'code' : room.room_code
+        'code' : room.room_code,
+        'id' : room.id
     }
 
     return roomDict
@@ -379,39 +380,76 @@ def createRoom():
     elif request.method == "POST":
         # Get data from json AJAX call
         data = request.get_json()
-        if data != None:
-            # Catch data before it is sent again as None
-            datadict = json.dumps(data)
-            roomdict = json.loads(datadict)
 
-            print(roomdict["rlist"][0])
-            
-            # set this to true
-            go = True
-            
-            # While go is true, create a room code, if room code doesn't exist, break out
-            # and set roomCode as the code of the new room
-            while go:
-                roomCode = get_rndm(6)
-                code = Room.query.filter_by(room_code=roomCode).first()
-                if roomCode != code:
-                    go = False
-           
-            # DONT FORGET: to add date and time to DB
+        
+        # set this to true
+        go = True
+        
+        # While go is true, create a room code, if room code doesn't exist, break out
+        # and set roomCode as the code of the new room
+        while go:
+            roomCode = get_rndm(6)
+            code = Room.query.filter_by(room_code=roomCode).first()
+            if roomCode != code:
+                go = False
+        
+        # DONT FORGET: to add date and time to DB
 
-            room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
-            db.session.add(room)
+        room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
+        db.session.add(room)
+        db.session.commit()
+
+        # Go through the list of prayers, and add each one to the Room_Bless table
+        for i in range(len(roomdict["rlist"])):
+            print(i)
+            j = i
+            j = Room_Bless(bless_id=roomdict['rlist'][i],ord_num=(1+i), room_id=room.id)
+            
+            db.session.add(j)
             db.session.commit()
-
-            # Go through the list of prayers, and add each one to the Room_Bless table
-            for i in range(len(roomdict["rlist"])):
-                print(i)
-                j = i
-                j = Room_Bless(bless_id=roomdict['rlist'][i],ord_num=(1+i), room_id=room.id)
-                
-                db.session.add(j)
-                db.session.commit()
         return render_template('roomCreated.html')
+
+@app.route('/_create_room', methods=['POST'])
+@login_required
+def createRoom_post():
+    ''' Create a room '''
+    room_exist = Room.query.filter_by(user_id=current_user.get_id()).all()
+    if len(room_exist) < 10:
+        # Get data from json AJAX call
+        data = request.get_json()
+            
+        # Catch data before it is sent again as None
+        datadict = json.dumps(data)
+        roomdict = json.loads(datadict)
+
+        print(roomdict["rlist"][0])
+        
+        # set this to true
+        go = True
+        
+        # While go is true, create a room code, if room code doesn't exist, break out
+        # and set roomCode as the code of the new room
+        while go:
+            roomCode = get_rndm(6)
+            code = Room.query.filter_by(room_code=roomCode).first()
+            if roomCode != code:
+                go = False
+        
+        # DONT FORGET: to add date and time to DB
+
+        room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
+        db.session.add(room)
+        db.session.commit()
+
+        # Go through the list of prayers, and add each one to the Room_Bless table
+        for i in range(len(roomdict["rlist"])):
+            print(i)
+            j = i
+            j = Room_Bless(bless_id=roomdict['rlist'][i],ord_num=(1+i), room_id=room.id)
+            
+            db.session.add(j)
+            db.session.commit()
+    return render_template('room-library.html')
 
 # Set up sockets.
 

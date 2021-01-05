@@ -181,6 +181,7 @@ line-height: 25px;
     box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     
+    margin: 20px 0 0;
 }
 
 .tab2 textarea {
@@ -304,6 +305,7 @@ line-height: 25px;
     justify-content: center;
     transition: transform 0.5s;
     border: none;
+    outline: none !important;
 }
 
 .bless_title {
@@ -334,7 +336,8 @@ line-height: 25px;
 }
 
 .order {
-    position: relative;
+    position: absolute;
+    z-index: 99;
     left: 86%;
     width: 26px;
     height: 26px;
@@ -378,6 +381,22 @@ ul {
     clear: both;
 }
 
+.outline-red {
+    border: 2px solid #FF9999 !important;
+    border-style: solid !important;
+}
+
+.btn-bless {
+    position: relative;
+
+}
+
+/* Media query.btn-bless {
+    margin: 5px;
+    position: relative;
+    left: 5%
+} */
+
 #room_create_new {clear: both;}
 
 .offscreen {
@@ -393,21 +412,18 @@ ul {
 .bg-1 {
     background-repeat: no-repeat;
     
-    background-position: 14vh 19%;
+    background-position: 10vh 25% !important;
 }
 
 .bg {
     background-repeat: no-repeat;
-    
-    background-position: 10vh 25%;
+    background-position: 10vh 25% !important;
+    height: 650px;
 }
 
 
 .bg-room {
     background: url('images/room_lib.svg') no-repeat;
-    background-repeat: no-repeat;
-   
-    background-position: 0% 20%;
 }
 
 .button-page {
