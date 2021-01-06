@@ -6,16 +6,48 @@
 
 {% block content %}
 <!-- WIP  this is where socketio stuff should shine! -->
-    <meta id="display_name" data-name='{{ displayName }}' data-id="{{ room.id }}">
+    <meta id="display_name" data-name='{{ displayName }}' data-id="{{ room.id }}" data-id-host="{{ current_user.id }}">
     <div class="input-container">
         <p class="roomtext"> code: {{room.room_code}}</p>
         <h1 class="room_head">{{room.room_name}}</h2>
         <p class="roomtext"> Mode: {{mode}}</p>
-        <p class="roomtext">Display-Name: {{display_name}}</p>
+        <p class="roomtext2">Display-Name: {{displayName}}</p>
         <label><p id="user_connected" display="none"></p></label>
+        
+
+        
     </div>
+
+    {% if mode == 'host' %}
+        <div>
+            <div class="div-space">
+                <button id='start' class="nextprev2 next">Start session</button>
+            </div>
+            <div class="div-space">
+                <button id='end' type="button" class="nextprev2 delete">End</button>
+            </div>
+        </div>
+       
     
+    {% endif %}
     
+
+    <div id="session_end" style="display:none">
+        <h2 class="join_text">Session has ended.</h2>
+    {% if current_user.is_authenticated and mode == 'guest' %}
+   
+        <div id="guest_goodies">
+        <h3 class="join_text">Would you like to keep any of the host's Bless Blocks?</h3>
+        <ul id="bless_guest" class='listroom2'>
+
+        </ul>
+        <div>
+            <button id="add_bless" class="nextprev2 next">Keep!</button>
+        </div>
+        </div>
+    
+    {% endif %}
+    </div>
     
     <div class="buttons_text columns">
         {% if mode == 'host' %}
@@ -30,7 +62,7 @@
         </div>
         {% endif %}
         <div class="buttons_text">
-            <div class='text-field' id="placeholder">
+            <div class='text-field' id="placeholder" style="display:none">
                 <h3 id="bless_name"></h3>
                 
                 <pre id="paragraph" class="toggle" display="none"></pre>
@@ -42,22 +74,17 @@
             </div>
 
             <div id="guest_buttons" style="display:none">
-                <button class="button-page" id='heb'>Hebrew</button>
-                <button class="button-page activated" id='eng'>English</button>
-                <button class="button-page" id='eng-heb'>Transliteration</button>
-                <button class="button-page" id='meaning'>Meaning</button>
+                <button class="button-page guest" id='heb'>Hebrew</button>
+                <button class="button-page guest" id='eng'>English</button>
+                <button class="button-page guest" id='eng-heb'>Transliteration</button>
+                <button class="button-page guest" id='meaning'>Meaning</button>
             </div>
         </div>
     </div>
 
-
-    <h3 id="wait"> Waiting... </h3>
-    {% if mode == 'host' %}
-    <button id="next" style='display:none'>Next</button>
-   
-    <button id='start'>Start session</button>
-    {% endif %}
-
+{% if mode == 'guest' %}
+    <h3 id="wait" class="join_text"> Waiting... </h3>
+{% endif %}
     
 
 <!-- solved 400 GET error by using a different version of socket.io CDN -->

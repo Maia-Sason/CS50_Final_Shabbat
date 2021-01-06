@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     function joinRoom(room) {
         socket.emit('join', {'room' : room,
-                            'displayname' : $('#display_name').data('name')})
+                            'displayName' : $('#display_name').data('name')})
     }
 
     socket.on('button_press', msg => {
@@ -40,6 +40,13 @@ document.addEventListener('DOMContentLoaded', ()=> {
     });
 
     socket.on('bless', data => {
+        if ($("#placeholder").hide()) {
+            $("#placeholder").fadeIn()
+        }
+
+        $('.guest').removeClass('activated')
+        $("#heb").addClass('activated')
+
         console.log(data)
         $('#wait').hide()
         $('#guest_buttons').show()
@@ -53,28 +60,93 @@ document.addEventListener('DOMContentLoaded', ()=> {
         $('#hebrew_par').show()
     });
 
-    document.querySelector('#start').onclick = () => {
-        $('#start').hide()
-        socket.emit('start', {'show' : '$("#guest_buttons").show()',
-                            'wait' : '$("#wait").toggle()',
-                            'next' : '$("#next").show()',
-                            'blessShow' : '$("#blessblocks").show()',
-                            'room': room})
+    socket.on('ending', data=> {
+        $("#session_end").fadeIn();
+        $('.columns').fadeOut();
+        console.log('ended')
+
+        if ($('#guest_goodies') != undefined) {
+            var selectedBless = []
+
+            $('#guest_goodies').show();
+            for (let i = 0; i < data.length; i++) {
+                $("#bless_guest").append("<li><div id=' " +(data[i].id)+ "' bless-value='" + (data[i].id) + "' class='btn-bless bless bless_normal bless_guest'><p class=bless_title>"+ (data[i].name) +"</p></div></li")
+            }
+
+            $('.bless_guest').on('click', function() {
+            
+                let blessVal = ($(this).attr('bless-value'));
+
+                if ($(this).hasClass('bless_normal')) {
+                    selectedBless.push($(this).attr('bless-value'));
+                    console.log(selectedBless);
+                    $(this).removeClass('bless_normal').addClass('bless_active');
+                } else if ($(this).hasClass('bless_active')) {
+                    selectedBless.splice(selectedBless.indexOf(blessVal), 1 );
+                    $(this).removeClass('bless_active').addClass('bless_normal');
+                }
+            })
+
+            $('#add_bless').on('click', function () {
+
+                let json_data = JSON.stringify(selectedBless)
+
+                if (selectedBless != "") {
+                    console.log(selectedBless)
+                    // send ajax call with bless blocks to keep
+
+                    $.ajax({
+                        url : "/_add_bless_guest",
+                        type : 'post',
+                        contentType : "application/json",
+                        dataType : 'json',
+                        data: json_data,
+                    })
+                }
+                $(this).slideUp()
+                $("#guest_goodies").fadeOut()
+            })
+        }
+
+    })
+
+
+    if (document.querySelector('#start') != undefined) {
+        document.querySelector('#start').onclick = () => {
+            $('#start').slideUp()
+            socket.emit('start', {'show' : '$("#guest_buttons").show()',
+                                'wait' : '$("#wait").toggle()',
+                                'next' : '$("#next").show()',
+                                'blessShow' : '$("#blessblocks").show()',
+                                'room': room})
+        }
+    }
+
+    if ($('#end') != undefined) {
+    $('#end').on('click', function() {
+        $('#end').slideUp()
+        socket.emit('ending', {
+            'room': room
+        })
+    })
+
     }
 
     $('.bless').on('click', function () {
         // send requests to load eng, heb, eng-heb, meaning from server
+        if ($("#placeholder").hide()) {
+            $("#placeholder").show()
+        }
         data = $(this).attr('bless-value');
         socket.emit('bless', {'id': data, 'room': room});
         $('.bless').addClass('bless_normal').removeClass('bless_active');
         $(this).addClass('bless_active').removeClass('bless_normal');
     });
 
-    document.querySelector('#next').onclick = () => {
-        let para = 'this is more info'
-
-        socket.emit('button_press', {'para' : para, 'room': room})
-    }
+    $('.guest').on('click', function () {
+        $('.guest').removeClass('activated')
+        $(this).addClass('activated')
+    })
 
 });
 

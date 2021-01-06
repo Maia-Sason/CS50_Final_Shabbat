@@ -286,9 +286,9 @@ def delete_room():
     # datadict = json.dumps(data)
     # roomdict = json.loads(datadict)
 
-    print(data)
+ 
     room_delete = Room.query.filter_by(id = data['room_id']).first()
-    print(room_delete)
+   
     bless_room = Room_Bless.__table__.delete().where(Room_Bless.room_id == data['room_id'])
 
     db.session.execute(bless_room)
@@ -316,6 +316,24 @@ def load_bless():
 
         return blockDict
 
+
+@app.route('/_add_bless_guest', methods=['POST'])
+def add_bless_guest():
+    data = request.get_json()
+
+    print(data)
+
+    for item in data:
+        copy = Bless.query.filter_by(id=item).first()
+        print(copy)
+
+        newbless = Bless(bless_name=copy.bless_name, eng=copy.eng, heb=copy.heb, eng_heb=copy.eng_heb, meaning=copy.meaning, user_id=current_user.get_id())
+        db.session.add(newbless)
+    db.session.commit()
+
+    return render_template('index.html')
+
+        
 
 @app.route("/bless-library", methods=["GET", "POST"])
 def blessLibrary():
@@ -465,7 +483,7 @@ def join(data):
     print(data)
     join_room(data["room"])
 
-    send({'msg': data['displayname'] + " has joined the room."}, room=data['room'])
+    send({'msg': data['displayName'] + " has joined the room."}, room=data['room'])
 
 @socketio.on('message')
 def message(data):
@@ -496,6 +514,44 @@ def bless(data):
                     'eng_heb' : blessing.eng_heb,
                     'meaning' : blessing.meaning}
     emit('bless', current_bless, room=data['room'])
+
+@socketio.on('ending')
+def ended(data):
+    '''end session and send bless'''
+    # open room_bless where room_bless.roomid == roomid
+    #  and room_bless.bless_id == Bless.user_id
+    bless_in_room = Room_Bless.query.filter_by(room_id = data['room']).all()
+    
+    blessList = []
+
+    print(bless_in_room)
+    for item in bless_in_room:
+        bless = Bless.query.filter_by(id = item.bless_id).first()
+        if bless.user_id != None:
+            blessitems = {'id' : bless.id, 'name': bless.bless_name}
+            blessList.append(blessitems)
+
+    print(f'new list {blessList}')
+
+    emit('ending', blessList, room=data['room'])
+
+    room_delete = Room.query.filter_by(id = data['room']).first()
+   
+    bless_room = Room_Bless.__table__.delete().where(Room_Bless.room_id == data['room'])
+
+    db.session.execute(bless_room)
+    db.session.delete(room_delete)
+    db.session.commit()
+
+
+    # where bless.user_id != NULL
+
+    # make a dict with the data
+
+    # then delete room where room_id == data.room, and also room_bless
+
+    # send dict back to users
+    
 
 
 if __name__ == '__main__':
