@@ -53,18 +53,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
         $('#hebrew_par').show()
     });
 
-    document.querySelector('#changecolor').onclick = () => {
-        let color = ($('#changecolor').html())
-        // Send the color as a string message in data
-        socket.emit('button_press', { color: 'color', 'room': room});
-        // If html was red set it to blue, else set it to red.
-        if ($('#changecolor').html() == "red") {
-            $('#changecolor').html('blue')
-        } else {
-            $('#changecolor').html("red")
-        }
-    }
-
     document.querySelector('#start').onclick = () => {
         $('#start').hide()
         socket.emit('start', {'show' : '$("#guest_buttons").show()',
@@ -76,7 +64,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     $('.bless').on('click', function () {
         // send requests to load eng, heb, eng-heb, meaning from server
-        data = $(this).val();
+        data = $(this).attr('bless-value');
         socket.emit('bless', {'id': data, 'room': room});
         $('.bless').addClass('bless_normal').removeClass('bless_active');
         $(this).addClass('bless_active').removeClass('bless_normal');

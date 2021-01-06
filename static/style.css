@@ -371,6 +371,21 @@ ul {
     float: left;
 }
 
+.listroom li {
+    padding: 10px;
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.listroom2 {
+    position: relative;
+    top: 20px;
+}
+
+.listroom2 li {
+    padding: 10px;
+}
+
 .list_container {
     float: left;
     width: 100%;
@@ -429,7 +444,7 @@ ul {
 .button-page {
     border-style: none;
     margin: 5px;
-    width: 151px;
+    min-width: 100px;
     height: 44px;
     background: #FFFFFF;
     box-shadow: -1px 1px 8px rgba(0, 0, 0, 0.1);
@@ -454,6 +469,18 @@ ul {
     box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
    
+
+}
+
+#bless_name {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 20px;
+    text-align: center;
+    padding: 20px;
+    padding-bottom: 0px;
 
 }
 
@@ -491,6 +518,10 @@ ul {
     background: #c9e6ec;
 }
 
+.activated {
+    background: #D5FAFF;
+}
+
 .next {
     background: #D4FAFF !important;
 }
@@ -526,6 +557,10 @@ ul {
     background:#99A8AD;
 }
 
+.copy-button {
+    background: white;
+}
+
 .button-placement {
     position: relative;
     display: flex;
@@ -558,3 +593,78 @@ ul {
 .tab {
     display: none;
   }
+
+.tabdiv {
+
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 25px;
+    text-align: center;
+    justify-content: center;
+
+    list-style: none;
+
+}
+
+#guest_buttons {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.btn-width {
+    width: 130px;
+}
+
+.p-5_ {
+    padding: 3em;
+}
+
+.columns {
+    display: flex;
+}
+
+.roomtext {
+    line-height:5px !important;
+}
+
+.room_head {
+    margin-top: -20px !important;
+}
+
+@media screen and (max-width: 560px) {
+    /* URL: https://stackoverflow.com/questions/42199911/how-can-i-reorder-html-using-media-queries */
+    .buttons_text {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    .buttons_text div:first-child {
+        order: 1;
+    }
+    
+    .bless {
+        width: 100px;
+    }
+
+    .p-5_ {
+        padding: 30px;
+    }
+
+    .columns {
+        display: inline-flex;
+    }
+    
+    .listroom2 {
+    padding: 10px;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+   
+    }
+    
+}

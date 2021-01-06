@@ -44,9 +44,9 @@
                     <h4 id="room-title" class="modal-title">Title</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <div>
+                <div class='tabdiv'>
                     <!-- room-code -->
-                    <p id='room-code'>Room Code:</p><button type="button" id="copy">Copy</button>
+                    <p id='room-code'>Room Code:</p><button class="nextprev copy-button" type="button" id="copy">Copy</button>
                     <input id="_hidden-code" class='offscreen' aria-hidden="true">
                     <p id='room-date'>Room Date and time: -/-/- --:-- --</p>
                 </div>
@@ -83,15 +83,15 @@
                     <input id="roomDate" type="datetime-local" class="input-small" id='title-block' placeholder="DD/MM/YYYY 00:00 PM">
                 </div>
                 <div class="tab2 bless_selection">
-                    <div class=" list">
+                    <div class="listroom">
                         <ul class="bless_list"></ul>
                     </div>
                 </div>
                 
-                <div class="tab2">
-                    <ul id="confirmation">
+                <div class="tab2 tabdiv">
+                    <div id="confirmation">
                     some confirmation
-                    </ul>
+                    </div>
                 </div>
                 <div class='button-placement'>
                     <button id='back-create' type="button" onclick="nextPrev(-1)" class="nextprev prev">Back</button>
@@ -292,14 +292,11 @@ $(document).ready( ()=> {
 
 
 function copy() {
-
     let copyText = document.querySelector('#_hidden-code')
     copyText.select()
     document.execCommand('copy');
-    console.log($('#_hidden-code').val())
-
-};
-
+    alert('Room code copied!')
+}
 document.querySelector("#copy").addEventListener("click", copy);
 
 $(document).ready(function() {
