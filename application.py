@@ -18,6 +18,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
+
 # Configure flask login
 
 # Configure flask login
