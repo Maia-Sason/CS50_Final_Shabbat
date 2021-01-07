@@ -47,7 +47,13 @@ $(function() {
                 }
             },
             // Password rules
-            password: 'required',
+            password: { 
+                required: true,
+                maxlength: 16,
+                minlength: 6
+
+            },
+
             confirm_pass: {
                 required: true,
                 // Make sure confirm_pass == password
@@ -85,5 +91,16 @@ $(function() {
             }
         }
     });
+
+    $('#logform').validate({
+        rules: {
+            email: {
+                required: true
+            },
+            password: {
+                required: true,
+            }
+        }
+    })
 
 });

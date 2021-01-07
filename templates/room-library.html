@@ -25,7 +25,8 @@
             {% for room in user_rooms %}
             <li>
                 <div room-value='{{ room.id }}' class="room_selected shabbat" data-toggle="modal" data-target="#modalPreview">  
-                    <h2 class="shabbat_header">{{ room.room_name}}  {{ room.id }}</h2>
+                    <h2 class="shabbat_header">{{ room.room_name}} {{ room.id }}</h2>
+                    <p class="date">{{ room.room_time }}</p>
                 </div>
             </li>
             {% endfor %}
@@ -80,7 +81,7 @@
                 </div>
                 <div class="tab2">
                     <input id="roomName" class="input-small" id='title-block' placeholder="Room Title">
-                    <input id="roomDate" type="datetime-local" class="input-small" id='title-block' placeholder="DD/MM/YYYY 00:00 PM">
+                    <input id="roomDate" type="datetime-local" class="input-small" id='title-block' placeholder="DD/MM/YYYY 00:00 PM" value="2015-09-10T10:20:29" min="1970-01-01T00:00" max="2030-01-01T00:00">
                 </div>
                 <div class="tab2 bless_selection">
                     <div class="listroom">
@@ -114,7 +115,19 @@
 
 </div>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script>
+
+$("#roomDate").flatpickr({
+    enableTime: true,
+    minDate: "today",
+    dateFormat: "Z",
+   
+    
+});
+
 var currentTab_create = 0
 
 var selectedBless = []
@@ -156,7 +169,7 @@ function nextPrev(n) {
     if (currentTab_create >= x.length) {
         var roomDict = {
             rname : $("#roomName").val(),
-            rdate : $("#Roomdate").val(),
+            rdate : $("#roomDate").val(),
             rlist: selectedBless
         }
 
@@ -233,6 +246,7 @@ $(document).ready(function () {
         let current_room = $(this)
         
         let room_data = {'room_id' : $(this).attr('room-value')};
+        console.log(room_data)
 
         let json_data = JSON.stringify(room_data)
         
@@ -244,9 +258,11 @@ $(document).ready(function () {
             dataType : 'json',
             data : json_data,
             success : function(data) {
+
                 $('#room-title').html('Room Name: ' + data.name),
                 $('#room-code').html('Room Code: ' + data.code),
-                $('#_hidden-code').val(data.code)
+                $('#room-date').html('Room Date: ' + data.date),
+                $('#_hidden-code').val(data.code),
                 $("#room-id").val(data.id)
             }
         })

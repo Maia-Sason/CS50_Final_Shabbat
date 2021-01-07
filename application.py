@@ -9,6 +9,8 @@ from flask import Flask, render_template, redirect, flash, jsonify, request
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user, UserMixin
 from passlib.hash import pbkdf2_sha256
 
+from datetime import datetime
+
 
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
@@ -69,7 +71,7 @@ class Room(db.Model):
     room_code = db.Column(db.Integer, unique=True)
     room_name = db.Column(db.String(30))
     
-    # room_time = db.Column(db.DateTime)
+    room_time = db.Column(db.DateTime)
 
 class Room_Bless(db.Model):
     __tablename__ = 'room_bless'
@@ -273,6 +275,7 @@ def load_room():
     roomDict = {
         'name' : room.room_name,
         'code' : room.room_code,
+        'date' : room.room_time,
         'id' : room.id
     }
 
@@ -440,7 +443,16 @@ def createRoom_post():
         datadict = json.dumps(data)
         roomdict = json.loads(datadict)
 
-        print(roomdict["rlist"][0])
+
+        # URL: https://stackoverflow.com/questions/5045210/how-to-remove-unconverted-data-from-a-python-datetime-object
+        end_date = roomdict["rdate"]
+        chop = len(end_date.split()[-1]) - 15
+        end_date = end_date[:-chop]
+
+        print('enddate ' + end_date)
+
+        date = datetime.strptime(end_date, '%Y-%m-%dT%H:%M')
+        # print(date)
         
         # set this to true
         go = True
@@ -454,8 +466,8 @@ def createRoom_post():
                 go = False
         
         # DONT FORGET: to add date and time to DB
-
-        room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
+        
+        room = Room(room_name=roomdict['rname'], room_time=date, room_code=roomCode, user_id=current_user.get_id())
         db.session.add(room)
         db.session.commit()
 

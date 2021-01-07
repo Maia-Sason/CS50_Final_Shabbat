@@ -94,7 +94,7 @@ nav ul {
 }
 
 .bg-join {
-    background: url('')
+    background: url('images/bg-join.svg')
 }
 
 .move {
@@ -162,6 +162,22 @@ line-height: 25px;
     height: 51px;
     border-style: none;
     display: flex;
+
+
+    background: #FFFFFF;
+    box-shadow: 1px 7px 14px -5px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+.form-container input {
+    
+    padding: 10px 25px;
+    
+    max-width: 277px;
+    height: 51px;
+    border-style: none;
+    display: flex;
+    
 
 
     background: #FFFFFF;

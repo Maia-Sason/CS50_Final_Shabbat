@@ -4,9 +4,20 @@
     Register
 {% endblock %}
 
+{% block background %}
+
+<div class="bg bg-bless">
+
+{% endblock %}
+
 {% block content %}
 <!-- Works with validation.js -->
 <form action="/register" method="post" id="reg_form">
+    <div class="input-container">
+        <h1 id="head">Register</h1>
+        <p>Register to share your traditions and share your blessings with friends!</p>
+    </div>
+    <div class="form-container">
     <div class="form-group col-md-6">
         <input autocomplete="off" autofocus id="email" class="form-control"
         name="email" placeholder="example@example.com" type="text" required>
@@ -24,11 +35,12 @@
       name="confirm_pass" placeholder="Retype Password" type="password" required>
     </div>
     
-    <div>
-        <button id="submit" class="btn btn-primary" type="submit">Submit</button>
+    <div class="input-container">
+        <button id="submit" type="submit">Submit</button>
     </div>
+</div>
 </form>
-
+</div>
 
 <!-- add validation features from jquery -->
 <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.2/jquery.validate.js"></script>

@@ -4,19 +4,32 @@
     Log In
 {% endblock %}
 
+{% block background %}
+
+<div class="bg bg-bless">
+
+{% endblock %}
+
 {% block content %}
-<form action="/login" method="post">
-<div class="form-group">
+<form id='logform' action="/login" method="post">
+<div class="form-container">
+    <div class="input-container">
+        <h1 id="head">Log In</h1>
+        <p>Log in and organize your ShareShabbat content!</p>
+    </div>
+<div class="form-group col-md-6">
     <!-- Get email -->
-    <input type="email" autocomplete="off" autofocus class="form-control" name="email" placeholder="example@email.com">
+    <input type="email" class="form-control" autocomplete="off" autofocus name="email" placeholder="example@email.com">
 </div>
-<div class="form-group">
+<div class="form-group col-md-6">
     <!-- Get password -->
-    <input class="form-control" name="password" placeholder="Password" type="password" required>
+    <input name="password" class="form-control" placeholder="Password" type="password" required>
 </div>
-<div>
-    <button class="btn btn-primary" type="submit">Log In</button>
+<div class="input-container">
+    <button type="submit">Log In</button>
+</div>
 </div>
 </form>
+</div>
 
 {% endblock %}
