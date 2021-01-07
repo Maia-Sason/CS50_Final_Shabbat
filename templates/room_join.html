@@ -4,6 +4,10 @@
     Room {{room.room_name}}
 {% endblock %}
 
+{% block background %}
+<div class='bg bg-join'>
+{% endblock %}
+
 {% block content %}
 <!-- WIP  this is where socketio stuff should shine! -->
     <meta id="display_name" data-name='{{ displayName }}' data-id="{{ room.id }}" data-id-host="{{ current_user.id }}">
@@ -85,6 +89,8 @@
 {% if mode == 'guest' %}
     <h3 id="wait" class="join_text"> Waiting... </h3>
 {% endif %}
+
+</div>
     
 
 <!-- solved 400 GET error by using a different version of socket.io CDN -->

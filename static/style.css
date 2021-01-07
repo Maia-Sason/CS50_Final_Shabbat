@@ -93,6 +93,10 @@ nav ul {
     background: url('images/bg-shapes-home.svg');
 }
 
+.bg-join {
+    background: url('')
+}
+
 .move {
     position: relative;
     top: 10px;
@@ -677,36 +681,154 @@ ul {
     margin: 20px;
 }
 
-@media screen and (max-width: 560px) {
-    /* URL: https://stackoverflow.com/questions/42199911/how-can-i-reorder-html-using-media-queries */
-    .buttons_text {
-        display: flex;
-        flex-direction: column;
+.desktop {
+    display: block;
+}
 
-    }
-
-    .buttons_text div:first-child {
-        order: 1;
-    }
-    
-    .bless {
-        width: 100px;
-    }
-
-    .p-5_ {
-        padding: 30px;
-    }
-
-    .columns {
-        display: inline-flex;
-    }
-    
-    .listroom2 {
-    padding: 10px;
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: center;
-   
-    }
+/* mobile */
+.ham-menu {
+    width: 40px;
+    border: none;
+    margin-right: 10px;
     
 }
+
+.hamburger {
+    
+    height: 22px;
+    width: 38px;
+    border: none;
+    margin-right: 10px;
+    position: absolute;
+    
+    top: 41px;
+}
+
+.hamburger { transition: transform 0.5s; }
+
+.ham-close {
+  
+    background: url('images/close.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: 27px;
+    width: 27px;
+    border: none;
+    margin-right: 10px;
+    margin-left: 5px;
+    position: absolute;
+    display: none;
+    rotate: 90;
+    top: 40px;
+
+}
+
+.ham-close { transition: transform 0.5s; }
+
+
+
+.nav-container2 {
+    z-index: 99;
+    height: 98px;
+
+    background: linear-gradient(180deg, #FFE9D9 0%, #A1EDFD 100%);
+    box-shadow: 0px 4px 48px rgba(0, 0, 0, 0.1);
+}
+
+.mobile {
+    display: none;
+}
+
+@media screen and (max-width: 828px) {
+    .desktop { display: none;}
+
+    .mobile {display: block;}
+    
+    .logo {
+        
+        display: flex; 
+        flex-direction: row;
+        justify-content: space-between;
+        flex-grow: 1;
+        margin: 0px 20px 0px;
+        padding-left: 0px;
+    }
+      
+    .logo_image {
+        position: relative;
+        top: -25px;
+        width: 75px;
+        height: 75px;
+        margin-left: 10px;        
+    }
+
+    .logotext {
+        position: relative;
+        top: 0px;
+        font-size: 20px;
+        padding: 0px;
+        
+    }
+    
+    .nav-mobile {
+        position: absolute;
+        overflow: hidden;
+        width: 200vw;
+        height: 0%;
+        z-index: 99;
+        background: linear-gradient(180deg, #FFE9D9 0%, #A1EDFD 100%);
+    }
+    
+    .nav-items {
+        position: fixed;
+        padding: 50px;
+        
+        
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .nav-items li {
+        padding-bottom: 40px;
+        
+        
+    }
+
+    @media screen and (max-width: 560px) {
+        /* URL: https://stackoverflow.com/questions/42199911/how-can-i-reorder-html-using-media-queries */
+    
+        .buttons_text {
+            display: flex;
+            flex-direction: column;
+    
+        }
+    
+        .buttons_text div:first-child {
+            order: 1;
+        }
+        
+        .bless {
+            width: 100px;
+        }
+    
+        .p-5_ {
+            padding: 30px;
+        }
+    
+        .columns {
+            display: inline-flex;
+        }
+        
+        .listroom2 {
+        padding: 10px;
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: center;
+       
+        }
+    
+    }
+
+}
+

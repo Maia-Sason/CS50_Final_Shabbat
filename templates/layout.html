@@ -33,7 +33,7 @@
 <body>
 
                 {% if current_user.is_authenticated %}
-                
+                <div class='desktop'>
                 <div class="nav-container">
                     <nav class='wrapper'>
                         <div class='logo'>
@@ -41,10 +41,10 @@
             
                         </div>
                         <ul class='nav-items'>
-                            <li id='rooms' class="item">
+                            <li class="item rooms-item">
                                 <a href=/room-library>Rooms</a>        
                             </li>
-                            <li id='blocks' class="item">
+                            <li class="item blocks-item">
                                 <a href=/bless-library>Blocks</a>
                             </li>
                             <li>
@@ -53,9 +53,46 @@
                         </ul>
                     </nav>
                 </div>
+                </div>
+
+                <!-- mobile users authenticated -->
+                <div class='mobile'>
+                <div class="nav-container2">
+                    <nav class='wrapper'>
+                        <div class='logo'>
+                            <div class='ham-menu'>
+                                <button class='ham-close'></button>
+                                <img  class='hamburger' src='/static/images/hamburger.svg'>
+                            </div>
+                            <div>
+                                <p class="logotext">ShareShabbat</p>
+                            </div>
+                            <div>
+                                <a href='/'><img class="logo_image" src="static/images/logopng.png" height="75px" alt="logo candles"></a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="nav-mobile">
+                    <nav>
+                    <ul class='nav-items'>
+                        <li class="item">
+                            <a class="rooms-item" href=/room-library>Rooms</a>        
+                        </li>
+                        <li class="item">
+                            <a class="blocks-item" href=/bless-library>Blocks</a>
+                        </li>
+                        <li>
+                            <a href=/logout>Log Out</a>
+                        </li>
+                    </ul>
+                    </nav>
+                </div>
+                </div>
+                
                     
                 {% else %}
-                
+                <div class='desktop'>
                 <div class="nav-container">
                     <nav class='wrapper'>
                         <div class='logo'>
@@ -75,6 +112,40 @@
                         </ul>
                     </nav>
                 </div>
+                </div>
+
+
+                <!-- mobile users -->
+                <div class='mobile'>
+                    <div class="nav-container2">
+                        <nav class='wrapper'>
+                            <div class='logo'>
+                                <div class='ham-menu'>
+                                    <button class='ham-close'></button>
+                                    <img  class='hamburger' src='/static/images/hamburger.svg'>
+                                </div>
+                                <div>
+                                    <p class="logotext">ShareShabbat</p>
+                                </div>
+                                <div>
+                                    <a href='/'><img class="logo_image" src="static/images/logopng.png" height="75px" alt="logo candles"></a>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="nav-mobile">
+                        <nav>
+                        <ul class='nav-items'>
+                            <li class="item">
+                                <a href=/login>Log In</a>
+                            </li>
+                            <li>
+                                <a href=/register>Register</a>
+                            </li>
+                        </ul>
+                        </nav>
+                    </div>
+                    </div>
 
                 {% endif %}
 
