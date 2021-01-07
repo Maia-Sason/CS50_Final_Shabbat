@@ -26,7 +26,7 @@ login.init_app(app)
 
 # config sqlalchemy
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 
 # Set up classes for db
@@ -91,7 +91,7 @@ db.create_all()
 db.session.commit()
 
 # create secret key to keep client session secure, cookies during sess
-app.secret_key = 'secret'
+app.secret_key = ('secret')
 
 # Instantiate Flask-socket io and pass in app.
 socketio = SocketIO(app, cors_allowed_origins="*")
