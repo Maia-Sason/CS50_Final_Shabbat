@@ -859,6 +859,11 @@ ul {
         justify-content: center;
        
         }
+
+        input {
+            border-style: solid;
+            border: 1px grey;
+        }
     
     }
 
