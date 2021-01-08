@@ -12,6 +12,7 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 passlib==1.7.4
+psycopg2-binary==2.8.6
 python-engineio==4.0.0
 python-socketio==5.0.2
 requests==2.25.1
