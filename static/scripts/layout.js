@@ -9,7 +9,7 @@ $(document).ready(function () {
         $('.hamburger').css({'transform': 'Rotate(90deg)'}).fadeOut();
         $('.ham-close').fadeIn().css({'transform': 'Rotate(-90deg)'});
         $('.nav-mobile').show();
-        $('.nav-mobile').animate({height: "300vh"});
+        $('.nav-mobile').animate({height: "100%"});
     })
     $('.ham-close').on('click', function() {
         $('.ham-close').css({'transform': 'Rotate(90deg)'}).fadeOut();
