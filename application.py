@@ -70,7 +70,7 @@ class Room(db.Model):
     __tablename__ = 'room'
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     id = db.Column(db.Integer, primary_key=True)
-    room_code = db.Column(db.Integer, unique=True)
+    room_code = db.Column(db.String, unique=True)
     room_name = db.Column(db.String(30))
     
     room_time = db.Column(db.DateTime)
@@ -457,9 +457,15 @@ def createRoom_post():
         # print(date)
         
         # set this to true
+        go = True
         
         # While go is true, create a room code, if room code doesn't exist, break out
         # and set roomCode as the code of the new room
+        while go:
+            roomCode = get_rndm(6)
+            code = Room.query.filter_by(room_code=roomCode).first()
+            if roomCode != code:
+                go = False
         
         # DONT FORGET: to add date and time to DB
         
