@@ -622,6 +622,7 @@ ul {
 }
 
 .button-placement {
+    width: 300px;
     position: relative;
     display: flex;
     justify-content: space-between;   
