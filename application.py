@@ -56,6 +56,15 @@ class Bless(db.Model):
     eng = db.Column(db.String)
     heb = db.Column(db.String)
     eng_heb = db.Column(db.String)
+    meaning = db.Column(db.String)
+
+    def __init__(self, bless_name, eng, heb, eng_heb, meaning,user_id):
+        self.bless_name = bless_name
+        self.eng = eng
+        self.heb = heb
+        self.eng_heb = eng_heb
+        self.meaning = meaning
+        self.user_id = user_id
 
 class Room(db.Model):
     __tablename__ = 'room'
