@@ -4,7 +4,7 @@
 // })
 
 $(document).ready(function () {
-    $('.nav-mobile').hide()
+    $('.nav-items').hide()
     $('.hamburger').on('click', function() {
         $('.hamburger').css({'transform': 'Rotate(90deg)'}).fadeOut();
         $('.ham-close').fadeIn().css({'transform': 'Rotate(-90deg)'});
@@ -14,6 +14,8 @@ $(document).ready(function () {
     $('.ham-close').on('click', function() {
         $('.ham-close').css({'transform': 'Rotate(90deg)'}).fadeOut();
         $('.hamburger').fadeIn().css({'transform': 'Rotate(180deg)'});
-        $('.nav-mobile').hide();
+        $('.nav-items').hide();
+        $('.nav-mobile').animate({height: "0%"});
+
     })
 })
