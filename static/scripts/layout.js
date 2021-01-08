@@ -8,6 +8,7 @@ $(document).ready(function () {
     $('.hamburger').on('click', function() {
         $('.hamburger').css({'transform': 'Rotate(90deg)'}).fadeOut();
         $('.ham-close').fadeIn().css({'transform': 'Rotate(-90deg)'});
+        $('.nav-items').show()
         $('.nav-mobile').show();
         $('.nav-mobile').animate({height: "100%"});
     })
