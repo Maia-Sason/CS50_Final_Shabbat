@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     if (document.querySelector('#start') != undefined) {
         document.querySelector('#start').onclick = () => {
-            $('#end').slideUp()
+            $('#end').show()
             $('#start').slideUp()
             socket.emit('start', {'show' : '$("#guest_buttons").show()',
                                 'wait' : '$("#wait").toggle()',
