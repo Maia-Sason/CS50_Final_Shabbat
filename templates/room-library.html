@@ -26,7 +26,7 @@
             <li>
                 <div room-value='{{ room.id }}' class="room_selected shabbat" data-toggle="modal" data-target="#modalPreview">  
                     <h2 class="shabbat_header" style='overflow-x:hidden'>{{ room.room_name}}</h2>
-                    <p class="date">{{ room.room_time }}</p>
+                    <!-- <p class="date">{{ room.room_time }}</p> -->
                 </div>
             </li>
             {% endfor %}
@@ -49,7 +49,7 @@
                     <!-- room-code -->
                     <p id='room-code'>Room Code:</p><button class="nextprev copy-button" type="button" id="copy">Copy</button>
                     <input id="_hidden-code" class='offscreen' aria-hidden="true">
-                    <p id='room-date'>Room Date and time: -/-/- --:-- --</p>
+                    <!-- <p id='room-date'>Room Date and time: -/-/- --:-- --</p> -->
                 </div>
                 <!-- room id -->
                 <div style="display:none">
@@ -261,7 +261,7 @@ $(document).ready(function () {
 
                 $('#room-title').html('Room Name: ' + data.name),
                 $('#room-code').html('Room Code: ' + data.code),
-                $('#room-date').html('Room Date: ' + data.date),
+                // $('#room-date').html('Room Date: ' + data.date),
                 $('#_hidden-code').val(data.code),
                 $("#room-id").val(data.id)
             }

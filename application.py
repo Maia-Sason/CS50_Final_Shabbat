@@ -56,7 +56,7 @@ class Bless(db.Model):
     eng = db.Column(db.String)
     heb = db.Column(db.String)
     eng_heb = db.Column(db.String)
-    meaning = db.Column(db.String)
+    meaning = db.Column(db.String
 
     def __init__(self, bless_name, eng, heb, eng_heb, meaning,user_id):
         self.bless_name = bless_name
@@ -418,7 +418,7 @@ def createRoom():
         
         # DONT FORGET: to add date and time to DB
 
-        room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
+        room = Room(room_name=roomdict['rname'], room_time=roomdict['rdate'], room_code=roomCode, user_id=current_user.get_id())
         db.session.add(room)
         db.session.commit()
 
@@ -469,7 +469,7 @@ def createRoom_post():
         
         # DONT FORGET: to add date and time to DB
         
-        room = Room(room_name=roomdict['rname'], room_time=date, room_code=roomCode, user_id=current_user.get_id())
+        room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
         db.session.add(room)
         db.session.commit()
 
