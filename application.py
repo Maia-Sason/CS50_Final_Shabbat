@@ -457,15 +457,9 @@ def createRoom_post():
         # print(date)
         
         # set this to true
-        go = True
         
         # While go is true, create a room code, if room code doesn't exist, break out
         # and set roomCode as the code of the new room
-        while go:
-            roomCode = get_rndm(6)
-            code = Room.query.filter_by(room_code=roomCode).first()
-            if roomCode != code:
-                go = False
         
         # DONT FORGET: to add date and time to DB
         
