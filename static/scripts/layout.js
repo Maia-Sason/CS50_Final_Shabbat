@@ -4,6 +4,7 @@
 // })
 
 $(document).ready(function () {
+    $('.nav-mobile').hide()
     $('.hamburger').on('click', function() {
         $('.hamburger').css({'transform': 'Rotate(90deg)'}).fadeOut();
         $('.ham-close').fadeIn().css({'transform': 'Rotate(-90deg)'});
