@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
     socket.on('start', data => {
         console.log(data.show)
         // document.write(data.show)
-        $('#end').show()
         $('#blessblocks').show()
 
     });
@@ -114,6 +113,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     if (document.querySelector('#start') != undefined) {
         document.querySelector('#start').onclick = () => {
+            $('#end').slideUp()
             $('#start').slideUp()
             socket.emit('start', {'show' : '$("#guest_buttons").show()',
                                 'wait' : '$("#wait").toggle()',
