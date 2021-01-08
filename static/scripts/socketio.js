@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', ()=> {
     // Connect to socket
-    var socket = io.connect('https://' + document.domain + ':' + location.port);
+    var socket = io();
 
 
     let room = $("#display_name").data('id').toString();
