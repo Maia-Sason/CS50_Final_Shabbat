@@ -93,7 +93,7 @@ db.create_all()
 db.session.commit()
 
 # create secret key to keep client session secure, cookies during sess
-app.secret_key = ('secret')
+app.secret_key = ('SECRET_KEY')
 
 # Instantiate Flask-socket io and pass in app.
 socketio = SocketIO(app, cors_allowed_origins="*")
