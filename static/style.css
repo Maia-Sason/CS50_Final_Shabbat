@@ -624,7 +624,7 @@ ul {
 .button-placement {
     position: relative;
     display: flex;
-    justify-content: center;   
+    justify-content: space-between;   
 }
 
 .modal-header {
