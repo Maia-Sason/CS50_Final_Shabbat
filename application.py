@@ -17,7 +17,6 @@ from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-heroku = Heroku(app)
 
 
 
