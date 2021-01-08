@@ -13,7 +13,7 @@ $(document).ready(function () {
     })
     $('.ham-close').on('click', function() {
         $('.ham-close').css({'transform': 'Rotate(90deg)'}).fadeOut();
-        $('.nav-mobile').animate({height: "0%"}).hide()
+        $('.nav-mobile').hide().animate({height: "0%"})
         $('.hamburger').fadeIn().css({'transform': 'Rotate(180deg)'});
 
     })
