@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     socket.on('start', data => {
         console.log(data.show)
         // document.write(data.show)
+        $('#end').show()
         $('#blessblocks').show()
 
     });
