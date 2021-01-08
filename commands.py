@@ -5,4 +5,7 @@ from flask.cli import with_appcontext
 
 from application import db, User, Bless, Room, Room_bless
 
-db.create_all()
+@click.command(name='create_tables')
+@with_appcontext
+def create_tables():
+    db.create_all()
