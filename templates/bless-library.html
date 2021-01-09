@@ -192,7 +192,7 @@
             $('#create-create').unbind('click');
             $('#next-create').unbind('click');
             $('#back-create').unbind('click');
-            
+
             console.log(currentTab_create)
             function nextPrevClick(n, currentTab) {
             
@@ -422,14 +422,11 @@
                     data : json_data,
                     success : function(data) {
                         console.log('deleted ' + data.id)
+                        current_bless.slideUp()
                         location.reload()
                     }
                     
                 })
-
-                
-
-                current_bless.slideUp()
                 }
             })
         })
