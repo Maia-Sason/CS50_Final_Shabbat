@@ -190,6 +190,9 @@
         
         $('#create-btn').on('click', function() {
             $('#create-create').unbind('click');
+            $('#next-create').unbind('click');
+            $('#back-create').unbind('click');
+            
             console.log(currentTab_create)
             function nextPrevClick(n, currentTab) {
             
