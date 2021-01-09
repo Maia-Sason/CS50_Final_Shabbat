@@ -371,8 +371,10 @@
     })
 
     $(document).ready(function () {
+        
         $('.bless').on('click', function() {
-            let current_bless = undefined
+            ('#delete').unbind('click');
+            
             
             current_bless = $(this)
             let block_data = undefined
