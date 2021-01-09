@@ -375,11 +375,11 @@ def delete_bless():
     data = request.get_json()
 
     bless = Bless.query.filter_by(id=data['bless_id']).first()
-
+    blessDict = {'id' : bless.id}
     db.session.delete(bless)
     db.session.commit()
 
-    return redirect('/bless-library')
+    return blessDict
 
     
 

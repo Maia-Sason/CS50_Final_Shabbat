@@ -640,6 +640,10 @@ ul {
     border-top-right-radius: .3rem;
 }
 
+.source {
+    clear: both;
+}
+
 .modal-footer {
     display: -ms-flexbox;
     display: flex;

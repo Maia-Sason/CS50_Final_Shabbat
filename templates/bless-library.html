@@ -100,6 +100,7 @@
                 </div>
             </li>
             {% endfor %}
+            <p class='source join_text'>All Preset Block blessing information is sourced from <a href="https://www.myjewishlearning.com/article/shabbat-blessings/">myjewishlearning.com</a>.</p>
         </ul>
         </div>
             <div id="custom" style="display:none">
@@ -122,6 +123,9 @@
 </div>
 
 <script>
+// Multistep form functionality referenced from w3schools.com
+// URL: https://www.w3schools.com/howto/howto_js_form_steps.asp
+
     // preview bless blocks
     $(document).ready(function () {
         $('.bless').on('click', function() {
@@ -368,7 +372,9 @@
 
     $(document).ready(function () {
         $('.bless').on('click', function() {
-            let current_bless = $(this)
+            let current_bless = undefined
+            
+            current_bless = $(this)
             let block_data = undefined
             block_data = {bless_id : $(this).attr('bless-value')};
             let json_data = JSON.stringify(block_data)
@@ -409,6 +415,9 @@
 
                     dataType : 'json',
                     data : json_data,
+                    success : function(data) {
+                        console.log('deleted ' + data.id)
+                    }
                     
                 })
 
