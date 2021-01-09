@@ -378,7 +378,7 @@
         
         $('.bless').on('click', function() {
             $('#delete').unbind();
-            $(this).unbind();            
+            $(this).unbind('click');            
             
             current_bless = $(this)
             let block_data = undefined
