@@ -378,8 +378,10 @@
         
         $('.bless').on('click', function() {
             $('#delete').unbind();
-            $(this).unbind('click');            
-            
+            $(this).unbind('click');
+            $('#next').unbind('click');
+            $('#back').unbind('click')
+
             current_bless = $(this)
             let block_data = undefined
             block_data = {bless_id : $(this).attr('bless-value')};
