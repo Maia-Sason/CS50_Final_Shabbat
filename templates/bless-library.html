@@ -407,24 +407,24 @@
 
             $('#delete').on('click', function() {
                 if (current_bless.hasClass('custom_bless')) {
+                    current_bless.addClass('deleteme');
+                // $.ajax({
+                //     url : '/_delete_bless',
+                //     type : 'post',
+                //     contentType : "application/json",
 
-                $.ajax({
-                    url : '/_delete_bless',
-                    type : 'post',
-                    contentType : "application/json",
-
-                    dataType : 'json',
-                    data : json_data,
-                    success : function(data) {
-                        console.log('deleted ' + data.id)
-                        location.reload()
-                    }
+                //     dataType : 'json',
+                //     data : json_data,
+                //     success : function(data) {
+                //         console.log('deleted ' + data.id)
+                //         location.reload()
+                //     }
                     
-                })
+                // })
 
                 
 
-                current_bless.slideUp()
+                // current_bless.slideUp()
                 }
             })
         })
