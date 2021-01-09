@@ -360,11 +360,13 @@ def createBless():
     data = request.get_json()
 
     newbless = Bless(bless_name=data['bname'], eng=data['beng'], heb=data['bheb'], eng_heb=data['beng_heb'], meaning=data['bmeaning'], user_id=current_user.get_id())
+    new_id = {id : newbless.id}
     db.session.add(newbless)
     db.session.commit()
 
-    return redirect('/bless-library')
 
+
+    return new_id
 
     # store it all in a database
 

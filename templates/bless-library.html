@@ -267,8 +267,14 @@
                         contentType : "application/json",
                         dataType : 'json',
                         data: js_data,
+                        success: function (data) {
+                            console.log(data.id);
+                            location.reload();
+                        }, error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert('there waas an issue with your request, please try again.')
+                        }
                     })
-                    location.reload();
+                    
 
                     return false;
 
