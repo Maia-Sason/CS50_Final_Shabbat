@@ -96,7 +96,7 @@
             {% for bless in genBless %}
             <li>
                 <div bless-value='{{ bless.id }}' class="bless bless_normal" data-toggle="modal" data-target="#modalPreview">  
-                    <h2 class="bless_title">{{ bless.bless_name }}</h2>
+                    <h2 behavior="scroll" direction="left" class="bless_title">{{ bless.bless_name }}</h2>
                 </div>
             </li>
             {% endfor %}
