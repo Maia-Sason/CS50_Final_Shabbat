@@ -472,6 +472,9 @@ def createRoom_post():
         # DONT FORGET: to add date and time to DB
         
         room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
+        
+        room_json = { 'id' : room.id}
+        
         db.session.add(room)
         db.session.commit()
 
@@ -483,7 +486,7 @@ def createRoom_post():
             
             db.session.add(j)
             db.session.commit()
-    return render_template('room-library.html')
+    return room_json
 
 # Set up sockets.
 

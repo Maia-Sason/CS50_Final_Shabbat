@@ -187,8 +187,11 @@ function nextPrev(n) {
             contentType : "application/json",
             dataType : 'json',
             data: js_data,
+            success: function (data) {
+                location.reload();
+            }
         })
-        location.reload();
+        
     }
     
     showTab(currentTab_create)
