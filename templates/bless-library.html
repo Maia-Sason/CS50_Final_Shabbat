@@ -108,7 +108,7 @@
                     {% for bless in userBless %}
                     <li>
                     <div bless-value='{{ bless.id }}' class="bless bless_normal custom_bless" data-toggle="modal" data-target="#modalPreview">  
-                        <h2 class="bless_title">{{ bless.bless_name }}</h2>
+                        <marquee behavior="scroll" scrolldelay="300" direction="left" class="bless_title">{{ bless.bless_name }}</marquee>
                     </div>
                     </li>
                     {% endfor %}

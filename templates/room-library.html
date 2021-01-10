@@ -306,7 +306,7 @@ $(document).ready( ()=> {
                     // figure this out
                     for (let i = 0; i < data.length; i++) {
                         console.log('id ' + data[i].id + ', name ' + data[i].name)
-                        $('.bless_list').append("<li><div id=' " +(data[i].id)+ "' bless-value='" + (data[i].id) + "' class='btn-bless bless bless_normal'><p class=bless_title style='overflow:hidden'>"+ (data[i].name) +"</p></div></li")
+                        $('.bless_list').append("<li><div id=' " +(data[i].id)+ "' bless-value='" + (data[i].id) + "' class='btn-bless bless bless_normal'><marquee behavior='scroll' scrolldelay='300' direction='left' class='bless_title'>"+ (data[i].name) +"</marquee></div></li")
                     }
 
                     console.log(data)
