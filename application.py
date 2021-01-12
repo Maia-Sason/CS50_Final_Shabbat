@@ -207,7 +207,7 @@ def check_mail():
     # URL: https://stackoverflow.com/questions/15438524/object20object-validation-plugin-flask
 
     # Get email from validation remote
-    email = request.args.get('email')
+    email = request.args.get('email').lower()
     # Check to see if email exists
     check = User.query.filter_by(email=email).first()
     if check == None:
