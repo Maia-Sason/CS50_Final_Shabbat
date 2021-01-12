@@ -381,59 +381,6 @@ def delete_bless():
 
     return blessDict
 
-    
-
-
-@app.route('/create-room', methods=['GET', 'POST'])
-@login_required
-def createRoom():
-    ''' Create a room '''
-    # get how many rooms user has
-    room_exist = Room.query.filter_by(user_id=current_user.get_id()).all()
-    if (request.method == "GET"):
-        # If amount of rooms is == or exceeds 10, return apology
-        if len(room_exist) >= 10:
-            return apology("No more than 10 active rooms supported.")
-
-        # Gather blessings to be displayed
-        userBless = current_user.blessings
-        genBless = Bless.query.filter_by(user_id=None).all()
-        allBless = genBless + userBless
-        # create a multistep form
-        return render_template('create-room.html', allBless=allBless)
-
-    elif request.method == "POST":
-        # Get data from json AJAX call
-        data = request.get_json()
-
-        
-        # set this to true
-        go = True
-        
-        # While go is true, create a room code, if room code doesn't exist, break out
-        # and set roomCode as the code of the new room
-        while go:
-            roomCode = get_rndm(6)
-            code = Room.query.filter_by(room_code=roomCode).first()
-            if roomCode != code:
-                go = False
-        
-        # DONT FORGET: to add date and time to DB
-
-        room = Room(room_name=roomdict['rname'], room_time=roomdict['rdate'], room_code=roomCode, user_id=current_user.get_id())
-        db.session.add(room)
-        db.session.commit()
-
-        # Go through the list of prayers, and add each one to the Room_Bless table
-        for i in range(len(roomdict["rlist"])):
-            print(i)
-            j = i
-            j = Room_Bless(bless_id=roomdict['rlist'][i],ord_num=(1+i), room_id=room.id)
-            
-            db.session.add(j)
-            db.session.commit()
-        return render_template('roomCreated.html')
-
 @app.route('/_create_room', methods=['POST'])
 @login_required
 def createRoom_post():
