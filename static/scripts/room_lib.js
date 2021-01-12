@@ -130,6 +130,7 @@ $("#modalCreate").on("hidden.bs.modal", function () {
 $(document).ready(function () {
 
     $('.room_selected').on('click', function() {
+        $('#delete').unbind();
         let current_room = $(this)
         
         let room_data = {'room_id' : $(this).attr('room-value')};
