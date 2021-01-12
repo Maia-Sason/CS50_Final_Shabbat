@@ -18,7 +18,7 @@ There is a final ajax call in the 'Blocks' for creating a new 'bless block'. A u
 
 The next ajax calls exist in the Rooms tab. Very similar to the Blocks section, in the Room section there is an ajax call for viewing room information on selection, deleting a selected room, and creating a room. There is one additional ajax call used to gather up all of the 'bless blocks' that exist under the user's account and load them into a form.
 
-### Websockets
+### Websockets:
 
 #### The app makes use of websockets when hosting and joining a room. Based on whether a user is acting as a host or a guest he/she will recieve different information. Hosts control what section their guests see at any given time. They are the ones triggering most of the information throughout the hosting session. The guests can only recieve information and click on buttons that only affect themselves.
 
