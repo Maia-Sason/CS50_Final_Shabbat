@@ -153,7 +153,7 @@ def login():
     if request.method == "GET":
         return render_template("login.html")
     else:
-        email = request.form.get("email")
+        email = request.form.get("email").lower()
         password = request.form.get("password")
 
         # find user email
@@ -183,7 +183,7 @@ def register():
     if request.method == "GET":
         return render_template("register.html")
     else:
-        email = request.form.get('email')
+        email = request.form.get('email').lower()
         display_name = request.form.get('display_name')
         password = request.form.get('password')
 
