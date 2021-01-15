@@ -88,6 +88,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
                 }
                 if (selectedBless.length > 0) {
                     $("#add_bless").show();
+                } else {
+                    $("#add_bless").hide();
                 }
             })
 
@@ -95,7 +97,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
                 let json_data = JSON.stringify(selectedBless)
 
-                if (selectedBless != "") {
+                if (selectedBless.length > 0) {
                     console.log(selectedBless)
                     // send ajax call with bless blocks to keep
 
