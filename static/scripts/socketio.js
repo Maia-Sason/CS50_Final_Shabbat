@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     });
 
     socket.on('start', data => {
+        $('#end').show()
         console.log(data.show)
         // document.write(data.show)
         $('#blessblocks').show()
@@ -70,7 +71,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
             $('#guest_goodies').show();
             for (let i = 0; i < data.length; i++) {
-                $("#bless_guest").append("<li><div id=' " +(data[i].id)+ "' bless-value='" + (data[i].id) + "' class='btn-bless bless bless_normal bless_guest'><p class=bless_title>"+ (data[i].name) +"</p></div></li")
+                $("#bless_guest").append("<li><div id=' " +(data[i].id)+ "' bless-value='" + (data[i].id) + "' class='btn-bless bless bless_normal bless_guest'><marquee class=bless_title>"+ (data[i].name) +"</marquee></div></li")
             }
 
             $('.bless_guest').on('click', function() {
@@ -84,6 +85,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
                 } else if ($(this).hasClass('bless_active')) {
                     selectedBless.splice(selectedBless.indexOf(blessVal), 1 );
                     $(this).removeClass('bless_active').addClass('bless_normal');
+                }
+                if (selectedBless.length > 0) {
+                    $("#add_bless").show();
                 }
             })
 
@@ -113,7 +117,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     if (document.querySelector('#start') != undefined) {
         document.querySelector('#start').onclick = () => {
-            $('#end').show()
+
             $('#start').slideUp()
             socket.emit('start', {'show' : '$("#guest_buttons").show()',
                                 'wait' : '$("#wait").toggle()',
@@ -124,12 +128,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
     }
 
     if ($('#end') != undefined) {
-    $('#end').on('click', function() {
-        $('#end').slideUp()
-        socket.emit('ending', {
-            'room': room
+        $('#end').on('click', function() {
+            $('#end').slideUp()
+            socket.emit('ending', {
+                'room': room
+            })
         })
-    })
 
     }
 
