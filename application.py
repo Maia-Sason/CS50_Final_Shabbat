@@ -418,7 +418,7 @@ def createRoom_post():
         
         # DONT FORGET: to add date and time to DB
         
-        room = Room(room_name=roomdict['rname'], room_code=roomCode, user_id=current_user.get_id())
+        room = Room(room_name=roomdict['rname'], room_time=roomdict['rdate'], room_code=roomCode, user_id=current_user.get_id())
         
         room_json = { 'id' : room.id}
         
