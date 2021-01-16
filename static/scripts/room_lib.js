@@ -150,6 +150,7 @@ $(document).ready(function () {
                 $('#room-title').html('Room Name: ' + data.name),
                 $('#room-code').html('Room Code: ' + data.code),
                 $('#room-date').html('Room Date: ' + data.date),
+                console.log(data.date)
                 $('#_hidden-code').val("https://shareshabbat.herokuapp.com/ code " + data.code),
                 $("#room-id").val(data.id)
             }
