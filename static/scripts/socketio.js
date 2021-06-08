@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         'reconnectionAttempts': 10
     });
 
-    window.addEventListener("focus", () => socket.connect());
+    // window.addEventListener("focus", () => socket.connect());
 
 
 
@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //         });
     //     }, 2000);
     // }
+
+    socket.io.on("reconnection_attempt", () => {
+        console.log('reconnecting...')
+    });
 
     const manualReconnect = () => {
         socket.connect();
