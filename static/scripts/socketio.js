@@ -19,6 +19,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //         });
     //     }, 2000);
     // }
+
+    socket.on("connect_error", () => {
+        setTimeout(() => {
+          socket.connect();
+        }, 1000);
+      });
       
     // socket.io.on("close", tryReconnect);
 
