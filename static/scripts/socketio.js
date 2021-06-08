@@ -22,6 +22,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
     //     }, 2000);
     // }
 
+    const manualReconnect = () => {
+        socket.connect();
+    }
+
     socket.on("connect_error", () => {
         setTimeout(() => {
           socket.connect();
@@ -29,7 +33,8 @@ document.addEventListener('DOMContentLoaded', ()=> {
       });
 
     socket.on('disconnect', () => {
-        console.log('You have been disconnected')
+        console.log('You have been disconnected');
+        $('#reconnect').show()
         // setInterval(() => {
         //     socket.connect();
         //     console.log('Trying to reconnect...')
@@ -67,6 +72,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     // On user connect, send data 'connected'
     socket.on('connect', ()=> {
+        $('#reconnect').hide()
         socket.send("I am connected");
         let name = $('#display_name').data('name');
         socket.emit('joined', {'name' : name,'room': room })
