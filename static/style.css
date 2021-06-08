@@ -8,6 +8,30 @@ body {
 
 }
 
+button {
+    cursor: pointer;
+}
+
+.error {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 800;
+    font-size: 64px;
+    line-height: 87px;
+}
+
+.error_description {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 36px;
+    line-height: 49px;
+    padding-top: 15px;
+    margin-bottom: -15px;
+    color: #000000;
+}
+
+
 .nav-container {
     z-index: 99;
     height: 151px;
@@ -581,7 +605,7 @@ ul {
     font-size: 24px;
     line-height: 24px;
     color: black !important;
-    margin:  0 30px 30px;
+    margin: 0 2vw 2vw;
 }
 
 .nextprev:hover {
@@ -622,7 +646,6 @@ ul {
 }
 
 .button-placement {
-    width: 300px;
     position: relative;
     display: flex;
     justify-content: space-between;   

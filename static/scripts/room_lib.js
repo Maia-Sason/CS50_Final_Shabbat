@@ -1,13 +1,14 @@
-
-$("#roomDate").flatpickr({
-    enableTime: true,
+const flatpickrDict = flatpickr("#roomDate", {enableTime: true,
     minDate: "today",
+    altFormat: "m-d-Y H:i",
+    altInput: true,
     dateFormat: "Z",
-   
-    
+    inline: true
 });
 
-
+//  $("#roomDate").flatpickr({
+                            
+//                         });
 
 
 // Multistep form functionality referenced from w3schools.com
@@ -53,7 +54,7 @@ function nextPrev(n) {
     if (currentTab_create >= x.length) {
         var roomDict = {
             rname : $("#roomName").val(),
-            rdate : $("#roomDate").val(),
+            rdate : $('#roomDate').val(),
             rlist: selectedBless
         }
 
@@ -150,6 +151,7 @@ $(document).ready(function () {
                 $('#room-title').html('Room Name: ' + data.name),
                 $('#room-code').html('Room Code: ' + data.code),
                 $('#room-date').html('Room Date: ' + data.date),
+                
                 console.log(data.date)
                 $('#_hidden-code').val("https://shareshabbat.herokuapp.com/ code " + data.code),
                 $("#room-id").val(data.id)
@@ -211,7 +213,7 @@ $(document).ready(function() {
         var  list = "";
         // add these to list as they are updated
         list += "<li>" + "Name: " + $("#roomName").val() + "</li>";
-        list += "<li>" + "Date and time: " + $("#roomDate").val() + "</li>";
+        list += "<li>" + "Date and time: " + parseISOString($("#roomDate").val()) + "</li>";
         list += "<li>" + "Number of Bless Blocks: " + selectedBless.length + "</li>";
         
         // Display list to html where tab id== "confirmation"
@@ -219,6 +221,12 @@ $(document).ready(function() {
         console.log(selectedBless)
     })
 })
+
+// StackOverFlow https://stackoverflow.com/questions/27012854/change-iso-date-string-to-date-object-javascript
+function parseISOString(s) {
+    var b = s.split(/\D+/);
+    return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], b[5], b[6]));
+  }
 
 // On btnbless click set blessVal to the value of this button
 $(".bless_list").on('click', 'div', function() {

@@ -1,10 +1,26 @@
 document.addEventListener('DOMContentLoaded', ()=> {
     // Connect to socket
-    var socket = io();
+    const socket = io({
+        'reconnection': true,
+        'reconnectionDelay': 500,
+        'reconnectionAttempts': 10
+    });
 
 
     let room = $("#display_name").data('id').toString();
     joinRoom(room);
+
+    // const tryReconnect = () => {
+    //     setTimeout(() => {
+    //         socket.io.open((err) => {
+    //         if (err) {
+    //             tryReconnect();
+    //         }
+    //         });
+    //     }, 2000);
+    // }
+      
+    // socket.io.on("close", tryReconnect);
 
     // When a message is recieved...
     socket.on('message', data => {

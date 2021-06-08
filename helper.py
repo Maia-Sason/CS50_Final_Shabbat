@@ -13,9 +13,9 @@ def get_rndm(length):
     # Set up a random string generator that generates codes for
     # Roomcode
     # Repurposed from my cs50 finance email code
-    letters = string.ascii_letters
-    result = ''.join(random.choice(letters) for i in range(length))
-    return result.upper()
+    numbers = string.digits
+    result = ''.join(random.choice(numbers) for i in range(length))
+    return result
 
 # Apology from cs50 finance
 def apology(message, code=400):

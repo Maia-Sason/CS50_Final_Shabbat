@@ -120,7 +120,7 @@ def index():
         roomCode = request.form.get("code")
 
         # get room from room_code
-        foundRoom = Room.query.filter_by(room_code=roomCode).first()
+        foundRoom = Room.query.filter_by(room_code=roomCode.upper()).first()
 
         # if there was no room
         if foundRoom == None:
