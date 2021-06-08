@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     const manualReconnect = () => {
         socket.connect();
+        console.log('attempting to reconnect...')
     }
 
     socket.on("connect_error", () => {
