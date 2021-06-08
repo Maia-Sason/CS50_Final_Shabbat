@@ -28,9 +28,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     socket.on('disconnect', () => {
         console.log('You have been disconnected')
-        setTimeout(() => {
+        setInterval(() => {
             socket.connect();
-        }, 1000);
+            console.log('Trying to reconnect...')
+        }, 5000);
     })
       
     // socket.io.on("close", tryReconnect);
