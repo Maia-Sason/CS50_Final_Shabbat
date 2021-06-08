@@ -1,5 +1,3 @@
-window.addEventListener("focus", () => socket.connect());
-
 document.addEventListener('DOMContentLoaded', ()=> {
     // Connect to socket
     const socket = io({
@@ -7,6 +5,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
         'reconnectionDelay': 500,
         'reconnectionAttempts': 10
     });
+
+    window.addEventListener("focus", () => socket.connect());
+
 
 
     let room = $("#display_name").data('id').toString();
