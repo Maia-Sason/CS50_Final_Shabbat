@@ -1,3 +1,5 @@
+window.addEventListener("focus", () => socket.connect());
+
 document.addEventListener('DOMContentLoaded', ()=> {
     // Connect to socket
     const socket = io({
@@ -28,10 +30,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     socket.on('disconnect', () => {
         console.log('You have been disconnected')
-        setInterval(() => {
-            socket.connect();
-            console.log('Trying to reconnect...')
-        }, 5000);
+        // setInterval(() => {
+        //     socket.connect();
+        //     console.log('Trying to reconnect...')
+        // }, 5000);
     })
       
     // socket.io.on("close", tryReconnect);
