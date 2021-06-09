@@ -6,9 +6,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
         'reconnectionAttempts': 10
     });
 
-    // window.addEventListener("focus", () => socket.connect());
-
-
+    document.getElementById("myAudio").loop = true;
 
     let room = $("#display_name").data('id').toString();
     joinRoom(room);
@@ -27,10 +25,10 @@ document.addEventListener('DOMContentLoaded', ()=> {
         console.log('reconnecting...')
     });
 
-    const manualReconnect = () => {
-        socket.connect();
-        console.log('attempting to reconnect...')
-    }
+    // const manualReconnect = () => {
+    //     socket.connect();
+    //     console.log('attempting to reconnect...')
+    // }
 
     socket.on("connect_error", () => {
         setTimeout(() => {
@@ -46,8 +44,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
         //     console.log('Trying to reconnect...')
         // }, 5000);
     })
-      
-    // socket.io.on("close", tryReconnect);
 
     // When a message is recieved...
     socket.on('message', data => {

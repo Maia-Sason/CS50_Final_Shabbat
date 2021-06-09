@@ -17,9 +17,6 @@
         <p class="roomtext"> Mode: {{mode}}</p>
         <p class="roomtext2">Display-Name: {{displayName}}</p>
         <label><p id="user_connected" display="none"></p></label>
-        <div class="div-space">
-            <button id='reconnect' type="button" style="display:none" onclick="manualReconnect()" class="nextprev2 delete">Reconnect</button>
-        </div>
         
 
         
@@ -95,10 +92,10 @@
 
 </div>
 
-<audio autoplay loop>
-    <!-- dont worry about this, just trying to keep iphone users connected to Socket!  :) -->
-    <source src="{{ url_for('static', filename='audio/testing.m4a') }}" type="audio/mpeg">
-</audio>
+<!-- <audio autoplay loop>
+ dont worry about this, just trying to keep iphone users connected to Socket!  :)
+    <source src="{{ url_for('static', filename='audio/silent.m4a') }}" type="audio/mpeg">
+</audio> -->
     
 
 <!-- solved 400 GET error by using a different version of socket.io CDN -->
