@@ -91,13 +91,7 @@
 {% endif %}
 
 </div>
-
-<!-- <audio autoplay loop>
- dont worry about this, just trying to keep iphone users connected to Socket!  :)
-    <source src="{{ url_for('static', filename='audio/silent.m4a') }}" type="audio/mpeg">
-</audio> -->
     
-
 <!-- solved 400 GET error by using a different version of socket.io CDN -->
     <script src="https://cdn.socket.io/socket.io-3.0.0.min.js"></script>
     <script src="{{ url_for('static', filename='scripts/socketio.js') }}"></script>
