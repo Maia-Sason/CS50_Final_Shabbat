@@ -6,29 +6,12 @@ document.addEventListener('DOMContentLoaded', ()=> {
         'reconnectionAttempts': 10
     });
 
-    document.getElementById("myAudio").loop = true;
-
     let room = $("#display_name").data('id').toString();
     joinRoom(room);
-
-    // const tryReconnect = () => {
-    //     setTimeout(() => {
-    //         socket.io.open((err) => {
-    //         if (err) {
-    //             tryReconnect();
-    //         }
-    //         });
-    //     }, 2000);
-    // }
 
     socket.io.on("reconnection_attempt", () => {
         console.log('reconnecting...')
     });
-
-    // const manualReconnect = () => {
-    //     socket.connect();
-    //     console.log('attempting to reconnect...')
-    // }
 
     socket.on("connect_error", () => {
         setTimeout(() => {
@@ -39,10 +22,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
     socket.on('disconnect', () => {
         console.log('You have been disconnected');
         $('#reconnect').show()
-        // setInterval(() => {
-        //     socket.connect();
-        //     console.log('Trying to reconnect...')
-        // }, 5000);
     })
 
     // When a message is recieved...
@@ -67,7 +46,6 @@ document.addEventListener('DOMContentLoaded', ()=> {
     socket.on('start', data => {
         $('#end').show()
         console.log(data.show)
-        // document.write(data.show)
         $('#blessblocks').show()
 
     });
