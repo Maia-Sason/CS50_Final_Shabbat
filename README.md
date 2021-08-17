@@ -1,5 +1,9 @@
 # ShareShabbat
+
 #### Video Demo:  https://www.youtube.com/watch?v=00EB7Ft9Fbc&feature=youtu.be
+
+#### Live Demo:  https://shareshabbat.herokuapp.com/
+
 #### Description: This is a website that can help you host and customize your own jewish holiday dinners and share your traditions with friends and family. You can customize your blessings to suite your needs. You can create a private room to host your events, and share your generated room code with your friends and family so they can follow along in the ceremony.
 
 ## How it works
